@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: deployr
+Version: 0.0.1
+Summary: pytools - apitrary python tool set
+Home-page: http://apitrary.com
+Author: Hans-Gunther Schmidt
+Author-email: hgs@apitrary.com
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: deployr buildr balancr loggr registr trackr apitrary application
+Platform: UNKNOWN

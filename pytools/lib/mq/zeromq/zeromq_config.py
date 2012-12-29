@@ -12,7 +12,7 @@
 # Request constants
 #
 #
-REQUEST_TIMEOUT = 3000
+REQUEST_TIMEOUT = 3500
 REQUEST_RETRIES = 10
 
 # Heartbeat constants
@@ -29,6 +29,8 @@ RECONNECT_TIMEOUT = 30.0
 #
 PPP_READY = "\x01"           # Signals worker is ready
 PPP_HEARTBEAT = "\x02"       # Signals worker heartbeat
+PPP_PING = 'ping'
+PPP_PONG = 'pong'
 
 # Connection constants
 #

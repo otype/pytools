@@ -8,25 +8,16 @@
     Copyright (c) 2012 apitrary
 
 """
-#
-##  Paranoid Pirate worker
-#
-#   Author: Daniel Lundin <dln(at)eintr(dot)org>
-#
-
-from random import randint
-import time
-
 import zmq
+import time
+from random import randint
+from lib.mq.zeromq.zeromq_config import HEARTBEAT_LIVENESS
+from lib.mq.zeromq.zeromq_config import HEARTBEAT_INTERVAL
+from lib.mq.zeromq.zeromq_config import INTERVAL_INIT
+from lib.mq.zeromq.zeromq_config import INTERVAL_MAX
+from lib.mq.zeromq.zeromq_config import PPP_READY
+from lib.mq.zeromq.zeromq_config import PPP_HEARTBEAT
 
-HEARTBEAT_LIVENESS = 10
-HEARTBEAT_INTERVAL = 2
-INTERVAL_INIT = 1
-INTERVAL_MAX = 32
-
-#  Paranoid Pirate Protocol constants
-PPP_READY = "\x01"      # Signals worker is ready
-PPP_HEARTBEAT = "\x02"  # Signals worker heartbeat
 
 def worker_socket(context, poller):
     """Helper function that returns a new configured socket
@@ -44,7 +35,6 @@ poller = zmq.Poller()
 
 liveness = HEARTBEAT_LIVENESS
 interval = INTERVAL_INIT
-
 heartbeat_at = time.time() + HEARTBEAT_INTERVAL
 
 worker = worker_socket(context, poller)
@@ -61,10 +51,11 @@ while True:
             break # Interrupted
 
         if len(frames) == 3:
+            print "1: {} -- 2: {} -- 3: {}".format(frames[0], frames[1], frames[2])
             print "I: Normal reply"
             worker.send_multipart(frames)
             liveness = HEARTBEAT_LIVENESS
-            time.sleep(1)  # Do some heavy work
+            time.sleep(5)  # Do some heavy work
         elif len(frames) == 1 and frames[0] == PPP_HEARTBEAT:
             print "I: Queue heartbeat: {}".format(time.time())
             liveness = HEARTBEAT_LIVENESS

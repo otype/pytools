@@ -19,8 +19,8 @@ import time
 
 import zmq
 
-HEARTBEAT_LIVENESS = 5
-HEARTBEAT_INTERVAL = 1
+HEARTBEAT_LIVENESS = 10
+HEARTBEAT_INTERVAL = 2
 INTERVAL_INIT = 1
 INTERVAL_MAX = 32
 
@@ -35,7 +35,7 @@ def worker_socket(context, poller):
     identity = "%04X-%04X" % (randint(0, 0x10000), randint(0, 0x10000))
     worker.setsockopt(zmq.IDENTITY, identity)
     poller.register(worker, zmq.POLLIN)
-    worker._connect("tcp://localhost:5556")
+    worker.connect("tcp://localhost:5556")
     worker.send(PPP_READY)
     return worker
 
@@ -66,7 +66,7 @@ while True:
             liveness = HEARTBEAT_LIVENESS
             time.sleep(1)  # Do some heavy work
         elif len(frames) == 1 and frames[0] == PPP_HEARTBEAT:
-            print "I: Queue heartbeat"
+            print "I: Queue heartbeat: {}".format(time.time())
             liveness = HEARTBEAT_LIVENESS
         else:
             print "E: Invalid message: %s" % frames

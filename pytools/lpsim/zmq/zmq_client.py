@@ -19,14 +19,14 @@
 import zmq
 
 REQUEST_TIMEOUT = 2500
-REQUEST_RETRIES = 5
+REQUEST_RETRIES = 10
 SERVER_ENDPOINT = "tcp://localhost:5555"
 
 context = zmq.Context(1)
 
 print "I: Connecting to server…"
 client = context.socket(zmq.REQ)
-client._connect(SERVER_ENDPOINT)
+client.connect(SERVER_ENDPOINT)
 
 poll = zmq.Poller()
 poll.register(client, zmq.POLLIN)
@@ -66,7 +66,7 @@ while retries_left:
             print "I: Reconnecting and resending (%s)" % request
             # Create new connection
             client = context.socket(zmq.REQ)
-            client._connect(SERVER_ENDPOINT)
+            client.connect(SERVER_ENDPOINT)
             poll.register(client, zmq.POLLIN)
             client.send(request)
 

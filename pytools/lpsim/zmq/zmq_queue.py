@@ -19,8 +19,8 @@ import time
 
 import zmq
 
-HEARTBEAT_LIVENESS = 5     # 3..5 is reasonable
-HEARTBEAT_INTERVAL = 1.0   # Seconds
+HEARTBEAT_LIVENESS = 10     # 3..5 is reasonable
+HEARTBEAT_INTERVAL = 2.0   # Seconds
 
 #  Paranoid Pirate Protocol constants
 PPP_READY = "\x01"      # Signals worker is ready

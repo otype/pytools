@@ -14,10 +14,14 @@
 #
 BROKER_ADDRESS = 'localhost'
 
-# RPC
+# Launchpad-to-Buildr settings
 #
 #
-RPC_QUEUE = 'LP_BUILDR'
+RPC_QUEUE = 'LP_BUILDR'   # @deprecated
+BUILDR_EXCHANGE_TYPE = 'topic'
+LP_BUILDR_EXCHANGE = 'launchpad-builder'
+BUILDR_DEPLOYR_EXCHANGE = 'buildr-deployr'
+BUILDR_BALANCR_EXCHANGE = 'buildr-balancr'
 
 # LOGGING
 #

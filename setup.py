@@ -37,6 +37,10 @@ def scripts_list():
         'pytools/buildr/buildr.py',
         'pytools/loggr/loggr.py',
         'pytools/lpsim/lp_deploy.py',
+        'pytools/lpsim/zmq/zmq_client.py',
+        'pytools/lpsim/zmq/zmq_queue.py',
+        'pytools/lpsim/zmq/zmq_auto_queue.py',
+        'pytools/lpsim/zmq/zmq_worker.py',
         'pytools/lib/mq/rabbitmq/base_async_continuous_publisher.py',
         'pytools/lib/mq/rabbitmq/base_async_consumer.py',
         'pytools/lib/mq/rabbitmq/base_async_combined.py'

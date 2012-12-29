@@ -10,10 +10,9 @@
 """
 import json
 import logging
-import pika
 from lib.mq.rabbitmq.base_async_continuous_publisher import BaseAsyncContinuousPublisher
-from rabbitmq_config import LOGGING_EXCHANGE
-from rabbitmq_config import LOGGING_EXCHANGE_TYPE
+from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE
+from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) -35s %(lineno) -5d: %(message)s')
 LOGGER = logging.getLogger('async_log_client')

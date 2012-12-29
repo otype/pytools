@@ -10,8 +10,8 @@
 """
 import logging
 from lib.mq.rabbitmq.base_async_consumer import BaseAsyncConsumer
-from rabbitmq_config import LOGGING_EXCHANGE_TYPE
-from rabbitmq_config import LOGGING_EXCHANGE
+from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE
+from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -20s %(funcName) -25s %(lineno) -5d: %(message)s')
 LOGGER = logging.getLogger('loggr')

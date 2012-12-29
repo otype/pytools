@@ -9,12 +9,15 @@
     Copyright (c) 2012 apitrary
 
 """
-import pika
 import json
 from time import sleep
 import sys
-from rabbitmq_config import RPC_QUEUE
+
+import pika
+
+from lib.mq.rabbitmq.rabbitmq_config import RPC_QUEUE
 from lib.mq.rabbitmq.blocking_log_publisher import BlockingLogPublisher
+
 
 zlog = BlockingLogPublisher(amqp_url='amqp://staging:staging@localhost:5672/%2F', service_name='BUILDR')
 connection = pika.BlockingConnection(pika.URLParameters('amqp://staging:staging@localhost:5672/%2F'))

@@ -13,7 +13,7 @@ import json
 import sys
 from lib.mq.rabbitmq.blocking_rpc_publisher import BlockingRPCPublisher
 from lib.mq.rabbitmq.blocking_log_publisher import BlockingLogPublisher
-from rabbitmq_config import RPC_QUEUE
+from lib.mq.rabbitmq.rabbitmq_config import RPC_QUEUE
 
 # MAIN
 #

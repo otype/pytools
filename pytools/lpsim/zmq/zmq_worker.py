@@ -38,10 +38,9 @@ interval = INTERVAL_INIT
 heartbeat_at = time.time() + HEARTBEAT_INTERVAL
 
 worker = worker_socket(context, poller)
+count = 0
 while True:
     socks = dict(poller.poll(HEARTBEAT_INTERVAL * 1000))
-
-    # Handle worker activity on backend
     if socks.get(worker) == zmq.POLLIN:
         #  Get message
         #  - 3-part envelope + content -> request
@@ -51,11 +50,11 @@ while True:
             break # Interrupted
 
         if len(frames) == 3:
-            print "1: {} -- 2: {} -- 3: {}".format(frames[0], frames[1], frames[2])
-            print "I: Normal reply"
+            count += 1
+            print "I: ({}) Message: {}".format(count, frames[2])
             worker.send_multipart(frames)
             liveness = HEARTBEAT_LIVENESS
-            time.sleep(5)  # Do some heavy work
+            time.sleep(1)  # Do some heavy work
         elif len(frames) == 1 and frames[0] == PPP_HEARTBEAT:
             print "I: Queue heartbeat: {}".format(time.time())
             liveness = HEARTBEAT_LIVENESS
@@ -76,6 +75,8 @@ while True:
             worker.close()
             worker = worker_socket(context, poller)
             liveness = HEARTBEAT_LIVENESS
+            count = 0
+
     if time.time() > heartbeat_at:
         heartbeat_at = time.time() + HEARTBEAT_INTERVAL
         print "I: Worker heartbeat"

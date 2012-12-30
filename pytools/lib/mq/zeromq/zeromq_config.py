@@ -12,14 +12,14 @@
 # Request constants
 #
 #
-REQUEST_TIMEOUT = 3500
-REQUEST_RETRIES = 10
+REQUEST_TIMEOUT = 30000         # This should be longer than a normal worker task would take.
+REQUEST_RETRIES = 5
 
 # Heartbeat constants
 #
 #
 HEARTBEAT_LIVENESS = 10
-HEARTBEAT_INTERVAL = 2
+HEARTBEAT_INTERVAL = 7
 INTERVAL_INIT = 1
 INTERVAL_MAX = 32
 RECONNECT_TIMEOUT = 30.0

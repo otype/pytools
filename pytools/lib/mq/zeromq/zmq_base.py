@@ -30,6 +30,39 @@ class ZmqBase(object):
         self.log.info("Server endpoint = {}".format(self.server_endpoint))
         self.log.info("Thread count = {}".format(self.running_threads))
 
+    def establish(self):
+        """
+            Connect! Can be used for initial connection establishment.
+        """
+        self.log.info('Establishing connection to server = {}'.format(self.server_endpoint))
+        self.setup_context()
+        self._setup_poller()
+        self.connect_client()
+        self._register_poll()
+        self.log.info("It's all good! Let's dance.")
+
+    def run(self):
+        """
+            Override this to implement the main loop.
+        """
+        pass
+
+    def on_received_message(self, reply):
+        """
+            Override this method to parse an incoming message (reply) from workers.
+        """
+        print("IMPLEMENT THIS!")
+
+    def close(self):
+        """
+            Close the whole connection.
+        """
+        self.log.info('Tearing down the connection and context.')
+        self._unregister_poller()
+        self.disconnect_client()
+        self.terminate()
+        del self.context
+
     def setup_context(self):
         """
             Setup ZeroMQ context
@@ -37,23 +70,12 @@ class ZmqBase(object):
         self.log.debug('Setting up context with threads count={}'.format(self.running_threads))
         self.context = zmq.Context(self.running_threads)
 
-    def setup_poller(self):
+    def _setup_poller(self):
         """
             Setup poller.
         """
         self.log.debug('Setting up poller.')
         self.poller = zmq.Poller()
-
-    def establish(self):
-        """
-            Connect! Can be used for initial connection establishment.
-        """
-        self.log.info('Establishing connection to server = {}'.format(self.server_endpoint))
-        self.setup_context()
-        self.setup_poller()
-        self.connect_client()
-        self.register_poll()
-        self.log.info("It's all good! Let's dance.")
 
     def connect_client(self, server_endpoint=None):
         """
@@ -68,37 +90,25 @@ class ZmqBase(object):
         self.log.debug('Connecting client to endpoint={}'.format(self.server_endpoint))
         self.client.connect(self.server_endpoint)
 
-    def register_poll(self):
+    def _register_poll(self):
         """
             Setup the poller
         """
         self.log.debug('Registering poller={}'.format(zmq.POLLIN))
         self.poller.register(self.client, zmq.POLLIN)
 
-    def unregister_poller(self):
+    def _unregister_poller(self):
         """
             De-register the poller
         """
-        self.log.warning('De-registering poller.')
+        self.log.info('De-registering poller.')
         self.poller.unregister(self.client)
-
-    def run(self):
-        """
-            Override this to implement the main loop.
-        """
-        pass
-
-    def on_received_message(self, reply):
-        """
-            Override this method to parse an incoming message (reply) from workers.
-        """
-        pass
 
     def disconnect_client(self):
         """
             Disconnecting client.
         """
-        self.log.warning('Closing client connection')
+        self.log.info('Closing client connection')
         self.client.setsockopt(zmq.LINGER, 0)
         self.client.close()
 
@@ -106,15 +116,5 @@ class ZmqBase(object):
         """
             Disconnect from socket, destroy context.
         """
-        self.log.warning('Terminating context.')
+        self.log.info('Terminating context.')
         self.context.term()
-
-    def close(self):
-        """
-            Close the whole connection.
-        """
-        self.log.warning('Tearing down the connection and context.')
-        self.unregister_poller()
-        self.disconnect_client()
-        self.terminate()
-        del self.context

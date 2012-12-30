@@ -32,12 +32,10 @@ class ZmqClient(ZmqBase):
 
     def on_received_message(self, message):
         print "Received reply: {}".format(message)
-#        return "krasse scheisse"
-        return ""
 
     def run(self):
         """
-            Override this to implement the main loop.
+            Runs the main loop.
         """
         retries_left = REQUEST_RETRIES
         while True:
@@ -50,11 +48,8 @@ class ZmqClient(ZmqBase):
 
                 self.log.debug("Received reply: {}".format(reply))
                 retries_left = REQUEST_RETRIES
-                message = self.on_received_message(reply)
-                if message:
-                    self.client.send(message)
-                else:
-                    self.client.send(PPP_PING)
+                self.on_received_message(reply)
+                self.client.send(PPP_PING)
             else:
                 self.log.error("No response from server, retrying ...")
                 self.close()

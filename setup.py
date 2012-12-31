@@ -34,7 +34,7 @@ def read_requirements():
 
 def scripts_list():
     return [
-        'pytools/loggr/loggr.py',
+        'pytools/loggr_service/loggr.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',
         'archive/lib/mq/zmq/env_publisher.py',
         'pytools/lib/mq/zeromq/zmq_client.py'
@@ -50,7 +50,7 @@ setup(
     long_description=read('README.md'),
     url='http://apitrary.com',
     install_requires=read_requirements(),
-    keywords='deployr buildr balancr loggr registr trackr apitrary application',
+    keywords='deployr buildr balancr loggr_service registr trackr apitrary application',
     packages=find_packages('pytools'),
     package_dir={'': 'pytools'},
     data_files=[],

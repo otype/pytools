@@ -14,7 +14,7 @@ from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE
 from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE
 
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -20s %(funcName) -25s %(lineno) -5d: %(message)s')
-LOGGER = logging.getLogger('loggr')
+LOGGER = logging.getLogger('loggr_service')
 
 
 class Loggr(BaseAsyncConsumer):

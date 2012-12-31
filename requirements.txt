@@ -1,6 +1,8 @@
+asyncmongo==1.2.1
 deployr==0.0.1
 nose==1.2.1
 pep8==1.4
 pika==0.9.8
+pymongo==2.4.1
 pyzmq==2.2.0.1
 tornado==2.4.1

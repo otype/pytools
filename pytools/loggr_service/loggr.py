@@ -12,11 +12,13 @@ import logging
 import sys
 import zmq
 import tornado
+
 from tornado.options import options
 from tornado.options import define
 from tornado.options import enable_pretty_logging
 from zmq.eventloop import ioloop
 from zmq.eventloop.zmqstream import ZMQStream
+from loggr_service.mongodb import MongoDBConnection
 
 # Enable pretty logging
 enable_pretty_logging()
@@ -27,7 +29,7 @@ class Loggr(object):
         Starts the Loggr, a subscriber for all log messages.
     """
 
-    def __init__(self, publisher_endpoint, topic="", debug=False, running_threads=1):
+    def __init__(self, publisher_endpoint, mongodb_host='127.0.0.1', topic="", debug=False, running_threads=1):
         """
             Base initialization
         """
@@ -39,6 +41,14 @@ class Loggr(object):
         self.topic = topic
         self.debug = debug
         self.running_threads = running_threads
+        self.mongodb_host = mongodb_host
+
+    def connect_db(self):
+        """
+            Connect to underlying MongoDB
+        """
+        self.mongodb = MongoDBConnection(db_host=self.mongodb_host)
+        self.mongodb.create_capped_db_collection(collection_name='testing')
 
     def show_all_settings(self):
         """
@@ -73,11 +83,16 @@ class Loggr(object):
         """
             Callback when message has arrived from publisher
         """
-        [address, contents] = message
-        # TODO: Do something smart with the message, e.g. store to MongoDB
+        [log_level, service_name, host, log_line] = message
+        mongo_id = self.mongodb.store_log(
+            log_level=log_level,
+            service_name=service_name,
+            host_name=host,
+            log_line=log_line
+        )
 
         if self.debug:
-            self.log.info("[%s] %s" % (address, contents))
+            self.log.info("[%s] MongoID=%s Service=%s Host=%s Message=%s" % (log_level, mongo_id, service_name, host, log_line))
 
     def close(self):
         """
@@ -92,6 +107,7 @@ class Loggr(object):
             Run via ioloop
         """
         self.show_all_settings()
+        self.connect_db()
         self.setup_subscriber()
         self.register_callback_in_stream()
 
@@ -110,6 +126,7 @@ def main():
     define("endpoint", default="tcp://localhost:5555", help="Publisher's address", type=str)
     define("topic", default="", help="Topic to subscribe", type=str)
     define("debug", default=False, help="Debugging flag", type=bool)
+    define("db_host", default="127.0.0.1", help="MongoDB host", type=str)
 
     # This needs to be done, first, before we do anything with tornado.
     ioloop.install()
@@ -119,12 +136,13 @@ def main():
     except tornado.options.Error, e:
         sys.exit('ERROR: {}'.format(e))
 
-    assert options.endpoint
-    topic = ""
-    if options.topic:
-        topic = options.topic
-
-    loggr = Loggr(publisher_endpoint=options.endpoint, topic=topic, debug=options.debug)
+    topic = options.topic if options.topic else ""
+    loggr = Loggr(
+        publisher_endpoint=options.endpoint,
+        topic=topic,
+        mongodb_host=options.db_host,
+        debug=options.debug
+    )
     loggr.run()
 
 

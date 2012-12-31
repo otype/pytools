@@ -8,6 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
+from time import sleep
 import zmq
 
 def main():
@@ -21,9 +22,10 @@ def main():
         while True:
             # Write two messages, each with an envelope and content
             print "sending A"
-            publisher.send_multipart(["A", "We don't want to see this"])
+            publisher.send_multipart(["loggr.INFO", "env_publisher", "localhost", "We don't want to see this"])
             print "sending B"
-            publisher.send_multipart(["B", "We would like to see this"])
+            publisher.send_multipart(["loggr.DEBUG", "env_publisher_sim", "localhost", "We would like to see this"])
+            sleep(1.0)
     except KeyboardInterrupt:
         publisher.close()
         context.term()

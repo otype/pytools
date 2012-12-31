@@ -10,7 +10,7 @@
 """
 import logging
 import pika
-from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE, RPC_QUEUE
+from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE, RPC_QUEUE
 
 LOG_FORMAT = '%(levelname) -10s %(asctime)s %(name) -30s %(funcName) -35s %(lineno) -5d: %(message)s'
 LOGGER = logging.getLogger(__name__)

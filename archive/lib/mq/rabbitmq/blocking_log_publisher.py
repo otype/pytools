@@ -10,7 +10,7 @@
 """
 import json
 import pika
-from lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE, LOGGING_EXCHANGE
+from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE, LOGGING_EXCHANGE
 
 class BlockingLogPublisher(object):
     """

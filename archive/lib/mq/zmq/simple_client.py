@@ -34,10 +34,10 @@ class SimpleClient(ZmqBase):
 
 def main():
     logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
-    simple_client = SimpleClient(zmq_socket_type=zmq.REQ, server_endpoint="tcp://localhost:5555")
+    simple_client = SimpleClient(zmq_socket_type=zmq.PUSH, server_endpoint="tcp://localhost:5555")
     try:
         while True:
-            simple_client.pub('Halloooo')
+            simple_client.pub('Emitting message')
             sleep(0.4)
     except KeyboardInterrupt:
         simple_client.terminate()

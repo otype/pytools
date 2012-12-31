@@ -15,8 +15,8 @@ import sys
 
 import pika
 
-from lib.mq.rabbitmq.rabbitmq_config import RPC_QUEUE
-from lib.mq.rabbitmq.blocking_log_publisher import BlockingLogPublisher
+from archive.lib.mq.rabbitmq.rabbitmq_config import RPC_QUEUE
+from archive.lib.mq.rabbitmq.blocking_log_publisher import BlockingLogPublisher
 
 
 zlog = BlockingLogPublisher(amqp_url='amqp://staging:staging@localhost:5672/%2F', service_name='BUILDR')

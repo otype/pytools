@@ -34,19 +34,10 @@ def read_requirements():
 
 def scripts_list():
     return [
-        'pytools/buildr/buildr.py',
-        'pytools/buildr/buildr2.py',
         'pytools/loggr/loggr.py',
-        'pytools/lib/mq/zeromq/zmq_client.py',
-        'pytools/lpsim/lp_deploy.py',
-#        'pytools/lpsim/zmq/zmq_client.py',
-        'pytools/lpsim/zmq/simple_client.py',
-        'pytools/lpsim/zmq/zmq_queue.py',
-        'pytools/lpsim/zmq/zmq_auto_queue.py',
-        'pytools/lpsim/zmq/zmq_worker.py',
-        'pytools/lib/mq/rabbitmq/base_async_continuous_publisher.py',
-        'pytools/lib/mq/rabbitmq/base_async_consumer.py',
-        'pytools/lib/mq/rabbitmq/base_async_combined.py'
+        'archive/lib/mq/zmq/ioloop_env_subscriber.py',
+        'archive/lib/mq/zmq/env_publisher.py',
+        'pytools/lib/mq/zeromq/zmq_client.py'
     ]
 
 

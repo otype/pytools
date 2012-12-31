@@ -8,9 +8,9 @@
     Copyright (c) 2012 apitrary
 
 """
+import zmq
 import logging
 import sys
-import zmq
 import tornado
 
 from tornado.options import options
@@ -18,6 +18,7 @@ from tornado.options import define
 from tornado.options import enable_pretty_logging
 from zmq.eventloop import ioloop
 from zmq.eventloop.zmqstream import ZMQStream
+from loggr_service.log_message import LogMessage
 from loggr_service.mongodb import MongoDBConnection
 
 # Enable pretty logging
@@ -83,16 +84,15 @@ class Loggr(object):
         """
             Callback when message has arrived from publisher
         """
-        [log_level, service_name, host, log_line] = message
-        mongo_id = self.mongodb.store_log(
-            log_level=log_level,
-            service_name=service_name,
-            host_name=host,
-            log_line=log_line
-        )
+        if len(message) != 4:
+            self.log.error("Invalid message length!")
+            return
+
+        log_message = LogMessage(log_message=message)
+        mongo_id = self.mongodb.store_log(log_message=log_message)
 
         if self.debug:
-            self.log.info("[%s] MongoID=%s Service=%s Host=%s Message=%s" % (log_level, mongo_id, service_name, host, log_line))
+            self.log.info("Stored as MongoID=%s" % mongo_id)
 
     def close(self):
         """

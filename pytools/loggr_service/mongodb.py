@@ -8,12 +8,11 @@
     Copyright (c) 2012 apitrary
 
 """
-import json
 import logging
 import asyncmongo
-import datetime
 from pymongo import MongoClient
 from pymongo.errors import CollectionInvalid
+from loggr_service.log_message import LogMessage
 
 class AsyncMongoDBConnection(object):
     """
@@ -99,43 +98,13 @@ class MongoDBConnection(object):
 
         self.collection = self.db[collection_name]
 
-    def store_log(self, log_level, service_name, host_name, log_line):
+    def store_log(self, log_message):
         """
             Insert a given document (e.g. a log message) into MongoDB
         """
-        log_message = LogMessage(
-            log_level=log_level,
-            service_name=service_name,
-            host_name=host_name,
-            message=log_line
-        )
+        if type(log_message) is not LogMessage:
+            self.log.error("Invalid log message object!")
+            return -1
+
         return self.collection.insert(log_message.as_dict())
 
-
-class LogMessage(object):
-    """
-        Defines a log message to write to MongoDB
-    """
-
-    def __init__(self, log_level, service_name, host_name, message):
-        """
-            Base initialization
-        """
-        super(LogMessage, self).__init__()
-        self.created_at = datetime.datetime.utcnow()
-        self.level = log_level
-        self.service = service_name
-        self.host = host_name
-        self.message = message
-
-    def as_dict(self):
-        """
-            Return this object as dictionary
-        """
-        return self.__dict__
-
-    def as_json(self):
-        """
-            Return this object as JSON
-        """
-        return json.dumps(self.__dict__)

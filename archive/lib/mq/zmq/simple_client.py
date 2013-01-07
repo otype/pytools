@@ -8,11 +8,14 @@
     Copyright (c) 2012 apitrary
 
 """
-import zmq
 import logging
 from time import sleep
-from lib.mq.zeromq.zeromq_config import LOG_FORMAT
+
+import zmq
+
+from archive.lib.mq.zmq.zeromq_config import LOG_FORMAT
 from lib.mq.zeromq.zmq_base import ZmqBase
+
 
 class SimpleClient(ZmqBase):
     """

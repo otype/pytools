@@ -11,7 +11,7 @@
 import logging
 import zmq
 from zmq.devices import monitored_queue
-from lib.mq.zeromq.zeromq_config import LOG_FORMAT
+from archive.lib.mq.zmq.zeromq_config import LOG_FORMAT
 
 class MonitorAutoQueue(object):
     """

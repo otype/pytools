@@ -8,15 +8,17 @@
     Copyright (c) 2012 apitrary
 
 """
-import zmq
 import time
 from random import randint
-from lib.mq.zeromq.zeromq_config import HEARTBEAT_LIVENESS
-from lib.mq.zeromq.zeromq_config import HEARTBEAT_INTERVAL
-from lib.mq.zeromq.zeromq_config import INTERVAL_INIT
-from lib.mq.zeromq.zeromq_config import INTERVAL_MAX
-from lib.mq.zeromq.zeromq_config import PPP_READY
-from lib.mq.zeromq.zeromq_config import PPP_HEARTBEAT
+
+import zmq
+
+from archive.lib.mq.zmq.zeromq_config import HEARTBEAT_LIVENESS
+from archive.lib.mq.zmq.zeromq_config import HEARTBEAT_INTERVAL
+from archive.lib.mq.zmq.zeromq_config import INTERVAL_INIT
+from archive.lib.mq.zmq.zeromq_config import INTERVAL_MAX
+from archive.lib.mq.zmq.zeromq_config import PPP_READY
+from archive.lib.mq.zmq.zeromq_config import PPP_HEARTBEAT
 
 
 def worker_socket(context, poller):

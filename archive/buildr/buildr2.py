@@ -8,10 +8,13 @@
     Copyright (c) 2012 apitrary
 
 """
-import zmq
 import logging
-from lib.mq.zeromq.zeromq_config import LOG_FORMAT
-from lib.mq.zeromq.zmq_client import ZmqClient
+
+import zmq
+
+from archive.lib.mq.zmq.zeromq_config import LOG_FORMAT
+from archive.lib.mq.zmq.zmq_client import ZmqClient
+
 
 def start_consumer():
     zmq_client = ZmqClient(zmq_socket_type=zmq.REQ, server_endpoint="tcp://localhost:5555")

@@ -3,71 +3,77 @@
 
     <application_name>    
 
-    created by hgschmidt on 26.12.12, 15:42 CET
+    created by hgschmidt on 29.12.12, 13:28 CET
     
     Copyright (c) 2012 apitrary
 
 """
-#
-#  Lazy Pirate client
-#  Use zmq_poll to do a safe request-reply
-#  To run, start lpserver and then randomly kill/restart it
-#
-#   Author: Daniel Lundin <dln(at)eintr(dot)org>
-#
+import logging
+from time import sleep
 
 import zmq
 
-REQUEST_TIMEOUT = 2500
-REQUEST_RETRIES = 10
-SERVER_ENDPOINT = "tcp://localhost:5555"
+from archive.lib.mq.zmq.zeromq_config import REQUEST_RETRIES, LOG_FORMAT, RECONNECT_TIMEOUT, PPP_PING
+from archive.lib.mq.zmq.zeromq_config import REQUEST_TIMEOUT
+from archive.lib.mq.zmq.zmq_base import ZmqBase
 
-context = zmq.Context(1)
 
-print "I: Connecting to server…"
-client = context.socket(zmq.REQ)
-client.connect(SERVER_ENDPOINT)
+class ZmqClient(ZmqBase):
+    """
+        Setup the ZeroMQ client.
+    """
 
-poll = zmq.Poller()
-poll.register(client, zmq.POLLIN)
+    def __init__(self, zmq_socket_type, server_endpoint, running_threads=1):
+        """
+            Setup the zeromq client.
+        """
+        super(ZmqClient, self).__init__(zmq_socket_type, server_endpoint, running_threads)
+        self.log = logging.getLogger(self.__class__.__name__)
 
-sequence = 0
-retries_left = REQUEST_RETRIES
-while retries_left:
-    sequence += 1
-    request = str(sequence)
-    print "I: Sending (%s)" % request
-    client.send(request)
+    def on_received_message(self, message):
+        print "Received reply: {}".format(message)
 
-    expect_reply = True
-    while expect_reply:
-        socks = dict(poll.poll(REQUEST_TIMEOUT))
-        if socks.get(client) == zmq.POLLIN:
-            reply = client.recv()
-            if not reply:
-                break
-            if int(reply) == sequence:
-                print "I: Server replied OK (%s)" % reply
+    def run(self):
+        """
+            Runs the main loop.
+        """
+        retries_left = REQUEST_RETRIES
+        while True:
+            socks = dict(self.poller.poll(REQUEST_TIMEOUT))
+            if socks.get(self.client) == zmq.POLLIN:
+                reply = self.client.recv()
+                if not reply:
+                    self.log.warning('Empty message received. Discarding.')
+                    continue
+
+                self.log.debug("Received reply: {}".format(reply))
                 retries_left = REQUEST_RETRIES
-                expect_reply = False
+                self.on_received_message(reply)
+                self.client.send(PPP_PING)
             else:
-                print "E: Malformed reply from server: %s" % reply
+                self.log.error("No response from server, retrying ...")
+                self.close()
+                retries_left -= 1
+                self.log.warning('Retries left = {}'.format(retries_left))
+                if not retries_left:
+                    self.log.error('Server seems to be offline! Sleeping for {} seconds.'.format(RECONNECT_TIMEOUT))
+                    sleep(RECONNECT_TIMEOUT)
+                    retries_left = REQUEST_RETRIES
+                    self.log.info('Enough sleep! Continuing ...')
 
-        else:
-            print "W: No response from server, retrying…"
-            # Socket is confused. Close and remove it.
-            client.setsockopt(zmq.LINGER, 0)
-            client.close()
-            poll.unregister(client)
-            retries_left -= 1
-            if not retries_left:
-                print "E: Server seems to be offline, abandoning"
-                break
-            print "I: Reconnecting and resending (%s)" % request
-            # Create new connection
-            client = context.socket(zmq.REQ)
-            client.connect(SERVER_ENDPOINT)
-            poll.register(client, zmq.POLLIN)
-            client.send(request)
+                self.log.debug('Re-establishing connection.')
+                self.establish()
+                self.client.send(PPP_PING)
 
-context.term()
+
+def main():
+    logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT)
+    zmq_client = ZmqClient(zmq_socket_type=zmq.REQ, server_endpoint="tcp://localhost:5555")
+    zmq_client.establish()
+    try:
+        zmq_client.run()
+    except KeyboardInterrupt:
+        zmq_client.close()
+
+if __name__ == '__main__':
+    main()

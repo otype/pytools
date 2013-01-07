@@ -8,8 +8,8 @@
     Copyright (c) 2012 apitrary
 
 """
-import zmq
 import logging
+import zmq
 import sys
 import tornado
 

@@ -11,22 +11,59 @@
 import datetime
 import json
 
+class InvalidMessageLengthError(Exception):
+    """
+        Thrown when a received message is of unknown type
+    """
+
+    def __init__(self, message, *args, **kwargs):
+        """
+            Log the message
+        """
+        super(InvalidMessageLengthError, self).__init__(*args, **kwargs)
+        self.message = message
+
+    def __str__(self):
+        """
+            Message as string
+        """
+        return self.message
+
+
 class LogMessage(object):
     """
         Defines a log message to write to MongoDB
     """
 
-    def __init__(self, log_level='', service_name='', host_name='', log_line='', log_message=None):
+    # required message length (number of frames to receive). Depends on the
+    # number of parameters received in the constructor.
+    required_length = 5
+
+    def __init__(
+            self,
+            log_level='',
+            incident_time=datetime.datetime.utcnow(),
+            service_name='',
+            host_name='',
+            log_line='',
+            log_message=None
+    ):
         """
             Base initialization
         """
         super(LogMessage, self).__init__()
         self.created_at = datetime.datetime.utcnow()
 
-        if log_message is not None and len(log_message) == 4:
-            [log_level, service_name, host_name, log_line] = log_message
+        if len(log_message) != self.required_length:
+            raise InvalidMessageLengthError('Provided length is {}, it should be {}.'.format(
+                len(log_message), self.required_length)
+            )
+
+        if log_message is not None and len(log_message) == self.required_length:
+            [log_level, incident_time, service_name, host_name, log_line] = log_message
 
         self.level = log_level
+        self.incident_time = incident_time
         self.service = service_name
         self.host = host_name
         self.message = log_line

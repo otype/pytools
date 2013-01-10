@@ -9,7 +9,8 @@
 
 """
 ZMQ = {
-    'LOGGR_BIND_ADDRESS': "tcp://*:5557",   # ZMQ_SERVER is running locally (for now).
+    'LOGGR_CONNECT_ADDRESS': "tcp://localhost:5555",   # ZMQ_SERVER is running locally (for now).
+#    'LOGGR_BIND_ADDRESS': "tcp://*:5555",   # ZMQ_SERVER is running locally (for now).
     'TOPIC': '' # We should listen to everything (= "")
 }
 

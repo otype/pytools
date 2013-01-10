@@ -74,7 +74,7 @@ class LoggrManager(object):
         """
             Callback when message has arrived from publisher
         """
-        if len(message) != 4:
+        if len(message) != LogMessage.required_length:
             self.log.error("Invalid message length!")
             return
 

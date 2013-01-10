@@ -9,5 +9,9 @@
 
 """
 
-# Define the log format
-LOG_FORMAT = '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+
+class LOGGING:
+    # Define the log format
+    LOG_FORMAT = '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+
+    LOGGR_CONNECT_ADDRESS = 'tcp://localhost:5555'

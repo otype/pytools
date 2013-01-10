@@ -7,17 +7,20 @@
     Copyright (c) 2012 apitrary
 
 """
-import logging
 import sys
 import argparse
-from deployr_service.config.logging_config import LOG_FORMAT
+
+from tornado.options import logging
+from deployr_service.config.logging_config import LOGGING
+from deployr_service.deploy_mq_rx import start_consumer
 from deployr_service.globals.environments import ENVIRONMENT
 from deployr_service.services import logging_service
 from deployr_service.services.config_service import ConfigService
 
 
-# Logger
-logging.basicConfig(format=LOG_FORMAT)
+#enable_pretty_logging()
+## Logger
+logging.basicConfig(format=LOGGING.LOG_FORMAT)
 logger = logging_service.get_logger()
 
 ##############################################################################
@@ -33,7 +36,6 @@ def show_all_settings(config):
     """
     logger.info('Starting service: deployr')
     logger.info('Remote Broker: {}:{}'.format(config['BROKER_HOST'], config['BROKER_PORT']))
-    logger.info('Deployr mode: {}'.format(args.mode))
     logger.info('Environment: {}'.format(config['NAME']))
 
     config_to_show = ConfigService.strip_out_sensitive_data(config)
@@ -47,15 +49,6 @@ def parse_shell_args():
     """
     global args
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "-M",
-        "--mode",
-        help="Deployr mode",
-        type=str,
-        choices=['deploy', 'balance'],
-        default='deploy'
-    )
 
     parser.add_argument(
         "-w",
@@ -82,6 +75,29 @@ def main():
     """
         Start the Tornado Web server
     """
+#    define("loggr", default=ZMQ['LOGGR_CONNECT_ADDRESS'], help="Publisher's address", type=str)
+#    define("endpoint", default=ZMQ['DEPLOYR_BIND_ADDRESS'], help="Publisher's address", type=str)
+#    define("topic", default=ZMQ['TOPIC'], help="Topic to subscribe", type=str)
+#    define("debug", default=DEBUG, help="Debugging flag", type=bool)
+#    define("db_host", default=MONGODB['HOST'], help="MongoDB host", type=str)
+#
+#    # This needs to be done, first, before we do anything with tornado.
+#    ioloop.install()
+#
+#    try:
+#        tornado.options.parse_command_line()
+#    except tornado.options.Error, e:
+#        sys.exit('ERROR: {}'.format(e))
+#
+#    topic = options.topic if options.topic else ""
+#    loggr = LoggrManager(
+#        publisher_endpoint=options.endpoint,
+#        topic=topic,
+#        mongodb_host=options.db_host,
+#        debug=options.debug
+#    )
+#    loggr.run()
+
     # Parse the shell arguments, first.
     parse_shell_args()
 
@@ -96,13 +112,6 @@ def main():
     show_all_settings(config)
 
     # start the MQ consumer
-    if args.mode == 'deploy':
-        from deployr_service.deploy_mq_rx import start_consumer
-#    elif args.mode == 'balance':
-#        from lb_deployr.loadbalance_update_mq_rx import start_consumer
-    else:
-        from deployr_service.deploy_mq_rx import start_consumer
-
     start_consumer(
         broker_host=config['BROKER_HOST'],
         broker_port=int(config['BROKER_PORT']),

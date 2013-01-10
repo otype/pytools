@@ -49,6 +49,7 @@ def scripts_list():
         'pytools/trackr_service/trackr.py',
         'pytools/deployr_service/deployr.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',
+        'archive/lib/mq/zmq/zmq_client.py',
         'archive/lib/mq/zmq/env_publisher.py'
     ]
 

@@ -8,23 +8,43 @@
     Copyright (c) 2012 apitrary
 
 """
+import json
 from time import sleep
+import datetime
+import sys
 import zmq
 
 def main():
     """ main method """
 
     context   = zmq.Context(1)
-    publisher = context.socket(zmq.PUB)
-    publisher.bind("tcp://*:5555")
+    publisher = context.socket(zmq.DEALER)
+#    publisher.bind("tcp://*:5555")
+#    publisher = context.socket(zmq.REQ)
+    publisher.connect("tcp://localhost:5555")
+
+    if len(sys.argv) <= 1:
+        sender = "DEFAULT_MESSAGE"
+    else:
+        sender = sys.argv[1]
 
     try:
         while True:
             # Write two messages, each with an envelope and content
-            print "sending A"
-            publisher.send_multipart(["loggr.INFO", "env_publisher", "localhost", "We don't want to see this"])
-            print "sending B"
-            publisher.send_multipart(["loggr.DEBUG", "env_publisher_sim", "localhost", "We would like to see this"])
+            print "sending {}".format(sender)
+#            publisher.send_multipart(["INFO", str(datetime.datetime.utcnow()), sender, "localhost", "{} has sent a message".format(sender)])
+
+            message = {
+                "level": "INFO",
+                "incident_time": str(datetime.datetime.utcnow()),
+                "service": sender,
+                "host": "localhost",
+                "message": "{} has sent a message".format(sender)
+            }
+
+            publisher.send("", zmq.SNDMORE)
+            publisher.send(json.dumps(message))
+            print(publisher.recv())
             sleep(1.0)
     except KeyboardInterrupt:
         publisher.close()

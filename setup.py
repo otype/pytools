@@ -34,7 +34,7 @@ def read_requirements():
 
 def scripts_list():
     return [
-        'pytools/loggr_service/loggr.py',
+        'pytools/loggr_service/main.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',
         'archive/lib/mq/zmq/env_publisher.py',
         'pytools/lib/mq/zeromq/zmq_client.py'

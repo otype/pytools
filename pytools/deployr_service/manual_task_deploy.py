@@ -11,11 +11,9 @@
 import sys
 from deployr_service.models.blocking_message_tx import BlockingMessageTx
 from deployr_service.models.deploy_message import DeployMessage
-from deployr_service.services import logging_service, deployr_config_service
+from deployr_service.services import logging_service
+from deployr_service.services.config_service import ConfigService
 
-#
-# Logger
-#
 logger = logging_service.get_logger()
 
 msg = DeployMessage(
@@ -29,7 +27,7 @@ msg = DeployMessage(
 )
 
 # Load the global configuration from config file
-config = deployr_config_service.load_configuration()
+config = ConfigService.load_configuration()
 
 def send(host, message):
     """

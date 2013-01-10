@@ -10,11 +10,9 @@
 """
 import xmlrpclib
 from deployr_service.globals.environments import RETURNCODE
-from deployr_service.services import logging_service, deployr_config_service
+from deployr_service.services import logging_service
+from deployr_service.services.config_service import ConfigService
 
-#
-# Logger
-#
 logger = logging_service.get_logger()
 
 def get_supervisor_xml_rpc_server():
@@ -22,7 +20,7 @@ def get_supervisor_xml_rpc_server():
         Get the Supervisor XML-RPC server address
     """
     # Load configuration
-    configuration = deployr_config_service.load_configuration()
+    configuration = ConfigService.load_configuration()
 
     # Contact XML-RPC on given address
     xml_rpc_address = configuration['SUPERVISOR_XML_RPC_SERVER_ADDRESS']

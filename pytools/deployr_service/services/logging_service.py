@@ -12,7 +12,7 @@ import logging
 import logging.handlers
 from deployr_service.config.logging_config import LOG_FORMAT
 from deployr_service.models.log_levels import LOGGING_LEVEL
-from deployr_service.services import deployr_config_service
+from deployr_service.services.config_service import ConfigService
 
 def get_log_level_from_config(log_level):
     """
@@ -67,7 +67,7 @@ def get_logger(log_level=None):
         Get the logger object
     """
     # Load the global configuration from config file
-    config = deployr_config_service.load_configuration()
+    config = ConfigService.load_configuration()
 
     if log_level is None:
         # Extract the log level from the config object

@@ -7,15 +7,12 @@
 
 """
 import json
-
-#
-# Logger
-#
 from deployr_service.globals.environments import TASKALIAS
 from deployr_service.models.deploy_task import DeployTask
 from deployr_service.models.errors import InvalidTaskTypeException, UnacceptableMessageException
 from deployr_service.models.undeploy_task import UndeployTask
-from deployr_service.services import deployr_config_service, logging_service
+from deployr_service.services import logging_service
+from deployr_service.services.config_service import ConfigService
 
 logger = logging_service.get_logger()
 
@@ -29,7 +26,7 @@ class TaskFactory(object):
         """
             We need the configuration upon task creation
         """
-        self.config = deployr_config_service.load_configuration()
+        self.config = ConfigService.load_configuration()
 
     def load_message(self, message):
         """

@@ -12,7 +12,8 @@ import sys
 import argparse
 from deployr_service.config.logging_config import LOG_FORMAT
 from deployr_service.globals.environments import ENVIRONMENT
-from deployr_service.services import logging_service, deployr_config_service
+from deployr_service.services import logging_service
+from deployr_service.services.config_service import ConfigService
 
 
 # Logger
@@ -35,7 +36,7 @@ def show_all_settings(config):
     logger.info('Deployr mode: {}'.format(args.mode))
     logger.info('Environment: {}'.format(config['NAME']))
 
-    config_to_show = deployr_config_service.strip_out_sensitive_data(config)
+    config_to_show = ConfigService.strip_out_sensitive_data(config)
     logger.info('Configuration: {}'.format(config_to_show))
     logger.info('Logging level: {}'.format(config['LOGGING']))
 
@@ -72,7 +73,7 @@ def check_for_config_write():
         Write configuration file if called via shell param
     """
     config_env = args.write_config
-    deployr_config_service.write_configuration(config_env)
+    ConfigService.write_configuration(config_env)
     logger.info("Configuration file written! Now, edit config file and start deployr!")
     sys.exit(0)
 
@@ -89,7 +90,7 @@ def main():
         check_for_config_write()
 
     # Load configuration
-    config = deployr_config_service.load_configuration()
+    config = ConfigService.load_configuration()
 
     # Show all configured handlers
     show_all_settings(config)

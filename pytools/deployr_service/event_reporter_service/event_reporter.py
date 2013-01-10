@@ -17,7 +17,8 @@ from deployr_service.config.event_reporter_config import EVENT_REPORTER_CONFIG
 from deployr_service.config.logging_config import LOG_FORMAT
 from deployr_service.models.deploy_message import DeployMessage
 from deployr_service.models.undeploy_message import UndeployMessage
-from deployr_service.services import logging_service, deployr_config_service
+from deployr_service.services import logging_service
+from deployr_service.services.config_service import ConfigService
 
 # Logger
 logging.basicConfig(format=LOG_FORMAT)
@@ -35,7 +36,7 @@ class EventReporter(object):
         super(EventReporter, self).__init__()
 
         # Load configuration
-        self.config = deployr_config_service.load_configuration()
+        self.config = ConfigService.load_configuration()
         self.env = EVENT_REPORTER_CONFIG[self.config['NAME']]
         logger.debug("EventReporter env = {}".format(self.env))
         self.url = self.env['EVENT_REPORTER_URL']

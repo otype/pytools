@@ -14,6 +14,7 @@
 import os
 from distutils.core import setup
 from setuptools import find_packages
+import sys
 
 
 def read(fname):
@@ -32,10 +33,21 @@ def read_requirements():
     return [element.strip() for element in requirements]
 
 
+def get_template_base_dir():
+    if sys.platform == 'darwin':
+        template_dir = "{}/.deployr/templates".format(os.getenv("HOME"))
+    elif sys.platform == 'linux2':
+        template_dir = "/etc/deployr/templates"
+    else:
+        template_dir = "{}/.deployr/templates".format(os.getenv("HOME"))
+
+    return template_dir
+
 def scripts_list():
     return [
         'pytools/loggr_service/loggr.py',
         'pytools/trackr_service/trackr.py',
+        'pytools/deployr_service/deployr.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',
         'archive/lib/mq/zmq/env_publisher.py'
     ]
@@ -53,6 +65,8 @@ setup(
     keywords='deployr buildr balancr loggr_service registr trackr apitrary application',
     packages=find_packages('pytools'),
     package_dir={'': 'pytools'},
-    data_files=[],
+    data_files=[
+        (get_template_base_dir(), ['pytools/deployr_service/templates/genapi_base.tpl'])
+    ],
     scripts=scripts_list()
 )

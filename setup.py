@@ -37,13 +37,12 @@ def scripts_list():
         'pytools/loggr_service/loggr.py',
         'pytools/trackr_service/trackr.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',
-        'archive/lib/mq/zmq/env_publisher.py',
-        'pytools/lib/mq/zeromq/zmq_client.py'
+        'archive/lib/mq/zmq/env_publisher.py'
     ]
 
 
 setup(
-    name='deployr',
+    name='pytools',
     version='0.0.1',
     author='Hans-Gunther Schmidt',
     author_email='hgs@apitrary.com',

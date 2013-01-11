@@ -2,11 +2,11 @@
 """
 Helper module for example applications. Mimics ZeroMQ Guide's zhelpers.h.
 """
+import zmq
 import binascii
 import os
 from random import randint
 
-import zmq
 
 # fix ROUTER/DEALER aliases, missing from pyzmq < 2.1.9
 if not hasattr(zmq, 'ROUTER'):

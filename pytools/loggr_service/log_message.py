@@ -10,25 +10,7 @@
 """
 import datetime
 import json
-
-class InvalidMessageLengthError(Exception):
-    """
-        Thrown when a received message is of unknown type
-    """
-
-    def __init__(self, message, *args, **kwargs):
-        """
-            Log the message
-        """
-        super(InvalidMessageLengthError, self).__init__(*args, **kwargs)
-        self.message = message
-
-    def __str__(self):
-        """
-            Message as string
-        """
-        return self.message
-
+from loggr_service.errors import InvalidMessageLengthError
 
 class LogMessage(object):
     """

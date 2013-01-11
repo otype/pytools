@@ -6,12 +6,9 @@ Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
 Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
-
-import logging
-
 import zmq
-
-import MDP
+import logging
+import majordomo_protocol
 from zhelpers import dump
 
 class MajorDomoClient(object):
@@ -59,7 +56,7 @@ class MajorDomoClient(object):
         # Frame 1: "MDPCxy" (six bytes, MDP/Client x.y)
         # Frame 2: Service name (printable string)
 
-        request = ['', MDP.C_CLIENT, service] + request
+        request = ['', majordomo_protocol.C_CLIENT, service] + request
         if self.verbose:
             logging.warn("I: send request to '%s' service: ", service)
             dump(request)
@@ -84,7 +81,7 @@ class MajorDomoClient(object):
 
             empty = msg.pop(0)
             header = msg.pop(0)
-            assert MDP.C_CLIENT == header
+            assert majordomo_protocol.C_CLIENT == header
 
             service = msg.pop(0)
             return msg

@@ -10,7 +10,7 @@ import zmq
 import logging
 import time
 from zhelpers import dump
-import MDP
+import majordomo_protocol
 
 class MajorDomoWorker(object):
     """Majordomo Protocol Worker API, Python version
@@ -62,7 +62,7 @@ class MajorDomoWorker(object):
             logging.info("I: connecting to broker at %s...", self.broker)
 
         # Register service with broker
-        self.send_to_broker(MDP.W_READY, self.service, [])
+        self.send_to_broker(majordomo_protocol.W_READY, self.service, [])
 
         # If liveness hits zero, queue is considered disconnected
         self.liveness = self.HEARTBEAT_LIVENESS
@@ -82,7 +82,7 @@ class MajorDomoWorker(object):
         if option:
             msg = [option] + msg
 
-        msg = ['', MDP.W_WORKER, command] + msg
+        msg = ['', majordomo_protocol.W_WORKER, command] + msg
         if self.verbose:
             logging.info("I: sending %s to broker", command)
             dump(msg)
@@ -97,7 +97,7 @@ class MajorDomoWorker(object):
         if reply is not None:
             assert self.reply_to is not None
             reply = [self.reply_to, ''] + reply
-            self.send_to_broker(MDP.W_REPLY, msg=reply)
+            self.send_to_broker(majordomo_protocol.W_REPLY, msg=reply)
 
         self.expect_reply = True
 
@@ -122,10 +122,10 @@ class MajorDomoWorker(object):
                 assert empty == ''
 
                 header = msg.pop(0)
-                assert header == MDP.W_WORKER
+                assert header == majordomo_protocol.W_WORKER
 
                 command = msg.pop(0)
-                if command == MDP.W_REQUEST:
+                if command == majordomo_protocol.W_REQUEST:
                     # We should pop and save as many addresses as there are
                     # up to a null part, but for now, just save one...
                     self.reply_to = msg.pop(0)
@@ -133,10 +133,10 @@ class MajorDomoWorker(object):
                     assert msg.pop(0) == ''
 
                     return msg # We have a request to process
-                elif command == MDP.W_HEARTBEAT:
+                elif command == majordomo_protocol.W_HEARTBEAT:
                     # Do nothing for heartbeats
                     pass
-                elif command == MDP.W_DISCONNECT:
+                elif command == majordomo_protocol.W_DISCONNECT:
                     self.reconnect_to_broker()
                 else:
                     logging.error("E: invalid input message: ")
@@ -155,7 +155,7 @@ class MajorDomoWorker(object):
 
             # Send HEARTBEAT if it's time
             if time.time() > self.heartbeat_at:
-                self.send_to_broker(MDP.W_HEARTBEAT)
+                self.send_to_broker(majordomo_protocol.W_HEARTBEAT)
                 self.heartbeat_at = time.time() + 1e-3 * self.heartbeat
 
         logging.warn("W: interrupt received, killing worker...")

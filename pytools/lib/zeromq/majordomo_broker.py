@@ -6,12 +6,12 @@ A minimal implementation of http:#rfc.zeromq.org/spec:7 and spec:8
 Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
+import zmq
 import logging
 import sys
 import time
 from binascii import hexlify
-import zmq
-import MDP
+import majordomo_protocol
 from zhelpers import dump
 
 class Service(object):
@@ -103,9 +103,9 @@ class MajorDomoBroker(object):
                 assert empty == ''
                 header = msg.pop(0)
 
-                if MDP.C_CLIENT == header:
+                if majordomo_protocol.C_CLIENT == header:
                     self.process_client(sender, msg)
-                elif MDP.W_WORKER == header:
+                elif majordomo_protocol.W_WORKER == header:
                     self.process_worker(sender, msg)
                 else:
                     logging.error("E: invalid message:")
@@ -143,7 +143,7 @@ class MajorDomoBroker(object):
 
         worker = self.require_worker(sender)
 
-        if MDP.W_READY == command:
+        if majordomo_protocol.W_READY == command:
             assert len(msg) >= 1 # At least, a service name
             service = msg.pop(0)
             # Not first command in session or Reserved service name
@@ -154,25 +154,25 @@ class MajorDomoBroker(object):
                 worker.service = self.require_service(service)
                 self.worker_waiting(worker)
 
-        elif MDP.W_REPLY == command:
+        elif majordomo_protocol.W_REPLY == command:
             if worker_ready:
                 # Remove & save client return envelope and insert the
                 # protocol header and service name, then rewrap envelope.
                 client = msg.pop(0)
                 empty = msg.pop(0) # ?
-                msg = [client, '', MDP.C_CLIENT, worker.service.name] + msg
+                msg = [client, '', majordomo_protocol.C_CLIENT, worker.service.name] + msg
                 self.socket.send_multipart(msg)
                 self.worker_waiting(worker)
             else:
                 self.delete_worker(worker, True)
 
-        elif MDP.W_HEARTBEAT == command:
-            if (worker_ready):
+        elif majordomo_protocol.W_HEARTBEAT == command:
+            if worker_ready:
                 worker.expiry = time.time() + 1e-3 * self.HEARTBEAT_EXPIRY
             else:
                 self.delete_worker(worker, True)
 
-        elif MDP.W_DISCONNECT == command:
+        elif majordomo_protocol.W_DISCONNECT == command:
             self.delete_worker(worker, False)
         else:
             logging.error("E: invalid message:")
@@ -182,7 +182,7 @@ class MajorDomoBroker(object):
         """Deletes worker from all data structures, and deletes worker."""
         assert worker is not None
         if disconnect:
-            self.send_to_worker(worker, MDP.W_DISCONNECT, None, None)
+            self.send_to_worker(worker, majordomo_protocol.W_DISCONNECT, None, None)
 
         if worker.service is not None:
             worker.service.waiting.remove(worker)
@@ -205,7 +205,7 @@ class MajorDomoBroker(object):
         """Locates the service (creates if necessary)."""
         assert (name is not None)
         service = self.services.get(name)
-        if (service is None):
+        if service is None:
             service = Service(name)
             self.services[name] = service
 
@@ -228,14 +228,14 @@ class MajorDomoBroker(object):
         msg[-1] = returncode
 
         # insert the protocol header and service name after the routing envelope ([client, ''])
-        msg = msg[:2] + [MDP.C_CLIENT, service] + msg[2:]
+        msg = msg[:2] + [majordomo_protocol.C_CLIENT, service] + msg[2:]
         self.socket.send_multipart(msg)
 
     def send_heartbeats(self):
         """Send heartbeats to idle workers if it's time"""
-        if (time.time() > self.heartbeat_at):
+        if time.time() > self.heartbeat_at:
             for worker in self.waiting:
-                self.send_to_worker(worker, MDP.W_HEARTBEAT, None, None)
+                self.send_to_worker(worker, majordomo_protocol.W_HEARTBEAT, None, None)
 
             self.heartbeat_at = time.time() + 1e-3 * self.HEARTBEAT_INTERVAL
 
@@ -271,7 +271,7 @@ class MajorDomoBroker(object):
             msg = service.requests.pop(0)
             worker = service.waiting.pop(0)
             self.waiting.remove(worker)
-            self.send_to_worker(worker, MDP.W_REQUEST, None, msg)
+            self.send_to_worker(worker, majordomo_protocol.W_REQUEST, None, msg)
 
     def send_to_worker(self, worker, command, option, msg=None):
         """Send message to worker.
@@ -288,7 +288,7 @@ class MajorDomoBroker(object):
         # and routing envelope
         if option is not None:
             msg = [option] + msg
-        msg = [worker.address, '', MDP.W_WORKER, command] + msg
+        msg = [worker.address, '', majordomo_protocol.W_WORKER, command] + msg
 
         if self.verbose:
             logging.info("I: sending %r to worker", command)

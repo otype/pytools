@@ -9,6 +9,7 @@
 
 """
 import sys
+from time import sleep
 import tornado
 from tornado.options import define, options, logging
 from zmq.eventloop import ioloop
@@ -31,20 +32,20 @@ class LoggrClient(object):
         self.flush_queue()
 
     def flush_queue(self):
-        print "flushing queue"
         count = 0
         while count < self.message_counter:
             try:
                 reply = self.client.recv()
             except KeyboardInterrupt:
-                break
+                logging.warning("CTRL-C pressed while flushing queue, closing down ...")
+                sys.exit(1)
             else:
                 # also break on failure to reply:
                 if reply is None:
                     break
             count += 1
-        print "%i requests/replies processed" % count
-
+            self.message_counter = 0
+        print "%i requests/replies processed, %i left" % (count, self.message_counter)
 
 def main():
     define("loggr_broker", default="tcp://localhost:5555", help="Loggr's broker address", type=str)
@@ -57,13 +58,19 @@ def main():
         sys.exit('ERROR: {}'.format(e))
 
     loggr = LoggrClient(zmq_connect_address=options.loggr_broker)
-    loggr.zlog('some_service', 'a nice message')
+#    while True:
+    for i in xrange(10000):
+        try:
+            loggr.zlog('echo', 'a nice message')
+        except KeyboardInterrupt:
+            logging.warning("CTRL-C pressed, closing down ...")
+            sys.exit(0)
 
-    try:
-        ioloop.IOLoop.instance().start()
-    except KeyboardInterrupt:
-        logging.warning("CTRL-C pressed, closing down ...")
-        ioloop.IOLoop.instance().stop()
+#    try:
+#        ioloop.IOLoop.instance().start()
+#    except KeyboardInterrupt:
+#        logging.warning("CTRL-C pressed, closing down ...")
+#        ioloop.IOLoop.instance().stop()
 
 if __name__ == '__main__':
     main()

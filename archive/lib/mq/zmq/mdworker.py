@@ -17,7 +17,7 @@ def main():
         request = worker.recv(reply)
         if request is None:
             break # Worker was interrupted
-        reply = request # Echo is complex... :-)
+        reply = request
 
 
 if __name__ == '__main__':

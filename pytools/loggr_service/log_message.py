@@ -34,9 +34,9 @@ class LogMessage(object):
             Base initialization
         """
         super(LogMessage, self).__init__()
-        self.created_at = datetime.datetime.utcnow()
+        self.created_at = str(datetime.datetime.utcnow())
 
-        if len(log_message) != self.required_length:
+        if log_message is not None and len(log_message) != self.required_length:
             raise InvalidMessageLengthError('Provided length is {}, it should be {}.'.format(
                 len(log_message), self.required_length)
             )
@@ -45,7 +45,7 @@ class LogMessage(object):
             [log_level, incident_time, service_name, host_name, log_line] = log_message
 
         self.level = log_level
-        self.incident_time = incident_time
+        self.incident_time = str(incident_time)
         self.service = service_name
         self.host = host_name
         self.message = log_line

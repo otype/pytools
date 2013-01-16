@@ -6,6 +6,7 @@ Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
 Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
+import sys
 import zmq
 import logging
 import time
@@ -165,3 +166,21 @@ class MajorDomoWorker(object):
     def destroy(self):
         # context.destroy depends on pyzmq >= 2.1.10
         self.ctx.destroy(0)
+
+
+# MAIN
+#
+#
+def main():
+    verbose = '-v' in sys.argv
+    worker = MajorDomoWorker("tcp://localhost:5555", "echo", verbose)
+    reply = None
+    while True:
+        request = worker.recv(reply)
+        if request is None:
+            break # Worker was interrupted
+        reply = request
+        print "Received message: {}".format(reply[0])
+
+if __name__ == '__main__':
+    main()

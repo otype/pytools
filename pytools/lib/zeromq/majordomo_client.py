@@ -6,6 +6,8 @@ Implements the MDP/Worker spec at http:#rfc.zeromq.org/spec:7.
 Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
+import sys
+from time import sleep
 import zmq
 import logging
 import majordomo_protocol
@@ -87,3 +89,22 @@ class MajorDomoClient(object):
             return msg
         else:
             logging.warn("W: permanent error, abandoning request")
+
+# MAIN
+#
+#
+def main():
+    verbose = '-v' in sys.argv
+    client = MajorDomoClient(broker="tcp://localhost:5555", verbose=verbose)
+
+    for i in xrange(100):
+        try:
+            print "Sending message {}/100".format(i)
+            client.send('echo', 'a sample message')
+            sleep(1.0)
+        except KeyboardInterrupt:
+            logging.warning("CTRL-C pressed, closing down ...")
+            sys.exit(0)
+
+if __name__ == '__main__':
+    main()

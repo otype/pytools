@@ -25,7 +25,7 @@ class LogMessage(object):
             self,
             log_level='',
             incident_time=datetime.datetime.utcnow(),
-            service_name='',
+            daemon_name='',
             host_name='',
             log_line='',
             created_at=str(datetime.datetime.utcnow()),
@@ -42,12 +42,12 @@ class LogMessage(object):
             )
 
         if log_message is not None and len(log_message) == self.required_length:
-            [log_level, incident_time, service_name, host_name, log_line] = log_message
+            [log_level, incident_time, daemon_name, host_name, log_line] = log_message
 
         self.level = log_level
         self.created_at = created_at
         self.incident_time = str(incident_time)
-        self.service = service_name
+        self.service = daemon_name
         self.host = host_name
         self.message = log_line
 

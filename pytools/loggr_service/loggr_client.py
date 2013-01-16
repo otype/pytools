@@ -20,13 +20,12 @@ class LoggrClient(object):
         Loggr client. Provides simple log methods to send log messages to the
         Loggr service which stores all messages into MongoDB.
     """
-    # Defined by MajorDomo! Should be inspected how to change that.
-    service = ZMQ['SERVICE']
 
     def __init__(
             self,
-            service_name,
+            daemon_name,
             broker_address="tcp://localhost:5555",
+            service_name=ZMQ['SERVICE'],
             verbose=False,
             host=None
     ):
@@ -35,8 +34,9 @@ class LoggrClient(object):
         """
         super(LoggrClient, self).__init__()
         self.zmq_connect_address = broker_address
+        self.service = service_name
         self.verbose = verbose
-        self.service_name = service_name
+        self.daemon_name = daemon_name
 
         if host is None:
             host = socket.gethostname()
@@ -56,7 +56,7 @@ class LoggrClient(object):
         """
         log_message = LogMessage(
             log_level=level,
-            service_name=self.service_name,
+            daemon_name=self.daemon_name,
             host_name=self.host,
             log_line=message
         )
@@ -91,7 +91,9 @@ class LoggrClient(object):
 def main():
     log = LoggrClient(
         broker_address="tcp://localhost:5555",
-        service_name='SampleLogClient'
+        daemon_name='SampleDaemon',
+        service_name=ZMQ['SERVICE'],
+        verbose=True
     )
     for i in xrange(4000):
         try:
@@ -99,7 +101,7 @@ def main():
             log.debug('a debug message')
             log.warning('a warning message')
             log.error('an error message')
-#            sleep(1.0)
+        #            sleep(1.0)
         except KeyboardInterrupt:
             logging.warning("CTRL-C pressed, closing down ...")
             sys.exit(0)

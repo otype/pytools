@@ -21,15 +21,16 @@ class LoggrManager(object):
         Starts the Loggr, a subscriber for all log messages.
     """
 
-    def __init__(self, publisher_endpoint, mongodb_host='127.0.0.1', debug=False):
+    def __init__(self, publisher_endpoint, mongodb_host='127.0.0.1', service_name=ZMQ['SERVICE'], debug=False):
         """
             Base initialization
         """
         super(LoggrManager, self).__init__()
         self.log = logging.getLogger(self.__class__.__name__)
         self.publisher_endpoint = publisher_endpoint
-        self.debug = debug
         self.mongodb_host = mongodb_host
+        self.service_name = service_name
+        self.debug = debug
 
 
     def connect_db(self):
@@ -51,7 +52,11 @@ class LoggrManager(object):
         """
             Setup the zmq subscriber and connect to publisher
         """
-        self.worker = MajorDomoWorker(self.publisher_endpoint, ZMQ['SERVICE'], self.debug)
+        self.worker = MajorDomoWorker(
+            broker=self.publisher_endpoint,
+            service=self.service_name,
+            verbose=self.debug
+        )
 
     def store(self, message):
         """
@@ -61,7 +66,7 @@ class LoggrManager(object):
 
         log_message = LogMessage(
             log_level=json_message['level'],
-            service_name=json_message['service'],
+            daemon_name=json_message['service'],
             created_at=json_message['created_at'],
             incident_time=json_message['incident_time'],
             host_name=json_message['host'],

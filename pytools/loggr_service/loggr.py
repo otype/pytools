@@ -26,6 +26,7 @@ def main():
         Run all steps and config checks, then start the server
     """
     define("bind_address", default=ZMQ['LOGGR_CONNECT_ADDRESS'], help="Loggr's Connect address", type=str)
+    define("service", default=ZMQ['SERVICE'], help="Broker Service name", type=str)
     define("debug", default=DEBUG, help="Debugging flag", type=bool)
     define("db_host", default=MONGODB['HOST'], help="MongoDB host", type=str)
 
@@ -37,6 +38,7 @@ def main():
     loggr = LoggrManager(
         publisher_endpoint=options.bind_address,
         mongodb_host=options.db_host,
+        service_name=options.service,
         debug=options.debug
     )
     loggr.run()

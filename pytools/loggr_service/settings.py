@@ -11,7 +11,7 @@
 ZMQ = {
     'LOGGR_CONNECT_ADDRESS': "tcp://localhost:5555",   # All workers and clients connect to broker
     'LOGGR_BROKER_BIND_ADDRESS': "tcp://*:5555",   # Broker bind address
-    'SERVICE': 'echo'
+    'SERVICE': 'loggr'
 }
 
 MONGODB = {

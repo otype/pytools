@@ -9,9 +9,11 @@
 
 """
 import sys
+import socket
 from tornado.options import logging
 from lib.zeromq.majordomo_client import MajorDomoClient
 from loggr_service.log_message import LogMessage
+from loggr_service.settings import ZMQ
 
 class LoggrClient(object):
     """
@@ -19,7 +21,7 @@ class LoggrClient(object):
         Loggr service which stores all messages into MongoDB.
     """
     # Defined by MajorDomo! Should be inspected how to change that.
-    service = 'echo'
+    service = ZMQ['SERVICE']
 
     def __init__(
             self,
@@ -38,7 +40,6 @@ class LoggrClient(object):
         self.service_name = service_name
 
         if host is None:
-            import socket
             host = socket.gethostname()
 
         self.host = host
@@ -100,6 +101,7 @@ def main():
             log.debug('a debug message')
             log.warning('a warning message')
             log.error('an error message')
+#            sleep(1.0)
         except KeyboardInterrupt:
             logging.warning("CTRL-C pressed, closing down ...")
             sys.exit(0)

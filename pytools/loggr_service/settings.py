@@ -9,9 +9,9 @@
 
 """
 ZMQ = {
-    'LOGGR_CONNECT_ADDRESS': "tcp://localhost:5555",   # ZMQ_SERVER is running locally (for now).
-#    'LOGGR_BIND_ADDRESS': "tcp://*:5555",   # ZMQ_SERVER is running locally (for now).
-    'TOPIC': '' # We should listen to everything (= "")
+    'LOGGR_CONNECT_ADDRESS': "tcp://localhost:5555",   # All workers and clients connect to broker
+    'LOGGR_BROKER_BIND_ADDRESS': "tcp://*:5555",   # Broker bind address
+    'SERVICE': 'echo'
 }
 
 MONGODB = {
@@ -19,3 +19,5 @@ MONGODB = {
 }
 
 DEBUG = False
+
+LOG_FORMAT = '%(asctime)s [%(levelname)s] %(name)s: %(message)s'

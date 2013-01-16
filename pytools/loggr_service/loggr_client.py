@@ -36,7 +36,6 @@ class LoggrClient(object):
         super(LoggrClient, self).__init__()
         self.zmq_connect_address = broker_address
         self.verbose = verbose
-        self.message_counter = 0
         self.service_name = service_name
 
         if host is None:
@@ -61,7 +60,6 @@ class LoggrClient(object):
             host_name=self.host,
             log_line=message
         )
-        self.message_counter += 1
         self.client.send(service=self.service, request=log_message.as_json())
         self.client.recv()
 

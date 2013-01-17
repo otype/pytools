@@ -8,11 +8,14 @@
     Copyright (c) 2012 apitrary
 
 """
-import os
 import sys
-from configobj import ConfigObj
 import logging
-from deployr_service.globals.environments import RETURNCODE
+
+import os
+from configobj import ConfigObj
+
+from deployr_service.sortout.environments import RETURNCODE
+
 
 class ConfigManager(object):
     """

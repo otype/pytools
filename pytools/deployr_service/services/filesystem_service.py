@@ -8,11 +8,15 @@
     Copyright (c) 2012 apitrary
 
 """
+from deployr_service.lib.deployr_base import DeployrBase
 
-def write_file(filename, content):
-    """
-        Write a given content to a file with given filename.
-    """
-    with open(filename, 'w') as f:
-        f.write(content)
-        f.write('\n')
+class FileSystemService(DeployrBase):
+
+    @staticmethod
+    def write_file(self, filename, content):
+        """
+            Write a given content to a file with given filename.
+        """
+        with open(filename, 'w') as f:
+            f.write(content)
+            f.write('\n')

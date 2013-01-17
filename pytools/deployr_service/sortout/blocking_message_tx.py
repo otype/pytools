@@ -13,12 +13,12 @@ import json
 import pika
 from pika.exceptions import AMQPConnectionError
 from pika.adapters.blocking_connection import BlockingConnection
-from deployr_service.globals.environments import RETURNCODE
+from deployr_service.sortout.environments import RETURNCODE
 from deployr_service.models.deploy_confirmation_message import DeployConfirmationMessage
 from deployr_service.models.deploy_message import DeployMessage
 from deployr_service.models.undeploy_confirmation_message import UndeployConfirmationMessage
 from deployr_service.models.undeploy_message import UndeployMessage
-from deployr_service.models.errors import UnacceptableMessageException
+from deployr_service.lib.errors import UnacceptableMessageException
 from deployr_service.services import logging_service
 
 #

@@ -24,16 +24,16 @@ class LoggrClient(object):
     def __init__(
             self,
             daemon_name,
-            broker_address="tcp://localhost:5555",
-            service_name=ZMQ['SERVICE'],
-            verbose=False,
+            loggr_broker,
+            service_name,
+            verbose,
             host=None
     ):
         """
             Init & connect
         """
         super(LoggrClient, self).__init__()
-        self.zmq_connect_address = broker_address
+        self.loggr_broker = loggr_broker
         self.service = service_name
         self.verbose = verbose
         self.daemon_name = daemon_name
@@ -48,7 +48,7 @@ class LoggrClient(object):
         """
             Create the client connection the the Majordomo broker.
         """
-        self.client = MajorDomoClient(self.zmq_connect_address, verbose=self.verbose)
+        self.client = MajorDomoClient(self.loggr_broker, verbose=self.verbose)
 
     def _zlog(self, level, message):
         """
@@ -90,7 +90,7 @@ class LoggrClient(object):
 
 def main():
     log = LoggrClient(
-        broker_address="tcp://localhost:5555",
+        loggr_broker="tcp://localhost:5555",
         daemon_name='SampleDaemon',
         service_name=ZMQ['SERVICE'],
         verbose=True

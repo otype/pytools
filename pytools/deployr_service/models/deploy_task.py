@@ -7,11 +7,11 @@
 
 """
 from deployr_service.event_reporter_service.event_reporter import EventReporter
-from deployr_service.globals.environments import RETURNCODE
+from deployr_service.sortout.environments import RETURNCODE
 from deployr_service.models.deploy_confirmation_message import DeployConfirmationMessage
 from deployr_service.services import deploy_service
 from deployr_service.models.base_task import BaseTask
-from deployr_service.models.blocking_message_tx import BlockingMessageTx
+from deployr_service.sortout.blocking_message_tx import BlockingMessageTx
 from deployr_service.services import logging_service
 
 #

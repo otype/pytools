@@ -8,7 +8,7 @@
 """
 from deployr_service.event_reporter_service.event_reporter import EventReporter
 from deployr_service.models.base_task import BaseTask
-from deployr_service.models.blocking_message_tx import BlockingMessageTx
+from deployr_service.sortout.blocking_message_tx import BlockingMessageTx
 from deployr_service.models.undeploy_confirmation_message import UndeployConfirmationMessage
 from deployr_service.services import undeploy_service
 

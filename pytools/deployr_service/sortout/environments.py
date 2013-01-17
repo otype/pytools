@@ -13,7 +13,7 @@ class ENVIRONMENT:
     """
         Self-defined enumeration for environment names
     """
-    TEST = 'test'
+    STAGING = 'staging'
     DEV = 'dev'
     LIVE = 'live'
 

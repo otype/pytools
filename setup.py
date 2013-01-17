@@ -46,6 +46,8 @@ def get_template_base_dir():
 def scripts_list():
     return [
         'pytools/loggr_service/loggr.py',
+        'pytools/loggr_service/loggr_broker.py',
+        'pytools/loggr_service/loggr_client.py',
         'pytools/trackr_service/trackr.py',
         'pytools/deployr_service/deployr.py',
         'archive/lib/mq/zmq/ioloop_env_subscriber.py',

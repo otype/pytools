@@ -9,7 +9,7 @@
 
 """
 import sys
-from deployr_service.models.blocking_message_tx import BlockingMessageTx
+from deployr_service.sortout.blocking_message_tx import BlockingMessageTx
 from deployr_service.models.deploy_message import DeployMessage
 from deployr_service.services import logging_service
 from deployr_service.services.config_service import ConfigService

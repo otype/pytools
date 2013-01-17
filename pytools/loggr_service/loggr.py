@@ -14,10 +14,6 @@ from tornado.options import options
 from tornado.options import define
 from tornado.options import enable_pretty_logging
 from loggr_service.loggr_manager import LoggrManager
-from loggr_service.settings import ZMQ
-from loggr_service.settings import MONGODB
-from loggr_service.settings import DEBUG
-
 
 enable_pretty_logging()
 
@@ -25,10 +21,10 @@ def main():
     """
         Run all steps and config checks, then start the server
     """
-    define("bind_address", default=ZMQ['LOGGR_CONNECT_ADDRESS'], help="Loggr's Connect address", type=str)
-    define("service", default=ZMQ['SERVICE'], help="Broker Service name", type=str)
-    define("debug", default=DEBUG, help="Debugging flag", type=bool)
-    define("db_host", default=MONGODB['HOST'], help="MongoDB host", type=str)
+    define("loggr_broker", default="tcp://localhost:5555", help="Loggr ZMQ (broker) address", type=str)
+    define("mongodb_host", default='127.0.0.1', help="MongoDB host", type=str)
+    define("service", default='loggr', help="Broker Service name", type=str)
+    define("debug", default=False, help="Debugging flag", type=bool)
 
     try:
         tornado.options.parse_command_line()
@@ -36,13 +32,16 @@ def main():
         sys.exit('ERROR: {}'.format(e))
 
     loggr = LoggrManager(
-        publisher_endpoint=options.bind_address,
-        mongodb_host=options.db_host,
+        loggr_broker=options.loggr_broker,
+        mongodb_host=options.mongodb_host,
         service_name=options.service,
         debug=options.debug
     )
     loggr.run()
 
 
+# MAIN
+#
+#
 if __name__ == "__main__":
     main()

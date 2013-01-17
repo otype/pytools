@@ -8,12 +8,12 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.globals.environments import ENVIRONMENT
+from deployr_service.sortout.environments import ENVIRONMENT
 
 
 EVENT_REPORTER_CONFIG = {
 
-    ENVIRONMENT.TEST: {
+    ENVIRONMENT.STAGING: {
         # Event Reporter API URL
         'API_URL': '127.0.0.1',
 

@@ -20,16 +20,16 @@ from loggr_service.settings import ZMQ
 
 class LoggrManager(object):
     """
-        Starts the Loggr, a subscriber for all log messages.
+        Starts the Loggr.
     """
 
-    def __init__(self, publisher_endpoint, mongodb_host='127.0.0.1', service_name=ZMQ['SERVICE'], debug=False):
+    def __init__(self, loggr_broker, mongodb_host='127.0.0.1', service_name=ZMQ['SERVICE'], debug=False):
         """
             Base initialization
         """
         super(LoggrManager, self).__init__()
         self.log = logging.getLogger(self.__class__.__name__)
-        self.publisher_endpoint = publisher_endpoint
+        self.loggr_broker = loggr_broker
         self.mongodb_host = mongodb_host
         self.service_name = service_name
         self.debug = debug
@@ -50,7 +50,7 @@ class LoggrManager(object):
         """
             Simply display all settings
         """
-        self.log.info("Publisher endpoint = {}".format(self.publisher_endpoint))
+        self.log.info("Loggr ZMQ Broker address = {}".format(self.loggr_broker))
         debug_mode = "ON" if self.debug == True else "OFF"
         self.log.info("Debug mode = {}".format(debug_mode))
 
@@ -59,7 +59,7 @@ class LoggrManager(object):
             Setup the zmq subscriber and connect to publisher
         """
         self.worker = MajorDomoWorker(
-            broker=self.publisher_endpoint,
+            broker=self.loggr_broker,
             service=self.service_name,
             verbose=self.debug
         )

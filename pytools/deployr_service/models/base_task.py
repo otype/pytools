@@ -6,7 +6,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.models.errors import InvalidTaskTypeException
+from deployr_service.lib.errors import InvalidTaskTypeException
 from deployr_service.services import logging_service
 
 #

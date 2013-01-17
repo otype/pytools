@@ -9,7 +9,7 @@
 
 """
 import json
-from deployr_service.globals.queue_settings import UNDEPLOY_ROUTING_KEY, GENAPI_DEPLOYMENT_QUEUE
+from deployr_service.sortout.queue_settings import UNDEPLOY_ROUTING_KEY, GENAPI_DEPLOYMENT_QUEUE
 
 
 class UndeployMessage(object):

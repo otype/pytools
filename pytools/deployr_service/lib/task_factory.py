@@ -7,9 +7,9 @@
 
 """
 import json
-from deployr_service.globals.environments import TASKALIAS
+from deployr_service.sortout.environments import TASKALIAS
 from deployr_service.models.deploy_task import DeployTask
-from deployr_service.models.errors import InvalidTaskTypeException, UnacceptableMessageException
+from deployr_service.lib.errors import InvalidTaskTypeException, UnacceptableMessageException
 from deployr_service.models.undeploy_task import UndeployTask
 from deployr_service.services import logging_service
 from deployr_service.services.config_service import ConfigService

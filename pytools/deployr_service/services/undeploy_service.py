@@ -8,7 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.globals.environments import RETURNCODE
+from deployr_service.sortout.environments import RETURNCODE
 from deployr_service.services import supervisorctl_service
 
 

@@ -11,6 +11,8 @@
 import json
 import logging
 import datetime
+from pymongo.errors import ConnectionFailure
+import sys
 from lib.zeromq.majordomo_worker import MajorDomoWorker
 from loggr_service.log_message import LogMessage
 from loggr_service.mongodb_connection import MongoDBConnection
@@ -32,13 +34,17 @@ class LoggrManager(object):
         self.service_name = service_name
         self.debug = debug
 
-
     def connect_db(self):
         """
             Connect to underlying MongoDB
         """
-        self.mongodb = MongoDBConnection(db_host=self.mongodb_host)
-        self.mongodb.create_capped_db_collection(collection_name='testing')
+        try:
+            self.mongodb = MongoDBConnection(db_host=self.mongodb_host)
+            self.mongodb.create_capped_db_collection(collection_name='testing')
+        except ConnectionFailure, e:
+            self.log.error("MongoDB connection failed! Maybe you are not running mongod?")
+            self.log.error("Error: {}".format(e))
+            sys.exit(1)
 
     def show_all_settings(self):
         """

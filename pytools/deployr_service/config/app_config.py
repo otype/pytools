@@ -11,7 +11,7 @@
 #
 APP_DETAILS = {
     'name': 'deployr',
-    'version': '0.5.0',
+    'version': '0.6.0',
     'company': 'apitrary',
     'author': 'Hans-Gunther Schmidt',
     'author_email': 'hgs@apitrary.com',

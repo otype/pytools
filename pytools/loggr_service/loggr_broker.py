@@ -14,8 +14,6 @@ from tornado.options import define
 from tornado.options import enable_pretty_logging
 from tornado.options import options
 from lib.zeromq.majordomo_broker import MajorDomoBroker
-from loggr_service.settings import ZMQ
-from loggr_service.settings import DEBUG
 
 enable_pretty_logging()
 
@@ -23,8 +21,8 @@ def main():
     """
         Create and start new Loggr broker
     """
-    define("bind_address", default=ZMQ['LOGGR_BROKER_BIND_ADDRESS'], help="Loggr's Connect address", type=str)
-    define("debug", default=DEBUG, help="Debugging flag", type=bool)
+    define("bind_address", default="tcp://*:5555", help="Loggr's Connect address", type=str)
+    define("debug", default=False, help="Debugging flag", type=bool)
 
     try:
         tornado.options.parse_command_line()
@@ -32,7 +30,7 @@ def main():
         sys.exit('ERROR: {}'.format(e))
 
     broker = MajorDomoBroker(options.debug)
-    broker.bind(ZMQ['LOGGR_BROKER_BIND_ADDRESS'])
+    broker.bind(options.bind_address)
     broker.mediate()
 
 if __name__ == '__main__':

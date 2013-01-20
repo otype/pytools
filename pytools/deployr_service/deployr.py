@@ -21,10 +21,10 @@ def main():
         Start the Tornado Web server
     """
     define("write_config", default=False, help="Write config files (overwrites existing)", type=bool)
-    define("env", default="dev", help="Environment: (dev|staging|live)", type=str)
-    define("loggr_broker", default="tcp://localhost:5555", help="Loggr ZMQ (broker) address", type=str)
-    define("deployr_broker", default="tcp://localhost:5557", help="Deployr ZMQ (broker) address", type=str)
-    define("debug", default=False, help="Debugging flag", type=bool)
+    define("env", help="Environment: (dev|staging|live)", type=str)
+    define("loggr_broker", help="Loggr ZMQ (broker) address", type=str)
+    define("deployr_broker", help="Deployr ZMQ (broker) address", type=str)
+    define("debug", help="Debugging flag", type=bool)
 
     try:
         tornado.options.parse_command_line()
@@ -37,12 +37,18 @@ def main():
         sys.exit(0)
 
     config = ConfigService.load_configuration()
-    deployr_manager = DeployrManager(config)
+    if options.env:
+        config['ENV'] = options.env
+    if options.loggr_broker:
+        config['LOGGR_BROKER_ADDRESS'] = options.loggr_broker
+    if options.deployr_broker:
+        config['DEPLOYR_BROKER_ADDRESS'] = options.deployr_broker
+    if options.debug:
+        config['DEBUG'] = options.debug
+
+    deployr_manager = DeployrManager(config=config)
     deployr_manager.run()
 
 
-# MAIN
-#
-#
 if __name__ == "__main__":
     main()

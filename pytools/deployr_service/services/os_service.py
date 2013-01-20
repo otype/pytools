@@ -38,13 +38,11 @@ class OsService(DeployrBase):
             self.loggr.error('Had trouble executing command: {}! Error: {}'.format(command, e))
             return RETURNCODE.OS_ERROR
 
-
     def python_interpreter_path(self):
         """
             Get the full path to the Python interpreter used here in deployr
         """
         return sys.executable
-
 
     def which(self, program):
         """

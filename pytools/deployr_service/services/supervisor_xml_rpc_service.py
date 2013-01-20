@@ -8,6 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
+import socket
 import xmlrpclib
 from deployr_service.lib.deployr_base import DeployrBase
 from deployr_service.sortout.environments import RETURNCODE
@@ -30,6 +31,9 @@ class SupervisorXmlRpcService(DeployrBase):
             self.server.supervisor.reloadConfig()
         except xmlrpclib.Fault, e:
             self.loggr.error('Could not reload config! Error: {}'.format(e))
+            return RETURNCODE.OS_ERROR
+        except socket.error, e:
+            self.loggr.error('Socket error: {}'.format(e.message))
             return RETURNCODE.OS_ERROR
         return RETURNCODE.OS_SUCCESS
 

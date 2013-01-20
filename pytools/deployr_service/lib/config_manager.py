@@ -8,12 +8,10 @@
     Copyright (c) 2012 apitrary
 
 """
+import os
 import sys
 import logging
-
-import os
 from configobj import ConfigObj
-
 from deployr_service.sortout.environments import RETURNCODE
 
 

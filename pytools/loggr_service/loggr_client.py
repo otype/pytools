@@ -60,8 +60,15 @@ class LoggrClient(object):
             host_name=self.host,
             log_line=message
         )
-        self.client.send(service=self.service, request=log_message.as_json())
-        self.client.recv()
+
+        try:
+#            if self.verbose:
+#                logging.info(log_message.as_dict())
+            logging.info(log_message.as_dict())
+            self.client.send(service=self.service, request=log_message.as_json())
+            self.client.recv()
+        except AttributeError, e:
+            logging.error("Received illegal message: {}".format(message))
 
     def info(self, message):
         """

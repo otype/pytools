@@ -13,7 +13,7 @@ from deployr_service.lib.deployr_base import DeployrBase
 class FileSystemService(DeployrBase):
 
     @staticmethod
-    def write_file(self, filename, content):
+    def write_file(filename, content):
         """
             Write a given content to a file with given filename.
         """

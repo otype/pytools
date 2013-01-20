@@ -45,6 +45,7 @@ def get_template_base_dir():
 
 def scripts_list():
     return [
+        'pytools/deployr_service/sortout/manual_task_deploy.py',
         'pytools/loggr_service/loggr.py',
         'pytools/loggr_service/loggr_broker.py',
         'pytools/loggr_service/loggr_client.py',

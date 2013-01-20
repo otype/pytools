@@ -9,19 +9,11 @@
 
 """
 import json
-from deployr_service.sortout.queue_settings import UNDEPLOY_CONFIRMATION_ROUTING_KEY, GENAPI_DEPLOYMENT_QUEUE
-
 
 class UndeployConfirmationMessage(object):
     """
         An undeploy message
     """
-
-    # the routing key for deploy confirmation
-    routing_key = UNDEPLOY_CONFIRMATION_ROUTING_KEY
-
-    # the exchange to use
-    queue = GENAPI_DEPLOYMENT_QUEUE
 
     def __init__(self, api_id, status):
         """

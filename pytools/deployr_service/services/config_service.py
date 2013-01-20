@@ -22,19 +22,6 @@ class ConfigService(object):
     """
 
     @staticmethod
-    def strip_out_sensitive_data(configuration_object):
-        """
-            Strip out all passwords from config hash
-        """
-        config_to_show = str(configuration_object)
-        config_to_show = config_to_show.replace(configuration_object['BROKER_PASSWORD'], '<hidden>')
-        config_to_show = config_to_show.replace(configuration_object['SUPERVISOR_XML_RPC_USERNAME'], '<hidden>')
-        config_to_show = config_to_show.replace(configuration_object['SUPERVISOR_XML_RPC_PASSWORD'], '<hidden>')
-
-        return config_to_show
-
-
-    @staticmethod
     def get_config_file_name():
         """
             Define the configuration file (and path)
@@ -54,11 +41,11 @@ class ConfigService(object):
         """
             Loading configuration file
         """
-        config_file = ConfigService.get_config_file_name()
-        config_manager = ConfigManager(config_file)
+        config = ConfigService.get_config_file_name()
+        config_manager = ConfigManager(config)
         config_manager.setup_config_dir()
 
-        if not os.path.exists(config_file):
+        if not os.path.exists(config):
             config_manager.load_config(config_obj=GLOBAL_CONF[ENVIRONMENT.DEV])
             config_manager.write_config()
 
@@ -71,13 +58,12 @@ class ConfigService(object):
         """
             Write the configuration file for the given environment
         """
-        config_file = ConfigService.get_config_file_name()
-
+        config = ConfigService.get_config_file_name()
         # Store existing config to <name>.backup
-        if os.path.exists(config_file):
-            shutil.move(config_file, "{}.backup".format(config_file))
+        if os.path.exists(config):
+            shutil.move(config, "{}.backup".format(config))
 
-        config_manager = ConfigManager(config_file)
+        config_manager = ConfigManager(config)
         config_manager.setup_config_dir()
         config_manager.load_config(config_obj=GLOBAL_CONF[config_env])
         config_manager.write_config()

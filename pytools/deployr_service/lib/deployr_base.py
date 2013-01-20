@@ -51,7 +51,7 @@ class DeployrBase(object):
         self.environment = self.get("ENV")
         self.config_file = self.get("DEPLOYR_CONFIG_FILE")
         self.service_name = self.get("SERVICE")
-        self.debug = True if self.get("DEBUG") == "1" else False
+        self.debug = True if self.get("DEBUG") == "1" or self.get("DEBUG") == True else False
 
     def show_all_settings(self):
         """

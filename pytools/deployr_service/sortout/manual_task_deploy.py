@@ -26,12 +26,21 @@ msg = DeployMessage(
     api_key='suchasecretapikeyyouwouldneverguess'
 )
 
+class ZmqClient(object):
+    def __init__(self, broker, verbose):
+        super(ZmqClient, self).__init__()
+        self.client = MajorDomoClient(broker=broker, verbose=verbose)
+
+    def send(self, message):
+        self.client.send('deployr', message)
+
+
 def main():
 #    verbose = '-v' in sys.argv
-    client = MajorDomoClient(broker="tcp://localhost:5557", verbose=True)
+    client = ZmqClient(broker="tcp://localhost:5557", verbose=True)
     while True:
         try:
-            client.send('deployr', msg.to_json())
+            client.send(msg.to_json())
             sleep(20.0)
         except KeyboardInterrupt:
             logging.info("Pressed CTRL-C. Killing.")

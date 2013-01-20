@@ -29,7 +29,6 @@ class DeployrManager(DeployrBase):
         """Process an incoming request from the ZMQ broker."""
         try:
             task = json.loads(message)
-            print ">>>>>>>> Task: {}".format(task)
             status = self.deployr_api.execute_task(task)
             print ">>>>>>>> Status: {}".format(status)
             self.loggr.info("Executed task status: {}".format(status))

@@ -21,14 +21,7 @@ class LoggrClient(object):
         Loggr service which stores all messages into MongoDB.
     """
 
-    def __init__(
-            self,
-            daemon_name,
-            loggr_broker,
-            service_name,
-            verbose,
-            host=None
-    ):
+    def __init__(self, daemon_name, loggr_broker, service_name, verbose, host=None):
         """
             Init & connect
         """

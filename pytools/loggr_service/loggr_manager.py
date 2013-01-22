@@ -40,7 +40,7 @@ class LoggrManager(object):
         """
         try:
             self.mongodb = MongoDBConnection(db_host=self.mongodb_host)
-            self.mongodb.create_capped_db_collection(collection_name='testing')
+            self.mongodb.create_db_collection(collection_name='testing')
         except ConnectionFailure, e:
             self.log.error("MongoDB connection failed! Maybe you are not running mongod?")
             self.log.error("Error: {}".format(e))

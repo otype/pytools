@@ -18,6 +18,9 @@ class MongoDBConnection(object):
         Creates a connection to MongoDB
     """
 
+    capped_collection_size = 10485760
+    capped_collection_max = 10000
+
     def __init__(self, db_name='logging', db_host='127.0.0.1', db_port=27017):
         """
             Base initialization
@@ -46,12 +49,17 @@ class MongoDBConnection(object):
         self.db = self.connection[self.db_name]
         self.show_all_settings()
 
-    def create_capped_db_collection(self, collection_name):
+    def create_db_collection(self, collection_name):
         """
             Create a capped collection for given collection name. Size is 10MB.
         """
         try:
-            self.db.create_collection(name=collection_name, size=10485760, max=10000, capped=True)
+            self.db.create_collection(
+                name=collection_name,
+                size=self.capped_collection_size,
+                max=self.capped_collection_max,
+                capped=True
+            )
         except CollectionInvalid, e:
             self.log.debug("Capped Collection=%s already exists" % collection_name)
 

@@ -45,6 +45,11 @@ class DeployrBase(object):
         self.supervisord_xml_rpc_username = self.get("SUPERVISOR_XML_RPC_USERNAME")
         self.supervisord_xml_rpc_password = self.get("SUPERVISOR_XML_RPC_PASSWORD")
         self.supervisord_xml_rpc_server = self.get("SUPERVISOR_XML_RPC_SERVER_ADDRESS")
+        self.rmq_broker_password = self.get("BROKER_PASSWORD")
+        self.rmq_broker_username = self.get("BROKER_USER")
+        self.rmq_broker_prefetch_count = self.get("BROKER_PREFETCH_COUNT")
+        self.rmq_broker_host = self.get("BROKER_HOST")
+        self.rmq_broker_port = self.get("BROKER_PORT")
         self.loggr_broker = self.get("LOGGR_BROKER_ADDRESS")
         self.deployr_broker = self.get("DEPLOYR_BROKER_ADDRESS")
         self.logging_level = self.get("LOGGING")
@@ -69,7 +74,10 @@ class DeployrBase(object):
         logging.info('Supervisor web port: {}'.format(self.supervisord_web_port))
         logging.info('Supervisor XML-RPC Server address: {}'.format(self.supervisord_xml_rpc_server))
         logging.info('Supervisor XML-RPC Server user: {}'.format(self.supervisord_xml_rpc_username))
-
+        logging.info('RabbitMQ Broker username: {}'.format(self.rmq_broker_username))
+        logging.info('RabbitMQ Broker prefetch: {}'.format("ON" if self.rmq_broker_prefetch_count == True else "OFF"))
+        logging.info('RabbitMQ Broker host: {}'.format(self.rmq_broker_host))
+        logging.info('RabbitMQ Broker port: {}'.format(self.rmq_broker_port))
 
         self.loggr.info("deployr.start[broker:{broker}, loggr:{loggr}, env:{env}, debug:{debug}]".format(
             broker=self.deployr_broker,

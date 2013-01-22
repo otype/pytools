@@ -14,7 +14,7 @@ from deployr_service.deployr_api import DeployrApi
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.errors import UnacceptableMessageException, InvalidTaskTypeException
 from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.lib.zmq.zmq_message_manager import ZmqMessageManager
+from deployr_service.lib.zmq_message_manager import ZmqMessageManager
 
 class DeployrManager(DeployrBase):
     """Manages the Deployr life-cycle."""

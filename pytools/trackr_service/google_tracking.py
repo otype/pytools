@@ -6,15 +6,18 @@
     Copyright (c) 2012 apitrary
 
 """
+import uuid
 import logging
 from random import randint
 from urllib import urlencode
 from urllib2 import urlopen
 from urlparse import urlunparse
 from hashlib import sha1
-import uuid
-from settings import GOOGLE_ANALYTICS
 
+GOOGLE_ANALYTICS = {
+    'STAGING': "UA-28942332-9",         # STAGING ENVIRONMENT GA
+    'LIVE': "UA-28942332-3"             # LIVE ENVIRONMENT GA
+}
 
 def send_data_to_google_analytics(ga_account_id, ga_visitor_id, called_path, http_method):
     """

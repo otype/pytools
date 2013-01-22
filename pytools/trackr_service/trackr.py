@@ -11,40 +11,26 @@
 import zmq
 import json
 import logging
-from settings import ZMQ
 from google_tracking import send_analytics_data
 
-# Establish ZMQ context
+TRACKR_BIND_ADDRESS = "tcp://*:5555"
+
 context = zmq.Context()
-
-# Socket to receive messages on
 receiver = context.socket(zmq.PULL)
+receiver.bind(TRACKR_BIND_ADDRESS)
 
-# Bind to the track address
-receiver.bind(ZMQ['TRACKR_BIND_ADDRESS'])
-
-# Initial config for logging
 logging.basicConfig()
-
-# Set logger name to 'deployr
 log = logging.getLogger('trackr')
-
-# Set the default log level
 log.setLevel(logging.DEBUG)
 
-log.debug("Starting trackr on: {}".format(ZMQ['TRACKR_BIND_ADDRESS']))
+log.debug("Starting trackr on: {}".format(TRACKR_BIND_ADDRESS))
 while True:
     # Running a first recv() ... the second one will actually get the message!
     receiver.recv()
-
-    # Receive the tracking data
     message = receiver.recv()
-
-    # Convert message to json
     try:
         tracking_data = json.loads(message)
 
-        # Send the tracking data to Google Analytics
         log.debug("Contacting Google with data: {}".format(tracking_data))
         send_analytics_data(
             remote_ip=tracking_data['remote_ip'],

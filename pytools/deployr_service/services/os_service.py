@@ -12,7 +12,7 @@ import os
 import sys
 import subprocess
 from deployr_service.lib.deployr_base import DeployrBase
-from deployr_service.sortout.environments import RETURNCODE
+from deployr_service.lib.returncodes import RETURNCODE
 
 
 class OsService(DeployrBase):

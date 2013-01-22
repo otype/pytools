@@ -12,7 +12,7 @@ import os
 import sys
 import logging
 from configobj import ConfigObj
-from deployr_service.sortout.environments import RETURNCODE
+from deployr_service.lib.returncodes import RETURNCODE
 
 
 class ConfigManager(object):

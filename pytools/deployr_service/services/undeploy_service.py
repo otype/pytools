@@ -8,22 +8,23 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.sortout.environments import RETURNCODE
-from deployr_service.services import supervisorctl_service
+from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.lib.returncodes import RETURNCODE
+from deployr_service.services.supervisorctl_service import SuperVisorCtlService
 
 
-def undeploy_api(api_id):
-    """
-        Undeploy a currently deployed API with given API ID
-    """
-    # stop the API
-    supervisorctl_service.supervisorctl_stop(api_id)
+class UndeployService(DeployrBase):
+    def __init__(self, config):
+        super(UndeployService, self).__init__(config)
 
-    # remove all configuration from supervisorctl context
-    supervisorctl_service.supervisorctl_remove(api_id)
 
-    # reread config files
-    supervisorctl_service.supervisorctl_reread()
+    def undeploy_api(self, api_id):
+        """Undeploy a currently deployed API with given API ID"""
+        supervisorctl_service = SuperVisorCtlService(config=self.config)
 
-    # delete configuration file from file system
-    return RETURNCODE.OS_SUCCESS
+        supervisorctl_service.supervisorctl_stop(api_id)
+        supervisorctl_service.supervisorctl_remove(api_id)
+        supervisorctl_service.supervisorctl_reread()
+
+        # TODO: delete configuration file from file system!
+        return RETURNCODE.OS_SUCCESS

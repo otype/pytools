@@ -17,7 +17,6 @@ class EventMessage(object):
         An Event message
     """
 
-
     def __init__(self, task_message ):
         """
             Setting the base variables for this message object

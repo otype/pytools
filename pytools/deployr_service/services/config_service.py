@@ -11,9 +11,9 @@
 import shutil
 import sys
 import os
-from deployr_service.sortout.environment_config import GLOBAL_CONF
-from deployr_service.sortout.environments import ENVIRONMENT
+from deployr_service.lib.environments import ENVIRONMENT
 from deployr_service.lib.config_manager import ConfigManager
+from deployr_service.lib.global_config import GLOBAL_CONF
 
 
 class ConfigService(object):

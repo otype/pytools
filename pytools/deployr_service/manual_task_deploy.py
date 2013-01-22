@@ -11,7 +11,7 @@
 import sys
 from time import sleep
 from tornado.options import enable_pretty_logging, logging
-from deployr_service.models.deploy_message import DeployMessage
+from deployr_service.messages.deploy_message import DeployMessage
 from lib.zeromq.majordomo_client import MajorDomoClient
 
 enable_pretty_logging()

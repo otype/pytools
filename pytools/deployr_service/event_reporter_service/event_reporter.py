@@ -13,10 +13,10 @@ import tornado
 from tornado.httpclient import HTTPRequest
 from tornado import httpclient
 from tornado.options import enable_pretty_logging
-from deployr_service.config.event_reporter_config import EVENT_REPORTER_CONFIG
+from deployr_service.event_reporter_service.event_reporter_config import EVENT_REPORTER_CONFIG
 from deployr_service.lib.deployr_base import DeployrBase
-from deployr_service.models.deploy_message import DeployMessage
-from deployr_service.models.undeploy_message import UndeployMessage
+from deployr_service.messages.deploy_message import DeployMessage
+from deployr_service.messages.undeploy_message import UndeployMessage
 from deployr_service.services.config_service import ConfigService
 
 # Logger

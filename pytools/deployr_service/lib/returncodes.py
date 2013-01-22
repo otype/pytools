@@ -1,26 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 
-    deployr
+    <application_name>    
 
-    created by hgschmidt on 26.11.12, 23:33 CET
+    created by hgschmidt on 29.12.12, 13:28 CET
     
     Copyright (c) 2012 apitrary
 
 """
 
-class ENVIRONMENT:
-    """
-        Self-defined enumeration for environment names
-    """
-    STAGING = 'staging'
-    DEV = 'dev'
-    LIVE = 'live'
-
 class RETURNCODE:
-    """
-        All return codes
-    """
+    """All return codes"""
     OS_SUCCESS = 0
     OS_ERROR = 1
     OS_MISUSE_ERROR = 2

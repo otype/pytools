@@ -10,27 +10,11 @@
 """
 import sys
 from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.lib.returncodes import RETURNCODE
 from deployr_service.services.network_service import NetworkService
 from deployr_service.services.os_service import OsService
 from deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
 from deployr_service.services.template_service import TemplateService
-from deployr_service.sortout.environments import RETURNCODE
-
-#GENAPI_TEMPLATES_CONFIG = {
-#    'GENAPI_BASE': {
-#        'GENAPI_BASE_TEMPLATE': 'genapi_base.tpl',
-#        'GENAPI_PYTHON_EXEC': os_service.python_interpreter_path(),
-#        'GENAPI_START_SCRIPT': '/usr/bin/genapi_runner.py',
-#        'GENAPI_HOME_DIRECTORY': '/home/genapi',
-#        'GENAPI_USER': 'genapi'
-#    },
-#    'GENAPI_BACKENDS': {
-#        'GENAPI_BACKENDS_TEMPLATE': 'genapi_backends.tpl'
-#    },
-#    'GENAPI_FRONTENDS': {
-#        'GENAPI_FRONTENDS_TEMPLATE': 'genapi_frontends.tpl'
-#    }
-#}
 
 class DeployService(DeployrBase):
     """Deploy service."""

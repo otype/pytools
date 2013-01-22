@@ -12,8 +12,8 @@ import json
 import logging
 from deployr_service.lib.deployr_api import DeployrApi
 from deployr_service.lib.deployr_base import DeployrBase
-from deployr_service.sortout.environments import RETURNCODE
 from deployr_service.lib.errors import UnacceptableMessageException, InvalidTaskTypeException
+from deployr_service.lib.returncodes import RETURNCODE
 from deployr_service.lib.zmq_message_manager import ZmqMessageManager
 
 class DeployrManager(DeployrBase):

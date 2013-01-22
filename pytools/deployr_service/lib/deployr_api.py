@@ -10,8 +10,8 @@
 """
 from deployr_service.lib.deployr_base import DeployrBase
 from deployr_service.lib.errors import InvalidTaskTypeException
+from deployr_service.lib.returncodes import RETURNCODE
 from deployr_service.services.deploy_service import DeployService
-from deployr_service.sortout.environments import RETURNCODE
 from deployr_service.task_types.deploy_task import DeployTask
 from deployr_service.task_types.undeploy_task import UndeployTask
 

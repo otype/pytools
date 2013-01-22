@@ -6,9 +6,7 @@
     Copyright (c) 2012 apitrary
 
 """
-#
-# Application details
-#
+
 APP_DETAILS = {
     'name': 'deployr',
     'version': '0.6.0',

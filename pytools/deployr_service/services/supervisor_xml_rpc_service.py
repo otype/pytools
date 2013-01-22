@@ -11,7 +11,8 @@
 import socket
 import xmlrpclib
 from deployr_service.lib.deployr_base import DeployrBase
-from deployr_service.sortout.environments import RETURNCODE
+from deployr_service.lib.returncodes import RETURNCODE
+
 
 class SupervisorXmlRpcService(DeployrBase):
     """
@@ -26,7 +27,8 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Reread the supervisor_api configuration files
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting reload of all configs'.format(self.supervisord_xml_rpc_server))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting reload of all configs'.format(self.supervisord_xml_rpc_server))
         try:
             self.server.supervisor.reloadConfig()
         except xmlrpclib.Fault, e:
@@ -42,7 +44,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Start given application via supervisor_api
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting start of application: {}'.format(self.supervisord_xml_rpc_server, app_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting start of application: {}'.format(self.supervisord_xml_rpc_server,
+                app_name))
         try:
             if self.server.supervisor.startProcess(app_name):
                 return RETURNCODE.OS_SUCCESS
@@ -58,7 +62,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Stop given application via supervisor_api
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting stop of application: {}'.format(self.supervisord_xml_rpc_server, app_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting stop of application: {}'.format(self.supervisord_xml_rpc_server,
+                app_name))
         try:
             if self.server.supervisor.stopProcess(app_name):
                 return RETURNCODE.OS_SUCCESS
@@ -74,7 +80,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Start given application via supervisor_api
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting restart of application: {}'.format(self.supervisord_xml_rpc_server, app_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting restart of application: {}'.format(self.supervisord_xml_rpc_server,
+                app_name))
 
         stop_state = self.stop(app_name)
         start_state = self.start(app_name)
@@ -90,7 +98,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Add new application to supervisor_api configuration
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting addition of application: {}'.format(self.supervisord_xml_rpc_server, group_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting addition of application: {}'.format(self.supervisord_xml_rpc_server,
+                group_name))
         try:
             if self.server.supervisor.addProcessGroup(group_name):
                 return RETURNCODE.OS_SUCCESS
@@ -141,7 +151,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Request status of given application
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting process info for api_id: {}'.format(self.supervisord_xml_rpc_server, app_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting process info for api_id: {}'.format(self.supervisord_xml_rpc_server,
+                app_name))
         try:
             all_processes = self.server.supervisor.getAllProcessInfo()
             for process in all_processes:
@@ -161,7 +173,9 @@ class SupervisorXmlRpcService(DeployrBase):
         """
             Remove application from supervisor_api context
         """
-        self.loggr.debug('SUPERVISOR XML-RPC({}): Requesting removal of group: {}'.format(self.supervisord_xml_rpc_server, group_name))
+        self.loggr.debug(
+            'SUPERVISOR XML-RPC({}): Requesting removal of group: {}'.format(self.supervisord_xml_rpc_server,
+                group_name))
         try:
             if self.server.supervisor.removeProcessGroup(group_name):
                 return RETURNCODE.OS_SUCCESS

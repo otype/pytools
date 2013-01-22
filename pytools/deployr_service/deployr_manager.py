@@ -13,8 +13,8 @@ import logging
 from deployr_service.deployr_api import DeployrApi
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.errors import UnacceptableMessageException, InvalidTaskTypeException
+from deployr_service.lib.rabbitmq_message_manager import RabbitMqMessageManager
 from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.lib.zmq_message_manager import ZmqMessageManager
 
 class DeployrManager(DeployrBase):
     """Manages the Deployr life-cycle."""
@@ -22,7 +22,8 @@ class DeployrManager(DeployrBase):
     def __init__(self, config):
         """Setup ZmqMessageManager with callback method"""
         super(DeployrManager, self).__init__(config=config)
-        self.zmq_message_manager = ZmqMessageManager(config=self.config, callback=self.process_incoming_request)
+#        self.message_manager = ZmqMessageManager(config=self.config, callback=self.process_incoming_request)
+        self.message_manager = RabbitMqMessageManager(config=self.config, callback=self.process_incoming_request, amqp_url='amqp://guest:guest@localhost:5672/%2F')
         self.deployr_api = DeployrApi(config=self.config)
 
     def process_incoming_request(self, message):
@@ -47,7 +48,7 @@ class DeployrManager(DeployrBase):
         """Start the deployr daemon here."""
         try:
             self.show_all_settings()
-            self.zmq_message_manager.run()
+            self.message_manager.run()
         except KeyboardInterrupt:
             logging.warning("CTRL-C pressed, closing down ...")
-            self.zmq_message_manager.close()
+            self.message_manager.close()

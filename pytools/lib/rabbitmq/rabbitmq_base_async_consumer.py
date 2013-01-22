@@ -10,9 +10,11 @@
 """
 import logging
 import pika
+from tornado.options import enable_pretty_logging
 
+enable_pretty_logging()
 
-class BaseAsyncConsumer(object):
+class RabbitMqBaseAsyncConsumer(object):
     """This is an example consumer that will handle unexpected interactions
     with RabbitMQ such as channel and connection closures.
 
@@ -26,7 +28,7 @@ class BaseAsyncConsumer(object):
 
     """
 
-    def __init__(self, amqp_url, exchange, queue, routing_key='#', debug=False):
+    def __init__(self, amqp_url, exchange, callback, routing_key='#', debug=False):
         """Create a new instance of the consumer class, passing in the AMQP
         URL used to connect to RabbitMQ.
 
@@ -39,7 +41,7 @@ class BaseAsyncConsumer(object):
         self._url = amqp_url
         self._exchange = exchange
         self._exchange_type = 'topic'
-        self._queue = queue
+        self._callback = callback
         self._routing_key = routing_key
         self._debug = debug
 
@@ -104,8 +106,8 @@ class BaseAsyncConsumer(object):
     def on_channel_closed(self, method_frame):
         """Invoked by pika when RabbitMQ unexpectedly closes the channel.
         Channels are usually closed if you attempt to do something that
-        violates the protocol, such as redeclare an exchange or queue with
-        different paramters. In this case, we'll close the connection
+        violates the protocol, such as re-declare an exchange or queue with
+        different parameters. In this case, we'll close the connection
         to shutdown the object.
 
         :param pika.frame.Method method_frame: The Channel.Close method frame
@@ -146,18 +148,14 @@ class BaseAsyncConsumer(object):
 
         """
         logging.info('Exchange declared')
-        self.setup_queue(self._queue)
+        self.setup_queue()
 
-    def setup_queue(self, queue_name):
+    def setup_queue(self):
         """Setup the queue on RabbitMQ by invoking the Queue.Declare RPC
         command. When it is complete, the on_queue_declareok method will
-        be invoked by pika.
-
-        :param str|unicode queue_name: The name of the queue to declare.
-
-        """
-        logging.info('Declaring queue %s', queue_name)
-        self._channel.queue_declare(self.on_queue_declareok, queue_name, exclusive=True)
+        be invoked by pika."""
+        logging.info('Declaring queue')
+        self._channel.queue_declare(self.on_queue_declareok, exclusive=True)
 
     def on_queue_declareok(self, method_frame):
         """Method invoked by pika when the Queue.Declare RPC call made in
@@ -169,6 +167,7 @@ class BaseAsyncConsumer(object):
         :param pika.frame.Method method_frame: The Queue.DeclareOk frame
 
         """
+        self._queue = method_frame.method.queue
         logging.info('Binding %s to %s with %s', self._exchange, self._queue, self._routing_key)
         self._channel.queue_bind(
             callback=self.on_bindok,
@@ -209,7 +208,7 @@ class BaseAsyncConsumer(object):
 
     def handle_message(self, body):
         """Message handler! Define here what to do with the body."""
-        pass
+        self._callback(body)
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
         """Invoked by pika when a message is delivered from RabbitMQ. The
@@ -315,9 +314,16 @@ class BaseAsyncConsumer(object):
         self._connection.ioloop.start()
 
 
+def echo(body):
+    print ">>> body: {}".format(body)
+
 def main():
-    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
-    base_async_consumer = BaseAsyncConsumer('amqp://guest:guest@localhost:5672/%2F', debug=True)
+    base_async_consumer = RabbitMqBaseAsyncConsumer(
+        amqp_url='amqp://guest:guest@localhost:5672/%2F',
+        exchange='base.exchange',
+        callback=echo,
+        debug=True
+    )
     try:
         base_async_consumer.run()
     except KeyboardInterrupt:

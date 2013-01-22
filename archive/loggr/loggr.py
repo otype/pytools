@@ -9,13 +9,10 @@
 
 """
 import logging
+from tornado.options import enable_pretty_logging
 from archive.lib.mq.rabbitmq.base_async_consumer import BaseAsyncConsumer
-from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE_TYPE
-from archive.lib.mq.rabbitmq.rabbitmq_config import LOGGING_EXCHANGE
 
-LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -20s %(funcName) -25s %(lineno) -5d: %(message)s')
-LOGGER = logging.getLogger('loggr_service')
-
+enable_pretty_logging()
 
 class Loggr(BaseAsyncConsumer):
     """
@@ -30,17 +27,17 @@ class Loggr(BaseAsyncConsumer):
         """
         super(Loggr, self).__init__(
             amqp_url=amqp_url,
-            exchange=LOGGING_EXCHANGE,
-            exchange_type=LOGGING_EXCHANGE_TYPE,
+            exchange='base_exchange',
+            queue='base_queue',
+            routing_key='#', # bind to all topics
             debug=debug
         )
-        self._topic_key = "#" # bind to all topics
 
     def setup_exchange(self):
         """
             Setup our exchange
         """
-        LOGGER.info('Declaring exchange %s', self._exchange)
+        logging.info('Declaring exchange %s', self._exchange)
         self._channel.exchange_declare(self.on_exchange_declareok, self._exchange, self._exchange_type)
 
 
@@ -48,7 +45,7 @@ class Loggr(BaseAsyncConsumer):
         """
             Declare an exclusive queue
         """
-        LOGGER.info('Declaring queue')
+        logging.info('Declaring queue')
         self._channel.queue_declare(callback=self.on_queue_declareok, exclusive=True)
 
 
@@ -57,12 +54,12 @@ class Loggr(BaseAsyncConsumer):
             Bind to queue if declaring the queue was fine.
         """
         self._queue = method_frame.method.queue
-        LOGGER.info('Binding %s to %s', self._exchange, self._queue)
+        logging.info('Binding %s to %s', self._exchange, self._queue)
         self._channel.queue_bind(
             callback=self.on_bindok,
             queue=self._queue,
             exchange=self._exchange,
-            routing_key=self._topic_key
+            routing_key=self._routing_key
         )
 
     def handle_message(self, body):

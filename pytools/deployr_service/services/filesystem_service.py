@@ -8,7 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.deployr_base import DeployrBase
 
 class FileSystemService(DeployrBase):
 

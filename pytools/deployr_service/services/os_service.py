@@ -8,10 +8,12 @@
     Copyright (c) 2012 apitrary
 
 """
-import os
 import sys
 import subprocess
-from deployr_service.lib.deployr_base import DeployrBase
+
+import os
+
+from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
 
 

@@ -9,7 +9,7 @@
 
 """
 import socket
-from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.deployr_base import DeployrBase
 
 
 class NetworkService(DeployrBase):

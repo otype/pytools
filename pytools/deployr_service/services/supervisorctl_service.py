@@ -7,7 +7,7 @@
 
 """
 import sys
-from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
 from deployr_service.services.os_service import OsService
 

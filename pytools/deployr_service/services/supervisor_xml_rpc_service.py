@@ -10,7 +10,7 @@
 """
 import socket
 import xmlrpclib
-from deployr_service.lib.deployr_base import DeployrBase
+from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
 
 

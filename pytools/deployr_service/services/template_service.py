@@ -8,11 +8,13 @@
     Copyright (c) 2012 apitrary
 
 """
-import os
 import sys
+
+import os
 from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
-from deployr_service.lib.deployr_base import DeployrBase
+
+from deployr_service.deployr_base import DeployrBase
 from deployr_service.services.filesystem_service import FileSystemService
 
 

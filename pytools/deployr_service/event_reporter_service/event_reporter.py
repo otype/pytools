@@ -19,7 +19,6 @@ from deployr_service.messages.deploy_message import DeployMessage
 from deployr_service.messages.undeploy_message import UndeployMessage
 from deployr_service.services.config_service import ConfigService
 
-# Logger
 enable_pretty_logging()
 
 class EventReporter(DeployrBase):

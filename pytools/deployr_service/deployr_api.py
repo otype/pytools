@@ -24,19 +24,23 @@ class DeployrApi(DeployrBase):
 
     def execute_task(self, task):
         """Execute task depending on task type"""
+        if type(task) != dict:
+            self.loggr.error("Not a valid task! Cannot execute task!")
+            return RETURNCODE.OS_INVALID_ARGUMENT
+
         if 'task_type' not in task:
             self.loggr.error("Not a valid task! Cannot execute task!")
             return RETURNCODE.OS_INVALID_ARGUMENT
 
         task_type = task['task_type']
-        return_status = None
+        return_status_set = None
         try:
             if task_type == DeployTask.get_task_type():
                 deploy_task = DeployTask(message=task, config=self.config)
-                return_status = self.deploy(task=deploy_task)
+                return_status_set = self.deploy(task=deploy_task)
             elif task_type == UndeployTask.get_task_type():
                 undeploy_task = UndeployTask(message=task, config=self.config)
-                return_status = self.undeploy(task=undeploy_task)
+                return_status_set = self.undeploy(task=undeploy_task)
             else:
                 self.loggr.warning("Unknown task type: {}".format(task.task_type))
         except InvalidTaskTypeException, e:
@@ -44,7 +48,7 @@ class DeployrApi(DeployrBase):
         except TypeError, e:
             self.loggr.error('Task type is not identifiable! Error: {}'.format(e))
 
-        return return_status
+        return return_status_set
 
     def deploy(self, task):
         """Execute the deploy task"""

@@ -12,7 +12,8 @@ import json
 import logging
 from deployr_service.deployr_api import DeployrApi
 from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.errors import UnacceptableMessageException, InvalidTaskTypeException
+from deployr_service.lib.errors import UnacceptableMessageException
+from deployr_service.lib.errors import InvalidTaskTypeException
 from deployr_service.lib.rabbitmq_message_manager import RabbitMqMessageManager
 from deployr_service.lib.returncodes import RETURNCODE
 
@@ -23,16 +24,22 @@ class DeployrManager(DeployrBase):
         """Setup ZmqMessageManager with callback method"""
         super(DeployrManager, self).__init__(config=config)
 #        self.message_manager = ZmqMessageManager(config=self.config, callback=self.process_incoming_request)
-        self.message_manager = RabbitMqMessageManager(config=self.config, callback=self.process_incoming_request, amqp_url='amqp://guest:guest@localhost:5672/%2F')
+        self.message_manager = RabbitMqMessageManager(
+            config=self.config,
+            callback=self.process_incoming_request,
+            amqp_url='amqp://guest:guest@localhost:5672/%2F'
+        )
         self.deployr_api = DeployrApi(config=self.config)
 
     def process_incoming_request(self, message):
         """Process an incoming request from the ZMQ broker."""
         try:
             task = json.loads(message)
-            status = self.deployr_api.execute_task(task)
-            print ">>>>>>>> Status: {}".format(status)
-            self.loggr.info("Executed task status: {}".format(status))
+            status_set = self.deployr_api.execute_task(task)
+
+            print ">>>>>>>> Status: {}".format(status_set)
+
+            self.loggr.info("Executed task status: {}".format(status_set))
             return RETURNCODE.OS_SUCCESS
         except UnacceptableMessageException, e:
             self.loggr.error('Could not create task factory for spawning tasks! Error: {}'.format(e.message))

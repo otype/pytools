@@ -104,8 +104,8 @@ class BaseAsyncConsumer(object):
     def on_channel_closed(self, method_frame):
         """Invoked by pika when RabbitMQ unexpectedly closes the channel.
         Channels are usually closed if you attempt to do something that
-        violates the protocol, such as redeclare an exchange or queue with
-        different paramters. In this case, we'll close the connection
+        violates the protocol, such as re-declare an exchange or queue with
+        different parameters. In this case, we'll close the connection
         to shutdown the object.
 
         :param pika.frame.Method method_frame: The Channel.Close method frame

@@ -11,7 +11,7 @@
 from tornado.options import enable_pretty_logging, logging
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.services.config_service import ConfigService
-from lib.rabbitmq.rabbitmq_base_async_consumer import RabbitMqBaseAsyncConsumer
+from lib.rabbitmq.rmq_base_rpc_async_consumer import RmqBaseRpcAsyncConsumer
 
 enable_pretty_logging()
 
@@ -36,7 +36,8 @@ class RabbitMqMessageManager(DeployrBase):
 
     def setup_worker(self):
         """Setup RabbitMQ worker"""
-        self.worker = RabbitMqBaseAsyncConsumer(amqp_url=self.amqp_url, exchange='deploy', callback=self.callback)
+#        self.worker = RmqBaseTopicAsyncConsumer(amqp_url=self.amqp_url, exchange='deploy', callback=self.callback)
+        self.worker = RmqBaseRpcAsyncConsumer(amqp_url=self.amqp_url, queue='deployr_rpc', callback=self.callback)
 
     def close(self):
         if self.worker:

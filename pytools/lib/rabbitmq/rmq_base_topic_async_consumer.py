@@ -14,7 +14,7 @@ from tornado.options import enable_pretty_logging
 
 enable_pretty_logging()
 
-class RabbitMqBaseAsyncConsumer(object):
+class RmqBaseTopicAsyncConsumer(object):
     """This is an example consumer that will handle unexpected interactions
     with RabbitMQ such as channel and connection closures.
 
@@ -318,7 +318,7 @@ def echo(body):
     print ">>> body: {}".format(body)
 
 def main():
-    base_async_consumer = RabbitMqBaseAsyncConsumer(
+    base_async_consumer = RmqBaseTopicAsyncConsumer(
         amqp_url='amqp://guest:guest@localhost:5672/%2F',
         exchange='base.exchange',
         callback=echo,

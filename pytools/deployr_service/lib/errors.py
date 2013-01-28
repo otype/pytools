@@ -9,55 +9,55 @@
 
 """
 
-class UnacceptableMessageException(Exception):
+class UnacceptableMessage(Exception):
     """Thrown when a received message is of unknown type"""
 
     def __init__(self, message, *args, **kwargs):
-        super(UnacceptableMessageException, self).__init__(*args, **kwargs)
+        super(UnacceptableMessage, self).__init__(*args, **kwargs)
         self.message = message
 
     def __str__(self):
         return self.message
 
 
-class UnknownTaskTypeException(Exception):
+class UnknownTaskType(Exception):
     """Thrown in case of an unknown task type passed via a message"""
 
     def __init__(self, message, *args, **kwargs):
-        super(UnknownTaskTypeException, self).__init__(*args, **kwargs)
+        super(UnknownTaskType, self).__init__(*args, **kwargs)
         self.message = message
 
     def __str__(self):
         return self.message
 
 
-class InvalidTaskTypeException(Exception):
+class InvalidTaskType(Exception):
     """Thrown in case of an invalid task type passed via a message"""
 
     def __init__(self, message, *args, **kwargs):
-        super(InvalidTaskTypeException, self).__init__(*args, **kwargs)
+        super(InvalidTaskType, self).__init__(*args, **kwargs)
         self.message = message
 
     def __str__(self):
         return self.message
 
 
-class MissingAttributeException(Exception):
+class MissingAttribute(Exception):
     """Thrown in case of a missing attribute within a JSON object"""
 
     def __init__(self, message, *args, **kwargs):
-        super(MissingAttributeException, self).__init__(*args, **kwargs)
+        super(MissingAttribute, self).__init__(*args, **kwargs)
         self.message = message
 
     def __str__(self):
         return self.message
 
 
-class FileNotFoundException(Exception):
+class FileNotFound(Exception):
     """Thrown in case of not being able to find a given file"""
 
     def __init__(self, message, *args, **kwargs):
-        super(FileNotFoundException, self).__init__(*args, **kwargs)
+        super(FileNotFound, self).__init__(*args, **kwargs)
         self.message = message
 
     def __str__(self):

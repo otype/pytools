@@ -15,7 +15,7 @@ from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
 
 from deployr_service.deployr_base import DeployrBase
-from deployr_service.services.filesystem_service import FileSystemService
+from deployr_service.services import filesystem_service
 
 
 class TemplateService(DeployrBase):
@@ -69,7 +69,7 @@ class TemplateService(DeployrBase):
         )
 
         self.loggr.debug("Writing template: {}".format(tpl))
-        FileSystemService.write_file(filename=config_file_name, content=tpl)
+        filesystem_service.write_file(filename=config_file_name, content=tpl)
         self.loggr.info('Supervisor configuration file written for API with id: {}'.format(genapi_api_id))
 
     def write_genapi_backends_tpl(self, config_file_name, api_id, api_host, api_port):
@@ -78,7 +78,7 @@ class TemplateService(DeployrBase):
         template = self.load_template(self.BACKENDS_TEMPLATE)
         tpl = template.render(api_id=api_id, api_host=api_host, api_port=api_port)
         self.loggr.debug("Writing template: {}".format(tpl))
-        FileSystemService.write_file(filename=config_file_name, content=tpl)
+        filesystem_service.write_file(filename=config_file_name, content=tpl)
         self.loggr.info('Loadbalancer (haproxy) BACKENDS configuration written for API with id: {}'.format(api_id))
 
     def write_genapi_frontends_tpl(self, config_file_name, api_id):
@@ -87,5 +87,5 @@ class TemplateService(DeployrBase):
         template = self.load_template(self.FRONTENDS_TEMPLATE)
         tpl = template.render(api_id=api_id)
         self.loggr.debug("Writing template: {}".format(tpl))
-        FileSystemService.write_file(filename=config_file_name, content=tpl)
+        filesystem_service.write_file(filename=config_file_name, content=tpl)
         self.loggr.info('Loadbalancer (haproxy) FRONTENDS configuration written for API with id: {}'.format(api_id))

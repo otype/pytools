@@ -12,7 +12,7 @@ import sys
 import tornado
 from tornado.options import enable_pretty_logging, define, options, logging
 from deployr_service.deployr_manager import DeployrManager
-from deployr_service.services.config_service import ConfigService
+from deployr_service.services import config_service
 
 enable_pretty_logging()
 
@@ -23,7 +23,11 @@ def main():
     define("write_config", default=False, help="Write config files (overwrites existing)", type=bool)
     define("env", help="Environment: (dev|staging|live)", type=str)
     define("loggr_broker", help="Loggr ZMQ (broker) address", type=str)
-    define("deployr_broker", help="Deployr ZMQ (broker) address", type=str)
+    define("deployr_broker", help="Deployr broker address", type=str)
+    define("rmq_host", help="RabbitMQ broker host", type=str)
+    define("rmq_port", help="RabbitMQ broker port", type=str)
+    define("rmq_username", help="RabbitMQ broker username", type=str)
+    define("rmq_password", help="RabbitMQ broker password", type=str)
     define("debug", help="Debugging flag", type=bool)
 
     try:
@@ -32,17 +36,25 @@ def main():
         sys.exit('ERROR: {}'.format(e))
 
     if options.write_config:
-        ConfigService.write_configuration(options.env)
+        config_service.write_configuration(options.env)
         logging.info("Configuration file written! Now, edit config file and start deployr!")
         sys.exit(0)
 
-    config = ConfigService.load_configuration()
+    config = config_service.load_configuration()
     if options.env:
         config['ENV'] = options.env
     if options.loggr_broker:
         config['LOGGR_BROKER_ADDRESS'] = options.loggr_broker
     if options.deployr_broker:
         config['DEPLOYR_BROKER_ADDRESS'] = options.deployr_broker
+    if options.rmq_host:
+        config['BROKER_HOST'] = options.rmq_host
+    if options.rmq_port:
+        config['BROKER_PORT'] = options.rmq_port
+    if options.rmq_username:
+        config['BROKER_USER'] = options.rmq_username
+    if options.rmq_password:
+        config['BROKER_PASSWORD'] = options.rmq_password
     if options.debug:
         config['DEBUG'] = options.debug
 

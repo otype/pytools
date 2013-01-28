@@ -10,29 +10,47 @@
 """
 import json
 import logging
+from pika import exceptions
+import pika
 from deployr_service.deployr_api import DeployrApi
 from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.errors import UnacceptableMessageException
-from deployr_service.lib.errors import InvalidTaskTypeException
-from deployr_service.lib.rabbitmq_message_manager import RabbitMqMessageManager
+from deployr_service.lib.errors import UnacceptableMessage
+from deployr_service.lib.errors import InvalidTaskType
 from deployr_service.lib.returncodes import RETURNCODE
+from deployr_service.lib.rmq_base_rpc_async_consumer import RmqBaseRpcAsyncConsumer
 
 class DeployrManager(DeployrBase):
-    """Manages the Deployr life-cycle."""
+    """
+        Manages the Deployr life-cycle.
+    """
 
     def __init__(self, config):
-        """Setup ZmqMessageManager with callback method"""
+        """
+            Setup MessageManager with callback method
+        """
         super(DeployrManager, self).__init__(config=config)
-#        self.message_manager = ZmqMessageManager(config=self.config, callback=self.process_incoming_request)
-        self.message_manager = RabbitMqMessageManager(
-            config=self.config,
-            callback=self.process_incoming_request,
-            amqp_url='amqp://guest:guest@localhost:5672/%2F'
-        )
+        self.amqp_url = str('amqp://{username}:{password}@{broker_host}:{broker_port}/%2F'.format(
+            username=self.rmq_broker_username,
+            password=self.rmq_broker_password,
+            broker_host=self.rmq_broker_host,
+            broker_port=self.rmq_broker_port
+        ))
         self.deployr_api = DeployrApi(config=self.config)
 
+    def setup_worker(self):
+        """
+            Setup RabbitMQ worker
+        """
+        self.worker = RmqBaseRpcAsyncConsumer(
+            amqp_url=self.amqp_url,
+            queue='deployr_rpc',
+            callback=self.process_incoming_request
+        )
+
     def process_incoming_request(self, message):
-        """Process an incoming request from the ZMQ broker."""
+        """
+            Process an incoming request from the ZMQ broker.
+        """
         try:
             task = json.loads(message)
             status_set = self.deployr_api.execute_task(task)
@@ -41,10 +59,10 @@ class DeployrManager(DeployrBase):
 
             self.loggr.info("Executed task status: {}".format(status_set))
             return RETURNCODE.OS_SUCCESS
-        except UnacceptableMessageException, e:
+        except UnacceptableMessage, e:
             self.loggr.error('Could not create task factory for spawning tasks! Error: {}'.format(e.message))
             return RETURNCODE.OS_ERROR
-        except InvalidTaskTypeException, e:
+        except InvalidTaskType, e:
             self.loggr.error(e.message)
             return RETURNCODE.OS_ERROR
         except AttributeError, e:
@@ -52,10 +70,15 @@ class DeployrManager(DeployrBase):
             return RETURNCODE.OS_ERROR
 
     def run(self):
-        """Start the deployr daemon here."""
+        """
+            Start the deployr daemon here.
+        """
         try:
             self.show_all_settings()
-            self.message_manager.run()
+            self.setup_worker()
+            self.worker.run()
         except KeyboardInterrupt:
             logging.warning("CTRL-C pressed, closing down ...")
-            self.message_manager.close()
+            self.worker.stop()
+        except pika.exceptions.AMQPConnectionError, e:
+            logging.error(e)

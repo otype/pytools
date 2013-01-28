@@ -46,7 +46,7 @@ def get_template_base_dir():
 def scripts_list():
     return [
         'pytools/deployr_service/manual_task_deploy.py',
-        'pytools/deployr_service/lib/rabbitmq_message_manager.py',
+        'pytools/deployr_service/lib/rmq_base_rpc_publisher.py',
         'pytools/lib/rabbitmq/blocking_log_publisher.py',
         'pytools/loggr_service/loggr.py',
         'pytools/loggr_service/loggr_broker.py',

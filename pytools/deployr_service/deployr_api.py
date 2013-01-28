@@ -9,21 +9,25 @@
 
 """
 from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.errors import InvalidTaskTypeException
+from deployr_service.lib.errors import InvalidTaskType
 from deployr_service.lib.returncodes import RETURNCODE
 from deployr_service.services.deploy_service import DeployService
 from deployr_service.task_types.deploy_task import DeployTask
 from deployr_service.task_types.undeploy_task import UndeployTask
 
 class DeployrApi(DeployrBase):
-    """Official API for Deployr. Call execute_task to run one of the defined task types."""
+    """
+        Official API for Deployr. Call execute_task to run one of the defined task types.
+    """
 
     def __init__(self, config):
         super(DeployrApi, self).__init__(config)
         self.deploy_service = DeployService(config=self.config)
 
     def execute_task(self, task):
-        """Execute task depending on task type"""
+        """
+            Execute task depending on task type
+        """
         if type(task) != dict:
             self.loggr.error("Not a valid task! Cannot execute task!")
             return RETURNCODE.OS_INVALID_ARGUMENT
@@ -43,7 +47,7 @@ class DeployrApi(DeployrBase):
                 return_status_set = self.undeploy(task=undeploy_task)
             else:
                 self.loggr.warning("Unknown task type: {}".format(task.task_type))
-        except InvalidTaskTypeException, e:
+        except InvalidTaskType, e:
             self.loggr.error('Could not create a valid task! Error: {}'.format(e))
         except TypeError, e:
             self.loggr.error('Task type is not identifiable! Error: {}'.format(e))
@@ -51,7 +55,9 @@ class DeployrApi(DeployrBase):
         return return_status_set
 
     def deploy(self, task):
-        """Execute the deploy task"""
+        """
+            Execute the deploy task
+        """
         status_code, application_host, assigned_port = self.deploy_service.deploy_api(
             api_id=task.api_id,
             db_host=task.db_host,
@@ -64,7 +70,9 @@ class DeployrApi(DeployrBase):
         return status_code, application_host, assigned_port
 
     def undeploy(self, task):
-        """Execute the undeploy task"""
+        """
+            Execute the undeploy task
+        """
         # TODO: Implement!
         return None
 

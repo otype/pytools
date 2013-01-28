@@ -11,8 +11,7 @@
 import sys
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.services.network_service import NetworkService
-from deployr_service.services.os_service import OsService
+from deployr_service.services import network_service, os_service
 from deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
 from deployr_service.services.template_service import TemplateService
 
@@ -21,8 +20,6 @@ class DeployService(DeployrBase):
 
     def __init__(self, config):
         super(DeployService, self).__init__(config)
-        self.network_service = NetworkService(config=self.config)
-        self.os_service = OsService(config=self.config)
         self.template_service = TemplateService(config=self.config)
         self.supervisor_xml_rpc_service = SupervisorXmlRpcService(config=self.config)
 
@@ -53,8 +50,8 @@ class DeployService(DeployrBase):
 
     def get_required_params(self, api_id):
         """Get required parameter set"""
-        assigned_port = self.network_service.get_open_port()
-        application_host = self.network_service.get_local_public_ip_address()
+        assigned_port = network_service.get_open_port()
+        application_host = network_service.get_local_public_ip_address()
         config_file_name = self.define_supervisor_config_file(api_id=api_id)
 
         self.loggr.debug('Assigning port: {}'.format(assigned_port))
@@ -69,7 +66,7 @@ class DeployService(DeployrBase):
         self.loggr.info('Writing configuration for API: {}'.format(api_id))
         self.template_service.write_genapi_base_tpl(
             genapi_api_id=api_id,
-            python_interpreter=self.os_service.python_interpreter_path(),
+            python_interpreter=os_service.python_interpreter_path(),
             genapi_start='/usr/bin/genapi_runner.py',
             logging_level=log_level,
             riak_host=db_host,

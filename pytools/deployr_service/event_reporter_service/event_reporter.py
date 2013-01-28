@@ -17,7 +17,7 @@ from deployr_service.event_reporter_service.event_reporter_config import EVENT_R
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.messages.deploy_message import DeployMessage
 from deployr_service.messages.undeploy_message import UndeployMessage
-from deployr_service.services.config_service import ConfigService
+from deployr_service.services import config_service
 
 enable_pretty_logging()
 
@@ -75,5 +75,5 @@ class EventReporter(DeployrBase):
 ##############################################################################
 
 if __name__ == '__main__':
-    event_reporter = EventReporter(ConfigService.load_configuration())
+    event_reporter = EventReporter(config_service.load_configuration())
     event_reporter.send('test')

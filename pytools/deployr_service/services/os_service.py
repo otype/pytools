@@ -15,7 +15,7 @@ import subprocess
 from deployr_service.lib.returncodes import RETURNCODE
 
 
-def execute_shell_command(self, command):
+def execute_shell_command(command):
     """
         Execute a single shell command. The command parameter needs to have
         all shell command parameters included, all in one array. E.g.:
@@ -30,12 +30,19 @@ def execute_shell_command(self, command):
         logging.error('Had trouble executing command: {}! Error: {}'.format(command, e))
         return RETURNCODE.OS_ERROR
 
+
 def python_interpreter_path():
-    """Get the full path to the Python interpreter used here in deployr"""
+    """
+        Get the full path to the Python interpreter used here in deployr
+    """
     return sys.executable
 
+
 def which(program):
-    """Works like shell's 'which'"""
+    """
+        Works like shell's 'which'
+    """
+
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 

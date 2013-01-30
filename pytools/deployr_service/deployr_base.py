@@ -87,9 +87,10 @@ class DeployrBase(object):
         ))
 
     def setup_loggr(self):
-        self.loggr = LoggrClient(
-            loggr_broker=self.loggr_broker,
-            daemon_name=self.service_name,
-            service_name=self.service_name,
-            verbose=self.debug
-        )
+#        self.loggr = LoggrClient(
+#            loggr_broker=self.loggr_broker,
+#            daemon_name=self.service_name,
+#            service_name=self.service_name,
+#            verbose=self.debug
+#        )
+        self.loggr = logging

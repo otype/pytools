@@ -16,7 +16,9 @@ from deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpc
 from deployr_service.services.template_service import TemplateService
 
 class DeployService(DeployrBase):
-    """Deploy service."""
+    """
+        Deploy service.
+    """
 
     def __init__(self, config):
         super(DeployService, self).__init__(config)
@@ -24,7 +26,9 @@ class DeployService(DeployrBase):
         self.supervisor_xml_rpc_service = SupervisorXmlRpcService(config=self.config)
 
     def define_supervisor_config_file(self, api_id):
-        """Define the config file name depending on the platform."""
+        """
+            Define the config file name depending on the platform.
+        """
         if sys.platform == 'darwin':
             config_file_name = '{}.conf'.format(api_id)
         elif sys.platform == 'linux2':
@@ -34,7 +38,9 @@ class DeployService(DeployrBase):
         return config_file_name
 
     def is_already_running(self, api_id):
-        """Check if API with given API ID is running or not."""
+        """
+            Check if API with given API ID is running or not.
+        """
         process_info = self.supervisor_xml_rpc_service.get_process_info(api_id)
         if process_info is None:
             return False
@@ -49,7 +55,9 @@ class DeployService(DeployrBase):
         return True
 
     def get_required_params(self, api_id):
-        """Get required parameter set"""
+        """
+            Get required parameter set
+        """
         assigned_port = network_service.get_open_port()
         application_host = network_service.get_local_public_ip_address()
         config_file_name = self.define_supervisor_config_file(api_id=api_id)
@@ -60,7 +68,9 @@ class DeployService(DeployrBase):
         return assigned_port, application_host, config_file_name
 
     def deploy_api(self, api_id, db_host, genapi_version, log_level, environment, entities, api_key):
-        """Deploy an GenAPI"""
+        """
+            Deploy an GenAPI
+        """
         assigned_port, application_host, config_file_name = self.get_required_params(api_id=api_id)
 
         self.loggr.info('Writing configuration for API: {}'.format(api_id))

@@ -55,10 +55,15 @@ class DeployrManager(DeployrBase):
             task = json.loads(message)
             status_set = self.deployr_api.execute_task(task)
 
-            print ">>>>>>>> Status: {}".format(status_set)
+            if type(status_set) == json:
+                status = status_set.to_dict()
+            elif type(status_set) == dict:
+                status = status_set
+            else:
+                status = str(status_set)
 
-            self.loggr.info("Executed task status: {}".format(status_set))
-            return RETURNCODE.OS_SUCCESS
+            self.loggr.info("Executed task status: {}".format(status))
+            return status_set
         except UnacceptableMessage, e:
             self.loggr.error('Could not create task factory for spawning tasks! Error: {}'.format(e.message))
             return RETURNCODE.OS_ERROR

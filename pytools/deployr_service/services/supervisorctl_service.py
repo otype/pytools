@@ -9,7 +9,7 @@
 import sys
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.services.os_service import OsService
+from deployr_service.services import os_service
 
 
 class SuperVisorCtlService(DeployrBase):
@@ -76,7 +76,6 @@ class SuperVisorCtlService(DeployrBase):
             command += checked_params
 
         self.loggr.debug('Running supervisorctl command: {}'.format(command))
-        os_service = OsService(self.config)
         return os_service.execute_shell_command([self.get_supervisorctl_executable()] + command)
 
     def supervisorctl_reread(self):

@@ -11,7 +11,10 @@
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.errors import InvalidTaskType
 from deployr_service.lib.returncodes import RETURNCODE
+from deployr_service.messages.deploy_confirmation_message import DeployConfirmationMessage
+from deployr_service.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from deployr_service.services.deploy_service import DeployService
+from deployr_service.services.undeploy_service import UndeployService
 from deployr_service.task_types.deploy_task import DeployTask
 from deployr_service.task_types.undeploy_task import UndeployTask
 
@@ -23,6 +26,7 @@ class DeployrApi(DeployrBase):
     def __init__(self, config):
         super(DeployrApi, self).__init__(config)
         self.deploy_service = DeployService(config=self.config)
+        self.undeploy_service = UndeployService(config=self.config)
 
     def execute_task(self, task):
         """
@@ -67,12 +71,18 @@ class DeployrApi(DeployrBase):
             entities=task.entities,
             api_key=task.api_key
         )
-        return status_code, application_host, assigned_port
+        return DeployConfirmationMessage(
+            api_id=task.api_id,
+            genapi_version=task.genapi_version,
+            host=application_host,
+            status=status_code,
+            port=assigned_port
+        ).to_dict()
 
     def undeploy(self, task):
         """
             Execute the undeploy task
         """
-        # TODO: Implement!
-        return None
+        status_code = self.undeploy_service.undeploy_api(api_id=task.api_id)
+        return UndeployConfirmationMessage(api_id=task.api_id, status=status_code).to_dict()
 

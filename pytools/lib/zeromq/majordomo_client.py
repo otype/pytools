@@ -7,8 +7,8 @@ Author: Min RK <benjaminrk@gmail.com>
 Based on Java example by Arkadiusz Orzechowski
 """
 import sys
-from time import sleep
 import zmq
+from time import sleep
 import logging
 import majordomo_protocol
 from zhelpers import dump
@@ -90,9 +90,7 @@ class MajorDomoClient(object):
         else:
             logging.warn("W: permanent error, abandoning request")
 
-# MAIN
-#
-#
+
 def main():
     verbose = '-v' in sys.argv
     client = MajorDomoClient(broker="tcp://localhost:5555", verbose=verbose)

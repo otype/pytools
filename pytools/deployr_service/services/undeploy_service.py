@@ -10,21 +10,29 @@
 """
 from deployr_service.deployr_base import DeployrBase
 from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.services.supervisorctl_service import SuperVisorCtlService
+from deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
 
 
 class UndeployService(DeployrBase):
     def __init__(self, config):
         super(UndeployService, self).__init__(config)
+        self.supervisor_xml_rpc_service = SupervisorXmlRpcService(config=self.config)
 
 
     def undeploy_api(self, api_id):
-        """Undeploy a currently deployed API with given API ID"""
-        supervisorctl_service = SuperVisorCtlService(config=self.config)
-
-        supervisorctl_service.supervisorctl_stop(api_id)
-        supervisorctl_service.supervisorctl_remove(api_id)
-        supervisorctl_service.supervisorctl_reread()
+        """
+            Undeploy a currently deployed API with given API ID
+        """
+        status = 0
+        status += self.supervisor_xml_rpc_service.stop(app_name=api_id)
+        status += self.supervisor_xml_rpc_service.remove_group(group_name=api_id)
+        status += self.supervisor_xml_rpc_service.reload_config()
 
         # TODO: delete configuration file from file system!
-        return RETURNCODE.OS_SUCCESS
+
+        if status > 0:
+            status_code = RETURNCODE.OS_ERROR
+        else:
+            status_code = RETURNCODE.OS_SUCCESS
+
+        return status_code

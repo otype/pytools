@@ -45,17 +45,19 @@ def get_template_base_dir():
 
 def scripts_list():
     return [
-        'pytools/deployr_service/manual_deploy.py',
-        'pytools/deployr_service/manual_undeploy.py',
-        'pytools/lib/rabbitmq/blocking_log_publisher.py',
-        'pytools/loggr_service/loggr.py',
-        'pytools/loggr_service/loggr_broker.py',
-        'pytools/loggr_service/loggr_client.py',
-        'pytools/trackr_service/trackr.py',
-        'pytools/deployr_service/deployr.py',
-        'archive/lib/mq/zmq/ioloop_env_subscriber.py',
-        'archive/lib/mq/zmq/zmq_client.py',
-        'archive/lib/mq/zmq/env_publisher.py'
+#        'pytools/deployr_service/manual_deploy.py',
+#        'pytools/deployr_service/manual_undeploy.py',
+#        'pytools/lib/rabbitmq/blocking_log_publisher.py',
+#        'pytools/loggr_service/loggr.py',
+#        'pytools/loggr_service/loggr_broker.py',
+#        'pytools/loggr_service/loggr_client.py',
+#        'pytools/trackr_service/trackr.py',
+#        'pytools/deployr_service/deployr.py',
+#        'archive/lib/mq/zmq/ioloop_env_subscriber.py',
+#        'archive/lib/mq/zmq/zmq_client.py',
+#        'archive/lib/mq/zmq/env_publisher.py',
+        'pytools/deployr/tasks.py',
+        'pytools/deployr/api/deploy.py'
     ]
 
 

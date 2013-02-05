@@ -8,12 +8,11 @@
     Copyright (c) 2012 apitrary
 
 """
-import shutil
-import sys
 import os
-from deployr_service.lib.environments import ENVIRONMENT
-from deployr_service.lib.config_manager import ConfigManager
-from deployr_service.lib.global_config import GLOBAL_CONF
+import sys
+import shutil
+from deployr.conf.config_manager import ConfigManager
+from deployr.conf.global_config import GLOBAL_CONF, ENVIRONMENT
 
 
 def get_config_file_name():

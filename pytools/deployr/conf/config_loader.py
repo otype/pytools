@@ -47,8 +47,6 @@ class ConfigLoader(object):
         self.rmq_broker_prefetch_count = self.get("BROKER_PREFETCH_COUNT")
         self.rmq_broker_host = self.get("BROKER_HOST")
         self.rmq_broker_port = self.get("BROKER_PORT")
-        #        self.loggr_broker = self.get("LOGGR_BROKER_ADDRESS")
-        #        self.deployr_broker = self.get("DEPLOYR_BROKER_ADDRESS")
         self.logging_level = self.get("LOGGING")
         self.environment = self.get("ENV")
         self.config_file = self.get("DEPLOYR_CONFIG_FILE")
@@ -60,8 +58,6 @@ class ConfigLoader(object):
             Show all configured constants
         """
         logging.info('Starting service: deployr')
-        #        logging.info('Deployr Broker: {}'.format(self.deployr_broker))
-        #        logging.info('Loggr Broker: {}'.format(self.loggr_broker))
         logging.info('Environment: {}'.format(self.environment))
         logging.info('Logging: {}'.format(self.logging_level))
         logging.info('Config file: {}'.format(self.config_file))

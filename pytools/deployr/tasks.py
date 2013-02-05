@@ -13,8 +13,8 @@ from celery import Celery
 from kombu.entity import Queue
 from deployr.conf.config_loader import ConfigLoader
 from deployr.messages.deploy_confirmation_message import DeployConfirmationMessage
+from deployr.services import config_service
 from deployr.services.deploy_service import DeployService
-from deployr_service.services import config_service
 
 config = ConfigLoader(config=config_service.load_configuration())
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(

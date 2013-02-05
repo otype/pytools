@@ -46,7 +46,7 @@ class DeployService(object):
             return False
 
         if process_info == RETURNCODE.OS_ERROR:
-            print('API is not running or connection to supervisor failed!')
+            logging.error('API is not running or connection to supervisor failed!')
             return False
 
         if process_info['statename'] != 'RUNNING':
@@ -62,9 +62,9 @@ class DeployService(object):
         application_host = network_service.get_local_public_ip_address()
         config_file_name = self.define_supervisor_config_file(api_id=api_id)
 
-        print('Assigning port: {}'.format(assigned_port))
-        print('Current host is {}'.format(application_host))
-        print('Configuration file name is {}'.format(config_file_name))
+        logging.debug('Assigning port: {}'.format(assigned_port))
+        logging.debug('Current host is {}'.format(application_host))
+        logging.debug('Configuration file name is {}'.format(config_file_name))
         return assigned_port, application_host, config_file_name
 
     def deploy_api(self, api_id, db_host, genapi_version, log_level, environment, entities, api_key):
@@ -73,7 +73,7 @@ class DeployService(object):
         """
         assigned_port, application_host, config_file_name = self.get_required_params(api_id=api_id)
 
-        print('Writing configuration for API: {}'.format(api_id))
+        logging.info('Writing configuration for API: {}'.format(api_id))
         self.template_service.write_genapi_base_tpl(
             genapi_api_id=api_id,
             python_interpreter=os_service.python_interpreter_path(),
@@ -92,13 +92,13 @@ class DeployService(object):
         )
 
         if self.is_already_running(api_id=api_id):
-            print('An API with API ID=\'{}\' is already running! Stopping it, first.'.format(api_id))
+            logging.info('An API with API ID=\'{}\' is already running! Stopping it, first.'.format(api_id))
             self.supervisor_xml_rpc_service.stop(api_id)
-            print('Removing API ID=\'{}\''.format(api_id))
+            logging.info('Removing API ID=\'{}\''.format(api_id))
             self.supervisor_xml_rpc_service.remove_group(api_id)
 
         self.supervisor_xml_rpc_service.reload_config()
-        print('Adding (deploying) new API with API ID=\'{}\' on host=\'{}\' on port=\'{}\''.format(
+        logging.info('Adding (deploying) new API with API ID=\'{}\' on host=\'{}\' on port=\'{}\''.format(
             api_id, application_host, assigned_port)
         )
         self.supervisor_xml_rpc_service.add_group(api_id)

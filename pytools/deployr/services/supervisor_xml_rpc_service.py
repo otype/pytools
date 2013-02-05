@@ -27,16 +27,16 @@ class SupervisorXmlRpcService(object):
         """
             Reread the supervisor_api configuration files
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting reload of all configs'.format(self.supervisord_xml_rpc_server)
         )
         try:
             self.server.supervisor.reloadConfig()
         except xmlrpclib.Fault, e:
-            print('Could not reload config! Error: {}'.format(e))
+            logging.error('Could not reload config! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
         except socket.error, e:
-            print('Socket error: {}'.format(e.message))
+            logging.error('Socket error: {}'.format(e.message))
             return RETURNCODE.OS_ERROR
         return RETURNCODE.OS_SUCCESS
 
@@ -45,7 +45,7 @@ class SupervisorXmlRpcService(object):
         """
             Start given application via supervisor_api
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting start of application: {}'.format(self.supervisord_xml_rpc_server,
                 app_name)
         )
@@ -53,10 +53,10 @@ class SupervisorXmlRpcService(object):
             if self.server.supervisor.startProcess(app_name):
                 return RETURNCODE.OS_SUCCESS
         except xmlrpclib.Fault, e:
-            print('Could not start process \'{}\'! Error: {}'.format(app_name, e))
+            logging.error('Could not start process \'{}\'! Error: {}'.format(app_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -64,17 +64,17 @@ class SupervisorXmlRpcService(object):
         """
             Stop given application via supervisor_api
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting stop of application: {}'.format(self.supervisord_xml_rpc_server,
                 app_name))
         try:
             if self.server.supervisor.stopProcess(app_name):
                 return RETURNCODE.OS_SUCCESS
         except xmlrpclib.Fault, e:
-            print('Could not stop process \'{}\'! Error: {}'.format(app_name, e))
+            logging.error('Could not stop process \'{}\'! Error: {}'.format(app_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -82,7 +82,7 @@ class SupervisorXmlRpcService(object):
         """
             Start given application via supervisor_api
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting restart of application: {}'.format(self.supervisord_xml_rpc_server,
                 app_name))
 
@@ -90,7 +90,7 @@ class SupervisorXmlRpcService(object):
         start_state = self.start(app_name)
 
         if (stop_state + start_state) > RETURNCODE.OS_SUCCESS:
-            print('Could not restart process \'{}\'!'.format(app_name))
+            logging.error('Could not restart process \'{}\'!'.format(app_name))
             return RETURNCODE.OS_ERROR
 
         return RETURNCODE.OS_SUCCESS
@@ -100,17 +100,17 @@ class SupervisorXmlRpcService(object):
         """
             Add new application to supervisor_api configuration
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting addition of application: {}'.format(self.supervisord_xml_rpc_server,
                 group_name))
         try:
             if self.server.supervisor.addProcessGroup(group_name):
                 return RETURNCODE.OS_SUCCESS
         except xmlrpclib.Fault, e:
-            print('Could not add process group \'{}\'! Error: {}'.format(group_name, e))
+            logging.error('Could not add process group \'{}\'! Error: {}'.format(group_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -118,19 +118,19 @@ class SupervisorXmlRpcService(object):
         """
             Request status of given application
         """
-        print('SUPERVISOR XML-RPC({}): Requesting status'.format(self.supervisord_xml_rpc_server))
+        logging.debug('SUPERVISOR XML-RPC({}): Requesting status'.format(self.supervisord_xml_rpc_server))
         try:
             response = self.server.supervisor.getState()
             if 'statename' in response:
                 if response['statename'] == 'RUNNING':
-                    print('SUPERVISOR XML-RPC({}): Status \'{}\''.format(response['statename']))
+                    logging.debug('SUPERVISOR XML-RPC({}): Status \'{}\''.format(response['statename']))
                     return RETURNCODE.OS_SUCCESS
             return RETURNCODE.OS_ERROR
         except xmlrpclib.Fault, e:
-            print('Could not get status! Error: {}'.format(e))
+            logging.error('Could not get status! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -138,14 +138,14 @@ class SupervisorXmlRpcService(object):
         """
             Request status of given application
         """
-        print('SUPERVISOR XML-RPC({}): Requesting all process info'.format(self.supervisord_xml_rpc_server))
+        logging.debug('SUPERVISOR XML-RPC({}): Requesting all process info'.format(self.supervisord_xml_rpc_server))
         try:
             return self.server.supervisor.getAllProcessInfo()
         except xmlrpclib.Fault, e:
-            print('Could not get all process info! Error: {}'.format(e))
+            logging.error('Could not get all process info! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -153,7 +153,7 @@ class SupervisorXmlRpcService(object):
         """
             Request status of given application
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting process info for api_id: {}'.format(self.supervisord_xml_rpc_server,
                 app_name))
         try:
@@ -164,10 +164,10 @@ class SupervisorXmlRpcService(object):
                         return process
             return None
         except xmlrpclib.Fault, e:
-            print('Could not get the process info for: {}! Error: {}'.format(app_name, e))
+            logging.error('Could not get the process info for: {}! Error: {}'.format(app_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -175,17 +175,17 @@ class SupervisorXmlRpcService(object):
         """
             Remove application from supervisor_api context
         """
-        print(
+        logging.debug(
             'SUPERVISOR XML-RPC({}): Requesting removal of group: {}'.format(self.supervisord_xml_rpc_server,
                 group_name))
         try:
             if self.server.supervisor.removeProcessGroup(group_name):
                 return RETURNCODE.OS_SUCCESS
         except xmlrpclib.Fault, e:
-            print('Could not remove process group \'{}\'! Error: {}'.format(group_name, e))
+            logging.error('Could not remove process group \'{}\'! Error: {}'.format(group_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -193,14 +193,14 @@ class SupervisorXmlRpcService(object):
         """
             Remove application from supervisor_api context
         """
-        print('SUPERVISOR XML-RPC({}): Requesting all config info'.format(self.supervisord_xml_rpc_server))
+        logging.debug('SUPERVISOR XML-RPC({}): Requesting all config info'.format(self.supervisord_xml_rpc_server))
         try:
             return self.server.supervisor.getAllConfigInfo()
         except xmlrpclib.Fault, e:
-            print('Could not get all config info! Error: {}'.format(e))
+            logging.error('Could not get all config info! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 
@@ -208,7 +208,7 @@ class SupervisorXmlRpcService(object):
         """
             Remove application from supervisor_api context
         """
-        print('SUPERVISOR XML-RPC({}): Requesting all config info'.format(self.supervisord_xml_rpc_server))
+        logging.debug('SUPERVISOR XML-RPC({}): Requesting all config info'.format(self.supervisord_xml_rpc_server))
         try:
             all_configs = self.server.supervisor.getAllConfigInfo()
             for config in all_configs:
@@ -217,10 +217,10 @@ class SupervisorXmlRpcService(object):
                         return config
             return None
         except xmlrpclib.Fault, e:
-            print('Could not get config info for API: {}! Error: {}'.format(app_name, e))
+            logging.error('Could not get config info for API: {}! Error: {}'.format(app_name, e))
             return RETURNCODE.OS_ERROR
         except Exception, e:
-            print('Unknown error! Call the administrator! Error: {}'.format(e))
+            logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
 

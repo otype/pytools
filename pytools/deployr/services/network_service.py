@@ -36,7 +36,7 @@ def get_open_port():
     s.listen(1)
     port = s.getsockname()[1]
     s.close()
-    print('Port {} is available.'.format(port))
+    logging.debug('Port {} is available.'.format(port))
     return port
 
 
@@ -51,5 +51,5 @@ def get_local_public_ip_address():
         ipaddr = s.getsockname()[0]
         s.close()
     except Exception, e:
-        print(e)
+        logging.error(e)
     return ipaddr

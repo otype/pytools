@@ -27,7 +27,7 @@ def execute_shell_command(command):
     try:
         return subprocess.call(command)
     except OSError, e:
-        logging.error('Had trouble executing command: {}! Error: {}'.format(command, e))
+        print('Had trouble executing command: {}! Error: {}'.format(command, e))
         return RETURNCODE.OS_ERROR
 
 

@@ -74,9 +74,9 @@ class TemplateService(object):
             genapi_log_file=genapi_log_file
         )
 
-        logging.debug("Writing template: {}".format(tpl))
+        print("Writing template: {}".format(tpl))
         filesystem_service.write_file(filename=config_file_name, content=tpl)
-        logging.info('Supervisor configuration file written for API with id: {}'.format(genapi_api_id))
+        print('Supervisor configuration file written for API with id: {}'.format(genapi_api_id))
 
     def write_genapi_backends_tpl(self, config_file_name, api_id, api_host, api_port):
         """
@@ -86,10 +86,10 @@ class TemplateService(object):
         template = self.load_template(self.BACKENDS_TEMPLATE)
         tpl = template.render(api_id=api_id, api_host=api_host, api_port=api_port)
 
-        logging.debug("Writing template: {}".format(tpl))
+        print("Writing template: {}".format(tpl))
         filesystem_service.write_file(filename=config_file_name, content=tpl)
 
-        logging.info('Loadbalancer (haproxy) BACKENDS configuration written for API with id: {}'.format(api_id))
+        print('Loadbalancer (haproxy) BACKENDS configuration written for API with id: {}'.format(api_id))
 
     def write_genapi_frontends_tpl(self, config_file_name, api_id):
         """
@@ -98,7 +98,7 @@ class TemplateService(object):
         """
         template = self.load_template(self.FRONTENDS_TEMPLATE)
         tpl = template.render(api_id=api_id)
-        logging.debug("Writing template: {}".format(tpl))
+        print("Writing template: {}".format(tpl))
         filesystem_service.write_file(filename=config_file_name, content=tpl)
 
-        logging.info('Loadbalancer (haproxy) FRONTENDS configuration written for API with id: {}'.format(api_id))
+        print('Loadbalancer (haproxy) FRONTENDS configuration written for API with id: {}'.format(api_id))

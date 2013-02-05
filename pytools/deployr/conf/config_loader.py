@@ -30,7 +30,7 @@ class ConfigLoader(object):
         if name in self.config:
             return self.config[name]
         else:
-            logging.error("Config variable:{} does not exist.".format(name))
+            print("Config variable:{} does not exist.".format(name))
             return ''
 
     def read_config(self):
@@ -57,17 +57,17 @@ class ConfigLoader(object):
         """
             Show all configured constants
         """
-        logging.info('Starting service: deployr')
-        logging.info('Environment: {}'.format(self.environment))
-        logging.info('Logging: {}'.format(self.logging_level))
-        logging.info('Config file: {}'.format(self.config_file))
-        logging.info('Service: {}'.format(self.service_name))
-        logging.info('Debug: {}'.format("ON" if self.debug == True else "OFF"))
-        logging.info('Supervisor host: {}'.format(self.supervisord_host))
-        logging.info('Supervisor web port: {}'.format(self.supervisord_web_port))
-        logging.info('Supervisor XML-RPC Server address: {}'.format(self.supervisord_xml_rpc_server))
-        logging.info('Supervisor XML-RPC Server user: {}'.format(self.supervisord_xml_rpc_username))
-        logging.info('RabbitMQ Broker username: {}'.format(self.rmq_broker_username))
-        logging.info('RabbitMQ Broker prefetch: {}'.format("ON" if self.rmq_broker_prefetch_count == True else "OFF"))
-        logging.info('RabbitMQ Broker host: {}'.format(self.rmq_broker_host))
-        logging.info('RabbitMQ Broker port: {}'.format(self.rmq_broker_port))
+        print('Starting service: deployr')
+        print('Environment: {}'.format(self.environment))
+        print('Logging: {}'.format(self.logging_level))
+        print('Config file: {}'.format(self.config_file))
+        print('Service: {}'.format(self.service_name))
+        print('Debug: {}'.format("ON" if self.debug == True else "OFF"))
+        print('Supervisor host: {}'.format(self.supervisord_host))
+        print('Supervisor web port: {}'.format(self.supervisord_web_port))
+        print('Supervisor XML-RPC Server address: {}'.format(self.supervisord_xml_rpc_server))
+        print('Supervisor XML-RPC Server user: {}'.format(self.supervisord_xml_rpc_username))
+        print('RabbitMQ Broker username: {}'.format(self.rmq_broker_username))
+        print('RabbitMQ Broker prefetch: {}'.format("ON" if self.rmq_broker_prefetch_count == True else "OFF"))
+        print('RabbitMQ Broker host: {}'.format(self.rmq_broker_host))
+        print('RabbitMQ Broker port: {}'.format(self.rmq_broker_port))

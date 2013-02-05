@@ -11,10 +11,13 @@
 from __future__ import absolute_import
 from celery import Celery
 from kombu.entity import Queue
+from tornado.options import enable_pretty_logging
 from deployr.conf.config_loader import ConfigLoader
 from deployr.messages.deploy_confirmation_message import DeployConfirmationMessage
 from deployr.services import config_service
 from deployr.services.deploy_service import DeployService
+
+enable_pretty_logging()
 
 config = ConfigLoader(config=config_service.load_configuration())
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(

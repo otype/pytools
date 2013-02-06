@@ -9,10 +9,12 @@
 
 """
 import logging
-import os
 import sys
 import subprocess
-from deployr_service.lib.returncodes import RETURNCODE
+
+import os
+
+from archive.deployr_service.lib.returncodes import RETURNCODE
 
 
 def execute_shell_command(command):

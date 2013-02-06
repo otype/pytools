@@ -6,7 +6,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.deployr_base import DeployrBase
+from archive.deployr_service.deployr_base import DeployrBase
 
 class DeployTask(DeployrBase):
     """

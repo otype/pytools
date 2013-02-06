@@ -8,11 +8,13 @@
     Copyright (c) 2012 apitrary
 
 """
-import os
 import sys
 import logging
+
+import os
 from configobj import ConfigObj
-from deployr_service.lib.returncodes import RETURNCODE
+
+from archive.deployr_service.lib.returncodes import RETURNCODE
 
 
 class ConfigManager(object):

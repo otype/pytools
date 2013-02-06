@@ -8,11 +8,11 @@
     Copyright (c) 2012 apitrary
 
 """
-import logging
 import os
 import sys
+import logging
 import subprocess
-from deployr_service.lib.returncodes import RETURNCODE
+from deployr.conf.returncodes import RETURNCODE
 
 
 def execute_shell_command(command):

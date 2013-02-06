@@ -9,19 +9,14 @@
     Copyright (c) 2012 apitrary
 
 """
-import pika
 import uuid
-from deployr_service.messages.deploy_message import DeployMessage
 
-msg = DeployMessage(
-    api_id='MANUAL_TASK_DEPLOY_API_ID',
-    db_host='riak1.dev.apitrary.net',
-    db_port=8098,
-    genapi_version=1,
-    log_level='debug',
-    entities=['jedis', 'wookies', 'stormtroopers'],
-    api_key='suchasecretapikeyyouwouldneverguess'
-)
+import pika
+
+from archive.deployr_service.messages.undeploy_message import UndeployMessage
+
+
+msg = UndeployMessage(api_id='MANUAL_TASK_DEPLOY_API_ID')
 
 class RmqBaseRpcPublisher(object):
     """

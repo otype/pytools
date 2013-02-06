@@ -8,7 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.lib.environments import ENVIRONMENT
+from archive.deployr_service.lib.environments import ENVIRONMENT
 
 EVENT_REPORTER_CONFIG = {
 

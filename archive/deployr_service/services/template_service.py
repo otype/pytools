@@ -14,8 +14,8 @@ import os
 from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
 
-from deployr_service.deployr_base import DeployrBase
-from deployr_service.services import filesystem_service
+from archive.deployr_service.deployr_base import DeployrBase
+from archive.deployr_service.services import filesystem_service
 
 
 class TemplateService(DeployrBase):

@@ -8,12 +8,13 @@
     Copyright (c) 2012 apitrary
 
 """
-import os
 import sys
 import logging
+
+import os
 from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
-from deployr_service.services import filesystem_service
+from deployr.services import filesystem_service
 
 
 class TemplateService(object):

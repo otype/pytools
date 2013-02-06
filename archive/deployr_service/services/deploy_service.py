@@ -9,11 +9,11 @@
 
 """
 import sys
-from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.services import network_service, os_service
-from deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
-from deployr_service.services.template_service import TemplateService
+from archive.deployr_service.deployr_base import DeployrBase
+from archive.deployr_service.lib.returncodes import RETURNCODE
+from archive.deployr_service.services import network_service, os_service
+from archive.deployr_service.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
+from archive.deployr_service.services.template_service import TemplateService
 
 class DeployService(DeployrBase):
     """

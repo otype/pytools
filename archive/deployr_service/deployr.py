@@ -11,8 +11,8 @@
 import sys
 import tornado
 from tornado.options import enable_pretty_logging, define, options, logging
-from deployr_service.deployr_manager import DeployrManager
-from deployr_service.services import config_service
+from archive.deployr_service.deployr_manager import DeployrManager
+from archive.deployr_service.services import config_service
 
 enable_pretty_logging()
 

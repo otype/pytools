@@ -10,14 +10,17 @@
 """
 import json
 import logging
+
 from pika import exceptions
 import pika
-from deployr_service.deployr_api import DeployrApi
 from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.errors import UnacceptableMessage
-from deployr_service.lib.errors import InvalidTaskType
-from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.lib.rmq_base_rpc_async_consumer import RmqBaseRpcAsyncConsumer
+
+from deployr_service.deployr_api import DeployrApi
+from archive.deployr_service.lib.errors import UnacceptableMessage
+from archive.deployr_service.lib.errors import InvalidTaskType
+from archive.deployr_service.lib.returncodes import RETURNCODE
+from archive.deployr_service.lib.rmq_base_rpc_async_consumer import RmqBaseRpcAsyncConsumer
+
 
 class DeployrManager(DeployrBase):
     """

@@ -8,15 +8,15 @@
     Copyright (c) 2012 apitrary
 
 """
-from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.errors import InvalidTaskType
-from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.messages.deploy_confirmation_message import DeployConfirmationMessage
-from deployr_service.messages.undeploy_confirmation_message import UndeployConfirmationMessage
-from deployr_service.services.deploy_service import DeployService
-from deployr_service.services.undeploy_service import UndeployService
-from deployr_service.task_types.deploy_task import DeployTask
-from deployr_service.task_types.undeploy_task import UndeployTask
+from archive.deployr_service.deployr_base import DeployrBase
+from archive.deployr_service.lib.errors import InvalidTaskType
+from archive.deployr_service.lib.returncodes import RETURNCODE
+from archive.deployr_service.messages.deploy_confirmation_message import DeployConfirmationMessage
+from archive.deployr_service.messages.undeploy_confirmation_message import UndeployConfirmationMessage
+from archive.deployr_service.services.deploy_service import DeployService
+from archive.deployr_service.services.undeploy_service import UndeployService
+from archive.deployr_service.task_types.deploy_task import DeployTask
+from archive.deployr_service.task_types.undeploy_task import UndeployTask
 
 class DeployrApi(DeployrBase):
     """

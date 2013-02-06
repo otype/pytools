@@ -16,9 +16,9 @@ from deployr.conf.config_loader import ConfigLoader
 from deployr.messages.deploy_confirmation_message import DeployConfirmationMessage
 from deployr.services import config_service
 from deployr.services.deploy_service import DeployService
-from celery.utils.log import get_task_logger
 
 config = ConfigLoader(config=config_service.load_configuration())
+#broker_address = 'amqp://guest:guest@localhost'
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     user=config.rmq_broker_username,
     password=config.rmq_broker_password,
@@ -26,13 +26,7 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     port=config.rmq_broker_port
 )
 
-celery = Celery('deployr',
-    #    broker='amqp://guest:guest@localhost',
-    broker=broker_address,
-    #    backend='amqp://guest:guest@localhost',
-    backend=broker_address,
-    include=['deployr.tasks'])
-
+celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['deployr.tasks'])
 celery.conf.update(
     CELERY_DEFAULT_QUEUE='deployr.default',
     CELERY_DEFAULT_EXCHANGE='deployr.tasks',

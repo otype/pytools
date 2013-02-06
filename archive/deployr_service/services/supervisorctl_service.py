@@ -7,9 +7,9 @@
 
 """
 import sys
-from deployr_service.deployr_base import DeployrBase
-from deployr_service.lib.returncodes import RETURNCODE
-from deployr_service.services import os_service
+from archive.deployr_service.deployr_base import DeployrBase
+from archive.deployr_service.lib.returncodes import RETURNCODE
+from archive.deployr_service.services import os_service
 
 
 class SuperVisorCtlService(DeployrBase):

@@ -9,12 +9,14 @@
 
 """
 from __future__ import absolute_import
+import logging
 from celery import Celery
 from kombu.entity import Queue
 from deployr.conf.config_loader import ConfigLoader
 from deployr.messages.deploy_confirmation_message import DeployConfirmationMessage
 from deployr.services import config_service
 from deployr.services.deploy_service import DeployService
+from celery.utils.log import get_task_logger
 
 config = ConfigLoader(config=config_service.load_configuration())
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
@@ -59,10 +61,10 @@ def undeploy(undeploy_task):
 def deploy(deploy_task):
     # TODO: Validate the deploy_task
 
-    print("Processing task: {}".format(deploy_task))
+    logging.info("Processing task: {}".format(deploy_task))
 
     deploy_service = DeployService(config=config)
-    deploy_service.deploy_api(
+    status_code, host_ip, port = deploy_service.deploy_api(
         api_id=deploy_task['api_id'],
         db_host=deploy_task['db_host'],
         genapi_version=deploy_task['genapi_version'],
@@ -75,9 +77,9 @@ def deploy(deploy_task):
     return DeployConfirmationMessage(
         api_id=deploy_task['api_id'],
         genapi_version=deploy_task['genapi_version'],
-        host='local.example.com',
-        port=19999,
-        status=0
+        host=host_ip,
+        port=port,
+        status=status_code
     ).to_dict()
 
 

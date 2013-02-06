@@ -31,15 +31,3 @@ def deploy_api(api_id, entities, api_key, db_host, db_port=8098, genapi_version=
         routing_key=DEPLOY_ROUTING_KEY
     )
     return result.get()
-
-
-if __name__ == '__main__':
-    print deploy_api(
-        api_id='MANUAL_TASK_DEPLOY_API_ID',
-        db_host='riak1.dev.apitrary.net',
-        db_port=8098,
-        genapi_version=1,
-        log_level='debug',
-        entities=['jedis', 'wookies', 'stormtroopers'],
-        api_key='suchasecretapikeyyouwouldneverguess'
-    )

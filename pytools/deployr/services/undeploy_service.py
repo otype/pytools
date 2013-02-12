@@ -64,10 +64,6 @@ class UndeployService(object):
             logging.error('API is not running or connection to supervisor failed!')
             return False
 
-#        if process_info['statename'] != 'STOPPED':
-#            return False
-        logging.info('>>>>> PROCESSINFO: {}'.format(process_info))
-
         return True
 
     def remove_api(self, api_id):
@@ -79,10 +75,6 @@ class UndeployService(object):
         if process_info == RETURNCODE.OS_ERROR:
             logging.error('API is not running or connection to supervisor failed!')
             return False
-
-#        if process_info['statename'] != 'REMOVED':
-#            return False
-        logging.info('>>>>> PROCESSINFO: {}'.format(process_info))
 
         return True
 

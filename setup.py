@@ -47,7 +47,8 @@ def scripts_list():
     return [
         'pytools/buildr_service/buildr.py',
         'pytools/deployr/tasks.py',
-        'pytools/deployr/api/deploy.py'
+        'pytools/deployr/api/deploy.py',
+        'pytools/deployr/api/undeploy.py'
     ]
 
 

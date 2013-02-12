@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    loggr
 
     created by hgschmidt on 29.12.12, 13:28 CET
     
-    Copyright (c) 2012 apitrary
+    Copyright (c) 2012 - 2013 apitrary
 
 """
 import json

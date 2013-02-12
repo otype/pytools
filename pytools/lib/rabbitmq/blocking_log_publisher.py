@@ -5,7 +5,7 @@
 
     created by hgschmidt on 26.12.12, 18:14 CET
     
-    Copyright (c) 2012 apitrary
+    Copyright (c) 2012 - 2013 apitrary
 
 """
 import json

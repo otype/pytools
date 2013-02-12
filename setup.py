@@ -46,9 +46,9 @@ def get_template_base_dir():
 def scripts_list():
     return [
         'pytools/buildr_service/buildr.py',
-        'pytools/deployr/tasks.py',
-        'pytools/deployr/api/deploy.py',
-        'pytools/deployr/api/undeploy.py'
+        'pytools/deployr_service/tasks.py',
+        'pytools/deployr_service/api/deploy.py',
+        'pytools/deployr_service/api/undeploy.py'
     ]
 
 
@@ -65,7 +65,7 @@ setup(
     packages=find_packages('pytools'),
     package_dir={'': 'pytools'},
     data_files=[
-        (get_template_base_dir(), ['pytools/deployr/templates/genapi_base.tpl'])
+        (get_template_base_dir(), ['pytools/deployr_service/templates/genapi_base.tpl'])
     ],
     scripts=scripts_list()
 )

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    buildr
 
     created by hgschmidt on 29.12.12, 13:28 CET
     
-    Copyright (c) 2012 apitrary
+    Copyright (c) 2012 - 2013 apitrary
 
 """
 import json
@@ -17,8 +17,8 @@ from tornado.options import logging
 from buildr_service.handler_helpers import get_current_time_formatted
 from buildr_service.header_service import HeaderService
 from buildr_service.response import Response
-from deployr.api.deploy import deploy_api
-from deployr.api.undeploy import undeploy_api
+from deployr_service.api.deploy import deploy_api
+from deployr_service.api.undeploy import undeploy_api
 
 
 class NoDictionaryException(BaseException):

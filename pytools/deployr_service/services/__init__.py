@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    deployr
 
-    created by hgschmidt on 26.12.12, 10:38 CET
+    created by hgschmidt on 29.12.12, 13:28 CET
     
     Copyright (c) 2012 - 2013 apitrary
 

@@ -5,13 +5,13 @@
 
     created by hgschmidt on 29.12.12, 13:28 CET
     
-    Copyright (c) 2012 apitrary
+    Copyright (c) 2012 - 2013 apitrary
 
 """
 import logging
 import socket
 import pika
-from archive.deployr_service.lib.returncodes import RETURNCODE
+from deployr_service.conf.returncodes import RETURNCODE
 
 
 class RabbitMqWorker(object):

@@ -168,11 +168,16 @@ class UndeployHandler(BaseHandler):
         if self.require_headers() == 1:
             return
 
+        # TODO: validate 'api_id' and 'app_host' in self.request.body
+
         # Load the JSON to see it's valid.
         obj_to_store = json.loads(tornado.escape.utf8(self.request.body), 'utf-8')
         logging.info("Retrieved new JSON task: {}".format(obj_to_store))
 
-        result = undeploy_api(api_id=obj_to_store['api_id'])
+        result = undeploy_api(
+            api_id=obj_to_store['api_id'],
+            app_host=obj_to_store['app_host']
+        )
 
         # find out on which host API is running
 

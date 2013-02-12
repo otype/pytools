@@ -147,12 +147,10 @@ class StatusHandler(BaseHandler):
 
 
 class DeployHandler(BaseHandler):
-    def get(self):
+    def post(self):
         if self.require_headers() == 1:
             return
-        self.respond(payload={'DEPLOY':'GET'})
 
-    def post(self):
         # Load the JSON to see it's valid.
         obj_to_store = json.loads(tornado.escape.utf8(self.request.body), 'utf-8')
         logging.info(obj_to_store)
@@ -161,9 +159,19 @@ class DeployHandler(BaseHandler):
         logging.info('Received result from deploy job: {}'.format(result))
         self.respond(payload=result)
 
-class UndeployHandler(BaseHandler):
-    def get(self):
-        self.respond(payload={'UNDEPLOY':'GET'})
 
+class UndeployHandler(BaseHandler):
     def post(self):
+        # find out on which host API is running
+
+        # check if API is running
+
+        # tell loadbalancer to de-register API
+
+        # stop API on given host(-s)
+
+        # remove API
+
+        # delete supervisor config for API
+
         self.respond(payload={'UNDEPLOY':'POST'})

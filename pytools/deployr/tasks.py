@@ -14,8 +14,10 @@ from celery import Celery
 from kombu.entity import Queue
 from deployr.conf.config_loader import ConfigLoader
 from deployr.messages.deploy_confirmation_message import DeployConfirmationMessage
+from deployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from deployr.services import config_service
 from deployr.services.deploy_service import DeployService
+from deployr.services.undeploy_service import UndeployService
 
 config = ConfigLoader(config=config_service.load_configuration())
 #broker_address = 'amqp://guest:guest@localhost'
@@ -48,7 +50,11 @@ celery.conf.update(
 
 @celery.task
 def undeploy(undeploy_task):
-    return undeploy_task
+    logging.info("Processing task: {}".format(undeploy_task))
+    api_id = undeploy_task['api_id']
+    undeploy_service = UndeployService(config=config)
+    status = undeploy_service.undeploy_api(api_id=api_id)
+    return UndeployConfirmationMessage(api_id=api_id, status=status).to_dict()
 
 
 @celery.task

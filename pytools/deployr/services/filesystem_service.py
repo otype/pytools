@@ -8,6 +8,7 @@
     Copyright (c) 2012 apitrary
 
 """
+import os
 
 def write_file(filename, content):
     """
@@ -16,3 +17,10 @@ def write_file(filename, content):
     with open(filename, 'w') as f:
         f.write(content)
         f.write('\n')
+
+def delete_file(filename):
+    """
+        Delete file with given filename
+    """
+    if os.path.isfile(filename):
+        os.remove(filename)

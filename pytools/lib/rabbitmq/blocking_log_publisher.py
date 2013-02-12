@@ -79,12 +79,13 @@ class BlockingLogPublisher(object):
     def error(self, message):
         self.send('ERROR', message)
 
+
 def main():
     log_publisher = BlockingLogPublisher(
         amqp_url='amqp://guest:guest@localhost:5672/%2F',
         service_name='some.service'
     )
-#    log_publisher.send(log_level='INFO', message='testing log message')
+    #    log_publisher.send(log_level='INFO', message='testing log message')
     log_publisher.info(message='testing log message')
     log_publisher.close()
 

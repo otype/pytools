@@ -107,6 +107,8 @@ class BaseHandler(tornado.web.RequestHandler):
         """
             Helper for checking the required header variables
         """
+        if self.header_service.headers is None:
+            return 1
 #        # Authorize request by enforcing API key (X-API-Key)
 #        if require_api_key:
 #            if self.header_service.get_key_from_header('X-Api-Key') != self.api_key:
@@ -165,6 +167,8 @@ class UndeployHandler(BaseHandler):
     def post(self):
         if self.require_headers() == 1:
             return
+
+        logging.info(self.request.body)
 
         # Load the JSON to see it's valid.
         obj_to_store = json.loads(tornado.escape.utf8(self.request.body), 'utf-8')

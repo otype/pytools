@@ -64,8 +64,9 @@ class UndeployService(object):
             logging.error('API is not running or connection to supervisor failed!')
             return False
 
-        if process_info['statename'] != 'STOPPED':
-            return False
+#        if process_info['statename'] != 'STOPPED':
+#            return False
+        logging.info('>>>>> PROCESSINFO: {}'.format(process_info))
 
         return True
 
@@ -79,8 +80,9 @@ class UndeployService(object):
             logging.error('API is not running or connection to supervisor failed!')
             return False
 
-        if process_info['statename'] != 'REMOVED':
-            return False
+#        if process_info['statename'] != 'REMOVED':
+#            return False
+        logging.info('>>>>> PROCESSINFO: {}'.format(process_info))
 
         return True
 
@@ -98,10 +100,16 @@ class UndeployService(object):
         """
         logging.info("Undeploying API: {}".format(api_id))
 
+        logging.info('1')
         if self.is_already_running(api_id=api_id):
+            logging.info('2')
             self.stop_api(api_id=api_id)
 
+        logging.info('3')
         self.remove_api(api_id=api_id)
+        logging.info('4')
         self.delete_api_config(api_id=api_id)
+        logging.info('5')
         self.supervisor_xml_rpc_service.reload_config()
+        logging.info('6')
         return RETURNCODE.OS_SUCCESS

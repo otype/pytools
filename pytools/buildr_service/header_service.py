@@ -45,10 +45,11 @@ class HeaderService(object):
         """
             Read a given key from header of given request
         """
-        if self.headers.get_all() is None:
-            return None
+        try:
+            for k, v in self.headers.get_all():
+                if k == key_name:
+                    return v
+        except TypeError, e:
+            pass
 
-        for k, v in self.headers.get_all():
-            if k == key_name:
-                return v
         return None

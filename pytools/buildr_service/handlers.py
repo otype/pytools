@@ -18,6 +18,7 @@ from buildr_service.handler_helpers import get_current_time_formatted
 from buildr_service.header_service import HeaderService
 from buildr_service.response import Response
 from deployr.api.deploy import deploy_api
+from deployr.api.undeploy import undeploy_api
 
 
 class NoDictionaryException(BaseException):
@@ -162,6 +163,15 @@ class DeployHandler(BaseHandler):
 
 class UndeployHandler(BaseHandler):
     def post(self):
+        if self.require_headers() == 1:
+            return
+
+        # Load the JSON to see it's valid.
+        obj_to_store = json.loads(tornado.escape.utf8(self.request.body), 'utf-8')
+        logging.info(obj_to_store)
+
+        result = undeploy_api(api_id=obj_to_store['api_id'])
+
         # find out on which host API is running
 
         # check if API is running
@@ -174,4 +184,4 @@ class UndeployHandler(BaseHandler):
 
         # delete supervisor config for API
 
-        self.respond(payload={'UNDEPLOY':'POST'})
+        self.respond(payload={'UNDEPLOY':'POST', 'status': result})

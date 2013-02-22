@@ -71,11 +71,7 @@ class BaseHandler(tornado.web.RequestHandler):
             logging.error('payload is type: {}'.format(type(payload)))
             raise NoDictionaryException()
 
-        response = Response(
-            status_code=status_code,
-            status_message=status_message,
-            result=payload
-        ).get_data()
+        response = Response(result=payload).get_data()
 
         self.set_status(status_code)
         self.set_header("X-Calvin", "You know, Hobbes, some days even my lucky rocketship underpants don’t help.")

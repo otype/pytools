@@ -20,7 +20,6 @@ from deployr_service.services.deploy_service import DeployService
 from deployr_service.services.undeploy_service import UndeployService
 
 config = ConfigLoader(config=config_service.load_configuration())
-#broker_address = 'amqp://guest:guest@localhost'
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     user=config.rmq_broker_username,
     password=config.rmq_broker_password,
@@ -28,7 +27,7 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     port=config.rmq_broker_port
 )
 
-celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['deployr.tasks'])
+celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['deployr_service.tasks'])
 celery.conf.update(
     CELERY_DEFAULT_QUEUE='deployr.default',
     CELERY_DEFAULT_EXCHANGE='deployr.tasks',

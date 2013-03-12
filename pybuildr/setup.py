@@ -11,8 +11,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from distutils.core import setup
-
+from setuptools import setup
 import os
 
 

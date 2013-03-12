@@ -12,9 +12,7 @@
 
 """
 import os
-from distutils.core import setup
-from setuptools import find_packages
-
+from setuptools import setup
 
 def read(fname):
     """
@@ -45,7 +43,7 @@ setup(
     url='http://apitrary.com',
     install_requires=read_requirements(),
     keywords='pyloggr apitrary',
-    packages=find_packages('pytoolslib'),
-    package_dir={'': 'pytoolslib'},
+#    packages=find_packages('pytoolslib'),
+#    package_dir={'': 'pytoolslib'},
     scripts=scripts_list()
 )

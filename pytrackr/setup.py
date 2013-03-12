@@ -11,9 +11,8 @@
     Copyright (c) 2012 apitrary
 
 """
-from distutils.core import setup
-
 import os
+from setuptools import setup
 
 
 def read(fname):

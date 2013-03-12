@@ -105,7 +105,7 @@ class BaseHandler(tornado.web.RequestHandler):
         """
         if self.header_service.headers is None:
             return 1
-        #        # Authorize request by enforcing API key (X-API-Key)
+            #        # Authorize request by enforcing API key (X-API-Key)
         #        if require_api_key:
         #            if self.header_service.get_key_from_header('X-Api-Key') != self.api_key:
         #                self.write_error(status_code=401, message='Invalid API Key.')
@@ -147,7 +147,10 @@ class StatusHandler(BaseHandler):
 
 class ApiHandler(BaseHandler):
     def get(self, *args, **kwargs):
-        pass
+        if self.require_headers() == 1:
+            return
+
+        self.respond({'status': 'ok', 'method': 'GET'})
 
     def post(self, *args, **kwargs):
         if self.require_headers() == 1:
@@ -167,7 +170,10 @@ class ApiHandler(BaseHandler):
         self.respond(payload=result)
 
     def put(self, *args, **kwargs):
-        pass
+        if self.require_headers() == 1:
+            return
+
+        self.respond({'status': 'ok', 'method': 'PUT'})
 
     def delete(self, *args, **kwargs):
         if self.require_headers() == 1:

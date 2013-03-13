@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    pydeployr
 
     created by hgschmidt on 29.12.12, 13:28 CET
     

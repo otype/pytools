@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    pygenapi
+    pybuildr
 
     by hgschmidt
 

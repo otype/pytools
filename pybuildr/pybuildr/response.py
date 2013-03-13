@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    GenAPI
+    pybuildr
 
     Response object template
 

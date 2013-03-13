@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    pydeployr
 
     usage: python setup.py install
 

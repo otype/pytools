@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    pybuildr
 
     usage: python setup.py install
 

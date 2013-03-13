@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    deployr
+    pydeployr
 
     created by hgschmidt on 29.12.12, 13:28 CET
     
@@ -49,6 +49,9 @@ celery.conf.update(
 
 @celery.task
 def undeploy(undeploy_task):
+    """
+        UNDEPLOY an API
+    """
     logging.info("Processing task: {}".format(undeploy_task))
     api_id = undeploy_task['api_id']
     undeploy_service = UndeployService(config=config)
@@ -58,8 +61,10 @@ def undeploy(undeploy_task):
 
 @celery.task
 def deploy(deploy_task):
+    """
+        DEPLOY an API
+    """
     # TODO: Validate the deploy_task
-
     logging.info("Processing task: {}".format(deploy_task))
 
     deploy_service = DeployService(config=config)

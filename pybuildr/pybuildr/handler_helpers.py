@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    GenAPI
+    pybuildr
 
     Copyright (c) 2012 - 2013 apitrary
 

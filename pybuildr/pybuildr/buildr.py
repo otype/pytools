@@ -16,8 +16,8 @@ import tornado.httpserver
 from tornado.options import define, logging
 from tornado.options import options
 from tornado.options import enable_pretty_logging
-from pybuildr.api_handler import ApiHandler
-from pybuildr.status_handler import StatusHandler
+from pybuildr.handlers.api_handler import ApiHandler
+from pybuildr.handlers.status_handler import StatusHandler
 
 enable_pretty_logging()
 

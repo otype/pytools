@@ -10,7 +10,9 @@
 """
 
 class RETURNCODE:
-    """All return codes"""
+    """
+        All return codes
+    """
     OS_SUCCESS = 0
     OS_ERROR = 1
     OS_MISUSE_ERROR = 2

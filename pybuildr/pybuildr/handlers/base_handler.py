@@ -11,10 +11,10 @@
 import tornado
 import tornado.web
 from tornado.options import logging
-from exceptions import NoDictionaryException
-from pybuildr.handler_helpers import get_current_time_formatted
-from pybuildr.header_service import HeaderService
+from pybuildr.exceptions import NoDictionaryException
+from pybuildr.handlers.handler_helpers import get_current_time_formatted
 from pybuildr.response import Response
+from pybuildr.services.header_service import HeaderService
 
 class BaseHandler(tornado.web.RequestHandler):
     """

@@ -80,7 +80,10 @@ class DeployService(object):
         self.template_service.write_genapi_base_tpl(
             genapi_api_id=api_id,
             python_interpreter=os_service.python_interpreter_path(),
-            genapi_start='/usr/bin/genapi_runner.py',
+            # Debian
+#            genapi_start='/usr/bin/genapi_runner.py',
+            # Ubuntu
+            genapi_start='/usr/local/bin/genapi_runner.py',
             logging_level=log_level,
             riak_host=db_host,
             app_port=assigned_port,

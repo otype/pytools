@@ -32,7 +32,10 @@ class UndeployService(object):
         if sys.platform == 'darwin':
             config_file_name = '{}.conf'.format(api_id)
         elif sys.platform == 'linux2':
-            config_file_name = '/etc/supervisor.d/{}.conf'.format(api_id)
+            # Use this for Debian 6
+        #            config_file_name = '/etc/supervisor.d/{}.conf'.format(api_id)
+            # Use this for Ubuntu
+            config_file_name = '/etc/supervisor/conf.d/{}.conf'.format(api_id)
         else:
             config_file_name = '{}.conf'.format(api_id)
         return config_file_name

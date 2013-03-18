@@ -24,3 +24,10 @@ def validate_user_agent(request):
         return 'UNKNOWN'
     else:
         return request.headers['User-Agent']
+
+
+def get_current_time_formatted():
+    """
+        Create a nice time stamp of the current time
+    """
+    return strftime('%d %b %Y %H:%M:%S +0000', gmtime())

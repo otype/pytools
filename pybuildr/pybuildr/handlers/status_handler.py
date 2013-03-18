@@ -29,5 +29,6 @@ class StatusHandler(BaseHandler):
         """
             Provides a basic hash with information for this app.
         """
+        self.require_accept_header()
         self.write({'info': self.app_details, 'status': 'OK'})
         self.finish()

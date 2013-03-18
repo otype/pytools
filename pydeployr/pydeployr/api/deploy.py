@@ -16,6 +16,9 @@ DEPLOY_QUEUE = 'deployr.deploy'
 
 
 def deploy_api(api_id, entities, api_key, db_host, db_port=8098, genapi_version=1, log_level='info'):
+    """
+        Deploy an API with given parameters
+    """
     deploy_message = DeployMessage(
         api_id=api_id,
         entities=entities,
@@ -25,9 +28,10 @@ def deploy_api(api_id, entities, api_key, db_host, db_port=8098, genapi_version=
         genapi_version=genapi_version,
         log_level=log_level
     )
-    result = tasks.deploy.apply_async(
+
+    return tasks.deploy.apply_async(
         args=[deploy_message.to_dict()],
         queue=DEPLOY_QUEUE,
         routing_key=DEPLOY_ROUTING_KEY
-    )
-    return result.get()
+    ).get()
+

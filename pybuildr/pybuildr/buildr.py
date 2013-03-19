@@ -38,6 +38,9 @@ APP_SETTINGS = {
 }
 
 def show_pre_commit_hook_warning():
+    """
+        Shows a message how to install the pre-commit hook for Riak KV buckets.
+    """
     logging.info("*********************************************************")
     logging.info("*                                                       *")
     logging.info("* DO NOT FORGET TO INSTALL THE PRE-COMMIT HOOK:         *")
@@ -45,6 +48,7 @@ def show_pre_commit_hook_warning():
     logging.info("* riak_node> search-cmd install apitrary_base_buildr    *")
     logging.info("*                                                       *")
     logging.info("*********************************************************")
+
 
 def main():
     """
@@ -84,8 +88,13 @@ def main():
     show_pre_commit_hook_warning()
     logging.info('Starting Buildr on port:{}'.format(options.port))
     logging.info('Using RIAK host:{} on port:{}'.format(options.riak_host, options.riak_pb_port))
-    tornado.ioloop.IOLoop.instance().start()
 
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        logging.info('Process stopped by user interaction.')
+    finally:
+        tornado.ioloop.IOLoop.instance().stop()
 
 # MAIN
 #

@@ -78,10 +78,15 @@ class BaseHandler(tornado.web.RequestHandler):
             Called automatically when an error occurred. But can also be used to
             respond back to caller with a manual error.
         """
-        if 'exc_info' in kwargs:
-            logging.error(repr(kwargs['exc_info']))
-
         message = 'Something went seriously wrong! Maybe invalid resource? Ask your admin for advice!'
+
+        if 'exc_info' in kwargs:
+            error = kwargs['exc_info']
+            if error[0] == KeyError:
+                message = 'KeyError: a necessary key was not found.'
+            else:
+                message = str(error[1])
+
         if 'message' in kwargs:
             message = kwargs['message']
 

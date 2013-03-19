@@ -37,7 +37,7 @@ class ApiHandler(BaseHandler):
             # No object_id provided -> Get all entries
             payload = self.api_service.fetch_all()
         else:
-            payload = self.api_service.fetch_api(api_id=object_id)
+            payload = self.api_service.fetch_by_api_id(api_id=object_id)
 
         self.respond(payload=payload)
 

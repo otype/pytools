@@ -60,3 +60,16 @@ class RiakObjectIdNotProvidedException(BaseException):
             error_message = message
         super(RiakObjectIdNotProvidedException, self).__init__(error_message, *args, **kwargs)
         raise HTTPError(status_code=400, log_message=error_message)
+
+
+class NoSuchApiFoundException(BaseException):
+    """
+        Thrown when an object ID was required but not provided
+    """
+
+    def __init__(self, message=None, *args, **kwargs):
+        error_message = 'No deployed API with given API ID found.'
+        if message:
+            error_message = message
+        super(NoSuchApiFoundException, self).__init__(error_message, *args, **kwargs)
+        raise HTTPError(status_code=404, log_message=error_message)

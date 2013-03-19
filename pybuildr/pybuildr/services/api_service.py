@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    <application_name>    
+    pybuildr
 
     created by hgschmidt on 29.12.12, 13:28 CET
     
@@ -10,11 +10,14 @@
 """
 import json
 import logging
+import uuid
 import tornado
 from tornado import escape
+from pybuildr.exceptions import RiakObjectNotFoundException
 from pybuildr.repositories.riak_repository import RiakRepository
-from pydeployr.api.deploy import deploy_api
 from pydeployr.api.undeploy import undeploy_api
+from pydeployr.api.deploy import deploy_api
+
 
 class ApiService(object):
     """
@@ -56,11 +59,17 @@ class ApiService(object):
         """
         return self.repository.fetch_all()
 
-    def fetch_api(self, api_id):
+    def fetch_by_api_id(self, api_id):
         """
             Fetch all entries with given API ID
         """
         return self.repository.search('api_id:{}'.format(api_id))
+
+    def fetch_by_api_id_and_app_host(self, api_id, app_host):
+        """
+            Fetch all APIs by API ID and APP_HOST
+        """
+        return self.repository.search('api_id:{} AND app_host:{}'.format(api_id, app_host))
 
     def deploy(self, request_body):
         """
@@ -78,19 +87,17 @@ class ApiService(object):
         logging.info('Received result from deploy job: {}'.format(deploy_result))
 
         db_result = self.repository.add(
-            object_id=obj_to_store['api_id'],
+            object_id=uuid.uuid1().hex,
             data={
                 u'api_id': obj_to_store['api_id'],
                 u'api_key': obj_to_store['api_key'],
                 u'entities': obj_to_store['entities'],
                 u'db_host': obj_to_store['db_host'],
                 u'db_port': obj_to_store['db_port'],
-                #                u'log_level': deploy_result['log_level'],
-                #                u'environment': deploy_result['environment'],
                 u'status': deploy_result['status'],
                 u'genapi_version': deploy_result['genapi_version'],
-                u'host': deploy_result['host'],
-                u'port': deploy_result['port'],
+                u'app_host': deploy_result['host'],
+                u'app_port': deploy_result['port'],
                 u'created_at': deploy_result['created_at']
             }
         )
@@ -110,23 +117,43 @@ class ApiService(object):
             Undeploy an API from a given JSON request
         """
         obj_to_store = self.read_json(request_body=request_body)
-        self.validate_json(obj_to_store, ['api_id', 'app_host'])
+        self.validate_json(obj_to_store, ['api_id'])
 
-        undeploy_result = undeploy_api(api_id=obj_to_store['api_id'], app_host=obj_to_store['app_host'])
+        if 'app_host' in obj_to_store:
+            # Both api_id and app_host have been provided -> Only search this particular API
+            db_objects = self.fetch_by_api_id_and_app_host(obj_to_store['api_id'], obj_to_store['app_host'])
+        else:
+            # Only api_id has been provided -> get ALL running instances of this API
+            db_objects = self.fetch_by_api_id(api_id=obj_to_store['api_id'])
 
-        # find out on which host API is running
+        if db_objects is None or len(db_objects) == 0:
+            raise RiakObjectNotFoundException()
 
-        # check if API is running
+        undeploy_result = []
+        for entry in db_objects:
+            undeploy_result.append(self.undeploy_api_by_host(entry))
 
-        # tell loadbalancer to de-register API
+        return {'status': undeploy_result}
 
-        # stop API on given host(-s)
+    def undeploy_api_by_host(self, db_object):
+        """
+            Undeploy a single API on given app host
+        """
+        self.validate_json(db_object, ['_id', '_data'])
+        api = db_object['_data']
+        db_id = db_object['_id']
 
-        # remove API
+        logging.info('Undeploying API with ID:{} on APP_HOST:{}'.format(api['api_id'], api['app_host']))
+        undeploy_result = undeploy_api(api_id=api['api_id'], app_host=api['app_host'])
 
-        # delete supervisor config for API
+        # TODO: find out on which host API is running
+        # TODO: check if API is running
+        # TODO: tell loadbalancer to de-register API
+        # TODO: stop API on given host(-s)
+        # TODO: remove API
+        # TODO: delete supervisor config for API
 
-        db_result = self.repository.remove(obj_to_store['api_id']).get_data()
-        logging.info("Received result from DB store: {}".format(db_result))
+        logging.info('Deleting reference for API ID:{}'.format(api['api_id']))
+        self.repository.remove(db_id).get_data()
 
-        return {'UNDEPLOY': 'POST', 'status': undeploy_result, 'db_result': db_result}
+        return undeploy_result

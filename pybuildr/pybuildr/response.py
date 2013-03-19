@@ -24,9 +24,15 @@ class Response(object):
         self.result = result
 
     def __str__(self):
+        """
+            Provides a string representation of the Response
+        """
         return 'Response(result="{}")'.format(self.result)
 
     def __repr__(self):
+        """
+            Provides a UTF-8 Response
+        """
         return u'Response(result="{}")'.format(self.result)
 
     def get_data(self):

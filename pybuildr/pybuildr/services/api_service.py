@@ -8,50 +8,21 @@
     Copyright (c) 2012 apitrary
 
 """
-import json
 import logging
 import uuid
-import tornado
-from tornado import escape
 from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
-from pybuildr.repositories.riak_repository import RiakRepository
+from pybuildr.services.api_base_service import ApiBaseService
 from pydeployr.api.undeploy import undeploy_api
 from pydeployr.api.deploy import deploy_api
 
 
-class ApiService(object):
+class ApiService(ApiBaseService):
     """
         Provides service methods for pydeployr API
     """
 
     def __init__(self, riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq):
-        super(ApiService, self).__init__()
-        self.repository = RiakRepository(
-            riak_host=riak_host,
-            riak_pb_port=riak_pb_port,
-            bucket_name=bucket_name,
-            riak_rq=riak_rq,
-            riak_wq=riak_wq
-        )
-
-
-    def validate_json(self, jobj, keys):
-        """
-            Validate a given JSON by checking for given keys
-        """
-        for key in keys:
-            assert key in jobj
-
-
-    def read_json(self, request_body):
-        """
-            Read a request body and convert it into JSON
-        """
-        assert request_body
-        obj_to_store = json.loads(tornado.escape.utf8(request_body), 'utf-8')
-        assert obj_to_store
-        logging.debug("Retrieved new JSON task: {}".format(obj_to_store))
-        return obj_to_store
+        super(ApiService, self).__init__(riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq)
 
     def fetch_all(self):
         """
@@ -70,6 +41,44 @@ class ApiService(object):
             Fetch all APIs by API ID and APP_HOST
         """
         return self.repository.search('api_id:{} AND app_host:{}'.format(api_id, app_host))
+
+    def fetch_all_by_app_host(self):
+        """
+            Fetch all APIs, sorted by app_host
+        """
+        entries = self.fetch_all()
+        by_app_hosts = dict()
+        for entry in entries:
+            app_host = entry['data']['app_host']
+
+            if app_host in by_app_hosts:
+                app_host_entry = by_app_hosts[app_host]
+            else:
+                app_host_entry = []
+
+            app_host_entry.append(entry['data'])
+            by_app_hosts[app_host] = app_host_entry
+
+        return by_app_hosts
+
+    def fetch_by_app_host(self, app_host):
+        """
+            Fetch all APIs by app_host
+        """
+        entries = self.repository.search('app_host:{}'.format(app_host))
+        by_app_hosts = dict()
+        for entry in entries:
+            app_host = entry['_data']['app_host']
+
+            if app_host in by_app_hosts:
+                app_host_entry = by_app_hosts[app_host]
+            else:
+                app_host_entry = []
+
+            app_host_entry.append(entry['_data'])
+            by_app_hosts[app_host] = app_host_entry
+
+        return by_app_hosts
 
     def deploy(self, request_body):
         """
@@ -108,7 +117,8 @@ class ApiService(object):
                 u'created_at': deploy_result['created_at']
             }
         )
-        logging.debug("Received result from DB store: ID = {} -- DATA = {}".format(db_result._key, db_result.get_data()))
+        logging.debug(
+            "Received result from DB store: ID = {} -- DATA = {}".format(db_result._key, db_result.get_data()))
 
         return deploy_result
 

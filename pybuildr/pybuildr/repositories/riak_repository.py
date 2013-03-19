@@ -61,7 +61,13 @@ class RiakRepository(object):
                         }
                         return [];
                     }''')
-        return query.run()
+        result = None
+        try:
+            result = query.run()
+        except Exception, e:
+            logging.error(e.message)
+
+        return result
 
     def add(self, object_id, data):
         """

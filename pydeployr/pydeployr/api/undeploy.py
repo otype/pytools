@@ -17,6 +17,9 @@ UNDEPLOY_QUEUE = 'deployr.undeploy'
 
 
 def undeploy_api(api_id, app_host):
+    """
+        Undeploy a given API from given app host
+    """
     undeploy_message = UndeployMessage(api_id=api_id)
     logging.debug('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
     result = tasks.undeploy.apply_async(

@@ -31,6 +31,9 @@ class ApiHandler(BaseHandler):
     def get(self, object_id=None):
         """
             GET /apis
+
+            No object_id provided -> Get a list of all deployed APIs
+            object_id provided -> Get information about API with given api_id
         """
         self.require_accept_header()
         if object_id is None:
@@ -44,6 +47,8 @@ class ApiHandler(BaseHandler):
     def post(self, *args, **kwargs):
         """
             POST /apis
+
+            Deploy an API
         """
         self.require_accept_header()
         self.require_content_type()
@@ -52,6 +57,8 @@ class ApiHandler(BaseHandler):
     def put(self, *args, **kwargs):
         """
             PUT /apis
+
+            Re-deploy an API
         """
         self.require_accept_header()
         self.require_content_type()
@@ -60,6 +67,8 @@ class ApiHandler(BaseHandler):
     def delete(self, *args, **kwargs):
         """
             DELETE /apis
+
+            Undeploy an API
         """
         self.require_accept_header()
         self.respond(payload=self.api_service.undeploy(request_body=self.request.body))

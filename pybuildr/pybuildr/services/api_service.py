@@ -13,7 +13,7 @@ import logging
 import uuid
 import tornado
 from tornado import escape
-from pybuildr.exceptions import RiakObjectNotFoundException
+from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
 from pybuildr.repositories.riak_repository import RiakRepository
 from pydeployr.api.undeploy import undeploy_api
 from pydeployr.api.deploy import deploy_api
@@ -76,13 +76,19 @@ class ApiService(object):
             Deploy an API from a given JSON request by calling pydeployr's API method
         """
         obj_to_store = self.read_json(request_body)
-        self.validate_json(obj_to_store, ['api_id', 'api_key', 'entities', 'db_host'])
+        self.validate_json(
+            obj_to_store,
+            ['api_id', 'api_key', 'entities', 'db_host', 'db_port', 'log_level', 'genapi_version']
+        )
 
         deploy_result = deploy_api(
             api_id=obj_to_store['api_id'],
             api_key=obj_to_store['api_key'],
             entities=obj_to_store['entities'],
-            db_host=obj_to_store['db_host']
+            db_host=obj_to_store['db_host'],
+            db_port=obj_to_store['db_port'],
+            genapi_version=obj_to_store['genapi_version'],
+            log_level=obj_to_store['log_level']
         )
         logging.info('Received result from deploy job: {}'.format(deploy_result))
 
@@ -94,6 +100,7 @@ class ApiService(object):
                 u'entities': obj_to_store['entities'],
                 u'db_host': obj_to_store['db_host'],
                 u'db_port': obj_to_store['db_port'],
+                u'log_level': obj_to_store['log_level'],
                 u'status': deploy_result['status'],
                 u'genapi_version': deploy_result['genapi_version'],
                 u'app_host': deploy_result['host'],
@@ -109,6 +116,14 @@ class ApiService(object):
         """
             Re-deploy an API by simply undeploying and deploying again.
         """
+        obj_to_store = self.read_json(request_body)
+        self.validate_json(obj_to_store, ['api_id'])
+
+        db_obj = self.fetch_by_api_id(obj_to_store['api_id'])
+        if db_obj is None or len(db_obj) == 0:
+            raise NoSuchApiFoundException()
+
+        logging.info('Received command to redeploy API ID:{}'.format(obj_to_store['api_id']))
         self.undeploy(request_body=request_body)
         self.deploy(request_body=request_body)
 

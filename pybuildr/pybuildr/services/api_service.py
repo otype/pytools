@@ -50,7 +50,7 @@ class ApiService(object):
         assert request_body
         obj_to_store = json.loads(tornado.escape.utf8(request_body), 'utf-8')
         assert obj_to_store
-        logging.info("Retrieved new JSON task: {}".format(obj_to_store))
+        logging.debug("Retrieved new JSON task: {}".format(obj_to_store))
         return obj_to_store
 
     def fetch_all(self):
@@ -108,7 +108,7 @@ class ApiService(object):
                 u'created_at': deploy_result['created_at']
             }
         )
-        logging.info("Received result from DB store: ID = {} -- DATA = {}".format(db_result._key, db_result.get_data()))
+        logging.debug("Received result from DB store: ID = {} -- DATA = {}".format(db_result._key, db_result.get_data()))
 
         return deploy_result
 
@@ -168,7 +168,7 @@ class ApiService(object):
         # TODO: remove API
         # TODO: delete supervisor config for API
 
-        logging.info('Deleting reference for API ID:{}'.format(api['api_id']))
+        logging.debug('Deleting reference for API ID:{}'.format(api['api_id']))
         self.repository.remove(db_id).get_data()
 
         return undeploy_result

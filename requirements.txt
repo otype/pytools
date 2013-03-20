@@ -7,7 +7,6 @@ celery==3.0.16
 configobj==4.7.2
 flower==0.4.2
 kombu==2.5.7
-librabbitmq==1.0.1
 nose==1.2.1
 pep8==1.4
 pika==0.9.8

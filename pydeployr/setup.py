@@ -43,9 +43,7 @@ def get_template_base_dir():
 
 def scripts_list():
     return [
-        'pydeployr/tasks.py',
-        'pydeployr/api/deploy.py',
-        'pydeployr/api/undeploy.py'
+        'pydeployr/tasks.py'
     ]
 
 

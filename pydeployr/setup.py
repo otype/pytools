@@ -57,7 +57,7 @@ setup(
     url='http://apitrary.com',
     install_requires=read_requirements(),
     keywords='pydeployr apitrary application',
-    packages=find_packages('deployr'),
+    packages=find_packages('pydeployr'),
     package_dir={'': 'pydeployr'},
     data_files=[
         (get_template_base_dir(), ['pydeployr/templates/genapi_base.tpl'])

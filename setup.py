@@ -44,8 +44,6 @@ def get_template_base_dir():
 def scripts_list():
     return [
         'pydeployr/pydeployr/tasks.py',
-        'pydeployr/pydeployr/api/deploy.py',
-        'pydeployr/pydeployr/api/undeploy.py',
         'pybuildr/pybuildr/buildr.py',
         'pyloggr/pyloggr/loggr.py',
         'pytrackr/pytrackr/trackr.py'
@@ -63,7 +61,7 @@ setup(
     install_requires=read_requirements(),
     keywords='pytools pybuildr pydeployr pybalancr pyloggr pytoolslib pytrackr apitrary application',
     data_files=[
-        (get_template_base_dir(), ['pydeployr/templates/genapi_base.tpl'])
+        (get_template_base_dir(), ['pydeployr/pydeployr/templates/genapi_base.tpl'])
     ],
     scripts=scripts_list()
 )

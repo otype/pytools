@@ -61,7 +61,7 @@ setup(
     install_requires=read_requirements(),
     keywords='pytools pybuildr pydeployr pybalancr pyloggr pytoolslib pytrackr apitrary application',
     packages=find_packages('pytools'),
-    packagedir={'':'pytools'},
+    package_dir={'':'pytools'},
     data_files=[
         (get_template_base_dir(), ['pytools/pydeployr/templates/genapi_base.tpl'])
     ],

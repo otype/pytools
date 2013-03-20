@@ -11,7 +11,7 @@
     Copyright (c) 2012 apitrary
 
 """
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 
 
@@ -46,6 +46,8 @@ setup(
     long_description=read('README.md'),
     url='http://apitrary.com',
     install_requires=read_requirements(),
+    packages=find_packages('pybuildr'),
+    package_dir={'': 'pybuildr'},
     keywords='pybuildr apitrary application',
     scripts=scripts_list()
 )

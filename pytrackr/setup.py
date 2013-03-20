@@ -12,7 +12,7 @@
 
 """
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(fname):
@@ -45,6 +45,8 @@ setup(
     long_description=read('README.md'),
     url='http://apitrary.com',
     install_requires=read_requirements(),
+    packages=find_packages('pytrackr'),
+    package_dir={'': 'pytrackr'},
     keywords='pytrackr apitrary',
     scripts=scripts_list()
 )

@@ -13,7 +13,7 @@
 """
 import sys
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def read(fname):
     """
@@ -57,6 +57,8 @@ setup(
     url='http://apitrary.com',
     install_requires=read_requirements(),
     keywords='pydeployr apitrary application',
+    packages=find_packages('pybuildr'),
+    package_dir={'': 'pybuildr'},
     data_files=[
         (get_template_base_dir(), ['pydeployr/templates/genapi_base.tpl'])
     ],

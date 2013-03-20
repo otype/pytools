@@ -11,7 +11,6 @@ librabbitmq==1.0.1
 nose==1.2.1
 pep8==1.4
 pika==0.9.8
-pybuildr==0.0.2
 pydeployr==0.0.1
 pymongo==2.4.2
 python-dateutil==1.5

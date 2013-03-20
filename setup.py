@@ -13,7 +13,7 @@
 """
 import sys
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def read(fname):
     """
@@ -60,6 +60,8 @@ setup(
     url='http://apitrary.com',
     install_requires=read_requirements(),
     keywords='pytools pybuildr pydeployr pybalancr pyloggr pytoolslib pytrackr apitrary application',
+    packages=find_packages('pytools'),
+    packagedir={'':'pytools'},
     data_files=[
         (get_template_base_dir(), ['pydeployr/pydeployr/templates/genapi_base.tpl'])
     ],

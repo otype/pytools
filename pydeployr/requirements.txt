@@ -1,9 +1,0 @@
-Jinja2==2.6
-amqp==1.0.9
-anyjson==0.3.3
-billiard==2.7.3.22
-celery==3.0.16
-configobj==4.7.2
-kombu==2.5.7
-python-dateutil==1.5
-flower==0.4.2

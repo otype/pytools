@@ -1,3 +1,0 @@
-pymongo==2.4.2
-pyzmq==13.0.0
-tornado==2.4.1

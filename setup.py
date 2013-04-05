@@ -52,7 +52,7 @@ def scripts_list():
 
 setup(
     name='pytools',
-    version='0.0.3',
+    version='0.0.4',
     author='Hans-Gunther Schmidt',
     author_email='hgs@apitrary.com',
     description='pytools - apitrary pytools',

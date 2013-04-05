@@ -43,7 +43,7 @@ def get_template_base_dir():
 
 def scripts_list():
     return [
-        'pytools/pydeployr/tasks.py',
+        'pytools/pydeployr/pydeployr_tasks.py',
         'pytools/pybuildr/buildr.py',
         'pytools/pyloggr/loggr.py',
         'pytools/pytrackr/trackr.py'

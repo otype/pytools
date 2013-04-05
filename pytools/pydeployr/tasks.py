@@ -27,7 +27,7 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     port=config.rmq_broker_port
 )
 
-celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['pydeployr.pydeployr_tasks'])
+celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['pydeployr.tasks'])
 celery.conf.update(
     CELERY_DEFAULT_QUEUE='deployr.default',
     CELERY_DEFAULT_EXCHANGE='deployr.tasks',

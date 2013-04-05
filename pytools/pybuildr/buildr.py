@@ -63,6 +63,11 @@ def main():
     define("riak_wq", default=2, help="Riak WRITE QUORUM", type=int)
     define("riak_bucket_name", default="apitrary_base_buildr", help="PyBuildr Riak bucket name", type=str)
 
+    try:
+        tornado.options.parse_command_line()
+    except tornado.options.Error, e:
+        sys.exit('ERROR: {}'.format(e))
+
     options_dict = dict(
         riak_host=options.riak_host,
         riak_pb_port=options.riak_pb_port,
@@ -78,11 +83,6 @@ def main():
         (r"/v1/apis/by_host", ApiHostHandler, options_dict),
         (r"/v1/apis/by_host/([0-9a-zA-Z]+)", ApiHostHandler, options_dict),
     ]
-
-    try:
-        tornado.options.parse_command_line()
-    except tornado.options.Error, e:
-        sys.exit('ERROR: {}'.format(e))
 
     application = tornado.web.Application(handlers=all_routes, **APP_SETTINGS)
     http_server = tornado.httpserver.HTTPServer(application)

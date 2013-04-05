@@ -24,7 +24,7 @@ enable_pretty_logging()
 
 APP_DETAILS = {
     'name': 'pybuildr',
-    'version': '0.0.2',
+    'version': '0.0.3',
     'company': 'apitrary',
     'author': 'Hans-Gunther Schmidt',
     'author_email': 'hgs@apitrary.com',

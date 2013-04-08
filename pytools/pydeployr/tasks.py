@@ -52,6 +52,8 @@ def undeploy(undeploy_task):
     """
         UNDEPLOY an API
     """
+    logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
+
     logging.info("Processing task: {}".format(undeploy_task))
     api_id = undeploy_task['api_id']
     undeploy_service = UndeployService(config=config)
@@ -64,6 +66,8 @@ def deploy(deploy_task):
     """
         DEPLOY an API
     """
+    logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
+
     # TODO: Validate the deploy_task
     logging.info("Processing task: {}".format(deploy_task))
 

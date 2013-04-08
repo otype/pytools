@@ -64,11 +64,11 @@ class ApiHandler(BaseHandler):
         self.require_content_type()
         self.respond(payload=self.api_service.redeploy(request_body=self.request.body))
 
-    def delete(self, *args, **kwargs):
+    def delete(self, api_id):
         """
             DELETE /apis
 
             Undeploy an API
         """
         self.require_accept_header()
-        self.respond(payload=self.api_service.undeploy(request_body=self.request.body))
+        self.respond(payload=self.api_service.undeploy(api_id=api_id))

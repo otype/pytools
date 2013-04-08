@@ -134,22 +134,15 @@ class ApiService(ApiBaseService):
             raise NoSuchApiFoundException()
 
         logging.info('Received command to redeploy API ID:{}'.format(obj_to_store['api_id']))
-        self.undeploy(request_body=request_body)
+        self.undeploy(api_id=obj_to_store['api_id'])    # TODO: BAD ONE HERE! Should make sure 'api_id' exists!
         self.deploy(request_body=request_body)
 
-    def undeploy(self, request_body):
+    def undeploy(self, api_id):
         """
             Undeploy an API from a given JSON request
         """
-        obj_to_store = self.read_json(request_body=request_body)
-        self.validate_json(obj_to_store, ['api_id'])
-
-        if 'app_host' in obj_to_store:
-            # Both api_id and app_host have been provided -> Only search this particular API
-            db_objects = self.fetch_by_api_id_and_app_host(obj_to_store['api_id'], obj_to_store['app_host'])
-        else:
-            # Only api_id has been provided -> get ALL running instances of this API
-            db_objects = self.fetch_by_api_id(api_id=obj_to_store['api_id'])
+        logging.info('Received command to undeploy API ID:{}'.format(api_id))
+        db_objects = self.fetch_by_api_id(api_id=api_id)
 
         if db_objects is None or len(db_objects) == 0:
             raise RiakObjectNotFoundException()
@@ -168,7 +161,6 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        logging.info('Undeploying API with ID:{} on APP_HOST:{}'.format(api['api_id'], api['app_host']))
         undeploy_result = undeploy_api(api_id=api['api_id'], app_host=api['app_host'])
 
         # TODO: find out on which host API is running

@@ -90,7 +90,6 @@ def deploy(deploy_task):
         status=status_code
     ).to_dict()
 
-
 #########################################################################
 #
 # MAIN

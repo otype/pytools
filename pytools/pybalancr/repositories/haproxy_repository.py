@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-    deployr
+    balancr
 
     created by hgschmidt on 27.11.12, 00:33 CET
     
@@ -9,6 +9,7 @@
 
 """
 import subprocess
+
 
 def reload_haproxy():
     """

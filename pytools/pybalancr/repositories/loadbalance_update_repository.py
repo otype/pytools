@@ -81,9 +81,9 @@ def loadbalance_update_api(api_id, api_host, api_port):
     # add the config (implicitly starts the genapi)
     logging.info('Trying to reload loadbalancer (haproxy), now ...')
 
-    status_code = RETURNCODE.OS_SUCCESS
-    if not haproxy_repository.reload_haproxy():
+    status_code = haproxy_repository.reload_haproxy()
+    logging.info('Reload of haproxy status: {}'.format(status_code))
+    if status_code != RETURNCODE.OS_SUCCESS:
         logging.error("Error on reloading haproxy.")
-        status_code = RETURNCODE.OS_ERROR
 
     return status_code

@@ -90,17 +90,6 @@ def deploy(deploy_task):
         status=status_code
     ).to_dict()
 
-# TODO: Remove if unused
-# @celery.task
-# def loadbalance_update(loadbalance_update_task):
-#     """
-#         Loadbalance update for a deployed API
-#     """
-#     logging.info("Send loadbalance update task: {}".format(loadbalance_update_task))
-#
-#     # TODO: implement here
-
-
 #########################################################################
 #
 # MAIN

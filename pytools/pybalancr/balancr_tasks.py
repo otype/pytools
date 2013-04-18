@@ -12,7 +12,9 @@ from __future__ import absolute_import
 import logging
 from celery import Celery
 from kombu.entity import Queue
+from pybalancr.repositories.loadbalance_update_repository import loadbalance_update_api
 from pydeployr.conf.config_loader import ConfigLoader
+from pydeployr.conf.returncodes import RETURNCODE
 from pydeployr.messages.loadbalance_update_confirmation_message import LoadbalanceUpdateConfirmationMessage
 from pydeployr.services import config_service
 
@@ -78,7 +80,13 @@ def deploy(deploy_task):
     logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
     logging.info("Processing task: {}".format(deploy_task))
 
-    # TODO: do smart stuff here
+    status = loadbalance_update_api(
+        api_id=deploy_task['api_id'],
+        api_host=deploy_task['api_host'],
+        api_port=deploy_task['api_port']
+    )
+    if status == RETURNCODE.OS_ERROR:
+        return {'error': 'Loadbalance update failed.'}
 
     return LoadbalanceUpdateConfirmationMessage(
         api_id=deploy_task['api_id'],

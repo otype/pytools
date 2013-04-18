@@ -13,11 +13,7 @@ import logging
 from celery import Celery
 from kombu.entity import Queue
 from pydeployr.conf.config_loader import ConfigLoader
-from pydeployr.messages.deploy_confirmation_message import DeployConfirmationMessage
-from pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from pydeployr.services import config_service
-from pydeployr.services.deploy_service import DeployService
-from pydeployr.services.undeploy_service import UndeployService
 
 config = ConfigLoader(config=config_service.load_configuration())
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
@@ -27,13 +23,18 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
     port=config.rmq_broker_port
 )
 
-celery = Celery('deployr', broker=broker_address, backend=broker_address, include=['pydeployr.tasks'])
+celery = Celery(
+    'pybalancr.balancr_tasks',
+    broker=broker_address,
+    backend=broker_address,
+    include=['pybalancr.balancr_tasks']
+)
 celery.conf.update(
-    CELERY_DEFAULT_QUEUE='deployr.default',
-    CELERY_DEFAULT_EXCHANGE='deployr.tasks',
+    CELERY_DEFAULT_QUEUE='balancr.default',
+    CELERY_DEFAULT_EXCHANGE='balancr.tasks',
     CELERY_QUEUES=(
-        Queue('deployr.deploy', routing_key='deploy.#'),
-        Queue('deployr.undeploy', routing_key='undeploy.#'),
+        Queue('balancr.deploy', routing_key='deploy.#'),
+        Queue('balancr.undeploy', routing_key='undeploy.#'),
         ),
     CELERY_DEFAULT_EXCHANGE_TYPE='topic',
     CELERY_TASK_RESULT_EXPIRES=300,
@@ -53,12 +54,8 @@ def undeploy(undeploy_task):
         UNDEPLOY an API
     """
     logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
-
     logging.info("Processing task: {}".format(undeploy_task))
-    api_id = undeploy_task['api_id']
-    undeploy_service = UndeployService(config=config)
-    status = undeploy_service.undeploy_api(api_id=api_id)
-    return UndeployConfirmationMessage(api_id=api_id, status=status).to_dict()
+    return 'undeploy_task'
 
 
 @celery.task
@@ -67,28 +64,19 @@ def deploy(deploy_task):
         DEPLOY an API
     """
     logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
-
-    # TODO: Validate the deploy_task
     logging.info("Processing task: {}".format(deploy_task))
+    return 'deploy_task'
 
-    deploy_service = DeployService(config=config)
-    status_code, host_ip, port = deploy_service.deploy_api(
-        api_id=deploy_task['api_id'],
-        db_host=deploy_task['db_host'],
-        genapi_version=deploy_task['genapi_version'],
-        log_level=deploy_task['log_level'],
-        environment=config.environment,
-        entities=deploy_task['entities'],
-        api_key=deploy_task['api_key']
-    )
+# TODO: Remove if unused
+# @celery.task
+# def loadbalance_update(loadbalance_update_task):
+#     """
+#         Loadbalance update for a deployed API
+#     """
+#     logging.info("Send loadbalance update task: {}".format(loadbalance_update_task))
+#
+#     # TODO: implement here
 
-    return DeployConfirmationMessage(
-        api_id=deploy_task['api_id'],
-        genapi_version=deploy_task['genapi_version'],
-        host=host_ip,
-        port=port,
-        status=status_code
-    ).to_dict()
 
 #########################################################################
 #

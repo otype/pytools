@@ -9,7 +9,7 @@
 
 """
 import logging
-from pydeployr import tasks
+from pydeployr import deployr_tasks
 from pydeployr.messages.undeploy_message import UndeployMessage
 
 UNDEPLOY_ROUTING_KEY = 'undeploy.undeploy'
@@ -25,7 +25,7 @@ def undeploy_api(api_id, app_host):
     logging.debug('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
 
     # TODO: Obviously, as of time writing, the apply_async() method is having trouble. This sync'ed one works!
-    result = tasks.undeploy.apply(
+    result = deployr_tasks.undeploy.apply(
         args=[undeploy_message.to_dict()],
         exchange='C.dq',
         routing_key=app_host

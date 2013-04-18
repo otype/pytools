@@ -148,7 +148,7 @@ class ApiService(ApiBaseService):
             api_host=obj_to_store['api_host'],
             api_port=obj_to_store['api_port']
         )
-        logging.info("Loadbalance deploy result: {}".format(loadbalance_deploy_result.to_json()))
+        logging.info("Loadbalance deploy result: {}".format(loadbalance_deploy_result))
 
         # loadbalance_deploy_result = loadbalance_update(
         #     api_id=obj_to_store['api_id'],

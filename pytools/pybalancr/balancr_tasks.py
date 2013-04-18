@@ -13,6 +13,7 @@ import logging
 from celery import Celery
 from kombu.entity import Queue
 from pydeployr.conf.config_loader import ConfigLoader
+from pydeployr.messages.loadbalance_update_confirmation_message import LoadbalanceUpdateConfirmationMessage
 from pydeployr.services import config_service
 
 config = ConfigLoader(config=config_service.load_configuration())
@@ -35,7 +36,7 @@ celery.conf.update(
     CELERY_QUEUES=(
         Queue('balancr.deploy', routing_key='deploy.#'),
         Queue('balancr.undeploy', routing_key='undeploy.#'),
-        ),
+    ),
     CELERY_DEFAULT_EXCHANGE_TYPE='topic',
     CELERY_TASK_RESULT_EXPIRES=300,
     CELERY_TIMEZONE='Europe/Berlin',
@@ -55,7 +56,18 @@ def undeploy(undeploy_task):
     """
     logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
     logging.info("Processing task: {}".format(undeploy_task))
-    return 'undeploy_task'
+
+    # TODO: do smart stuff here
+    # TODO: create confirmation message
+
+    # loadbalance_update_confirmation_message = LoadbalanceUpdateConfirmationMessage(
+    #     api_id=api_id,
+    #     lb_host='some.host',
+    #     lb_api_port=80,
+    #     api_domainname='some.com'
+    # )
+
+    return '>>>>>>>>>>>>>>>>>>>>>> undeploy_task'
 
 
 @celery.task
@@ -65,18 +77,15 @@ def deploy(deploy_task):
     """
     logging.info('Using Rabbitmq host:{} on port:{}'.format(config.rmq_broker_host, config.rmq_broker_port))
     logging.info("Processing task: {}".format(deploy_task))
-    return 'deploy_task'
 
-# TODO: Remove if unused
-# @celery.task
-# def loadbalance_update(loadbalance_update_task):
-#     """
-#         Loadbalance update for a deployed API
-#     """
-#     logging.info("Send loadbalance update task: {}".format(loadbalance_update_task))
-#
-#     # TODO: implement here
+    # TODO: do smart stuff here
 
+    return LoadbalanceUpdateConfirmationMessage(
+        api_id=deploy_task['api_id'],
+        lb_host='api.apitrary.com',
+        lb_api_port=80,
+        api_domainname='{}.api.apitrary.com'.format(deploy_task['api_id'])
+    )
 
 #########################################################################
 #

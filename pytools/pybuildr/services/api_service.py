@@ -11,8 +11,8 @@
 import json
 import logging
 import uuid
+from pybalancr.api.deploy import loadbalance_deploy
 from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
-from pybuildr.repositories.loadbalance_repository import loadbalance_update
 from pybuildr.services.api_base_service import ApiBaseService
 from pydeployr.api.undeploy import undeploy_api
 from pydeployr.api.deploy import deploy_api
@@ -143,12 +143,19 @@ class ApiService(ApiBaseService):
         obj_to_store = self.read_json(request_body)
         self.validate_json(obj_to_store, ['api_id', 'api_host', 'api_port'])
 
-        loadbalance_deploy_result = loadbalance_update(
+        loadbalance_deploy_result = loadbalance_deploy(
             api_id=obj_to_store['api_id'],
             api_host=obj_to_store['api_host'],
             api_port=obj_to_store['api_port']
         )
         logging.info("Loadbalance deploy result: {}".format(loadbalance_deploy_result.to_json()))
+
+        # loadbalance_deploy_result = loadbalance_update(
+        #     api_id=obj_to_store['api_id'],
+        #     api_host=obj_to_store['api_host'],
+        #     api_port=obj_to_store['api_port']
+        # )
+        # logging.info("Loadbalance deploy result: {}".format(loadbalance_deploy_result.to_json()))
 
         return loadbalance_deploy_result
 

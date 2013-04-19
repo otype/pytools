@@ -89,7 +89,7 @@ def deploy(deploy_task):
         host=host_ip,
         port=port,
         status=status_code
-    ).to_dict()
+    )
 
 #########################################################################
 #

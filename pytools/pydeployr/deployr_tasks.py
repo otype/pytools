@@ -34,7 +34,7 @@ celery.conf.update(
     CELERY_QUEUES=(
         Queue('deployr.deploy', routing_key='deploy.#'),
         Queue('deployr.undeploy', routing_key='undeploy.#'),
-        ),
+    ),
     CELERY_DEFAULT_EXCHANGE_TYPE='topic',
     CELERY_TASK_RESULT_EXPIRES=300,
     CELERY_TIMEZONE='Europe/Berlin',
@@ -46,6 +46,7 @@ celery.conf.update(
 # TASKS
 #
 #########################################################################
+
 
 @celery.task
 def undeploy(undeploy_task):

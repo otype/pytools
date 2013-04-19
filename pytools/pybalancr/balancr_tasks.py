@@ -51,6 +51,7 @@ celery.conf.update(
 #
 #########################################################################
 
+
 @celery.task
 def undeploy(undeploy_task):
     """

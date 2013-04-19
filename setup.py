@@ -15,6 +15,7 @@ import sys
 import os
 from setuptools import setup, find_packages
 
+
 def read(fname):
     """
         Read the README.md file
@@ -41,6 +42,7 @@ def get_template_base_dir():
 
     return template_dir
 
+
 def scripts_list():
     return [
         'pytools/pybalancr/balancr_tasks.py',
@@ -62,7 +64,7 @@ setup(
     install_requires=read_requirements(),
     keywords='pytools pybuildr pydeployr pybalancr pyloggr pytoolslib pytrackr apitrary application',
     packages=find_packages('pytools'),
-    package_dir={'':'pytools'},
+    package_dir={'': 'pytools'},
     data_files=[
         (get_template_base_dir(), ['pytools/pydeployr/templates/genapi_base.tpl'])
     ],

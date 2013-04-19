@@ -35,6 +35,7 @@ def create_and_fetch_backends_directory(api_id):
     """
     backends_path = '{}/backends/{}_cluster'.format(define_haproxy_config_path(), api_id)
     if not os.path.exists(backends_path):
+        logging.debug('Creating backends directory: {}'.format(backends_path))
         os.mkdir(backends_path, 0755)
     return backends_path
 
@@ -78,9 +79,8 @@ def loadbalance_update_api(api_id, api_host, api_port):
     logging.info('Writing configuration {} for API: {}'.format(frontends_config, api_id))
     template_service.write_genapi_frontends_tpl(config_file_name=frontends_config, api_id=api_id)
 
-    # add the config (implicitly starts the genapi)
+    # Reload HAPROXY
     logging.info('Trying to reload loadbalancer (haproxy), now ...')
-
     status_code = haproxy_repository.reload_haproxy()
     logging.info('Reload of haproxy status: {}'.format(status_code))
     if status_code != RETURNCODE.OS_SUCCESS:

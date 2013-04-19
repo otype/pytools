@@ -134,7 +134,8 @@ class ApiService(ApiBaseService):
                 }
             )
         )
-        return deploy_result
+
+        return deploy_result + loadbalance_deploy_result
 
     def loadbalance_deploy(self, request_body):
         """

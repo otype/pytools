@@ -100,8 +100,8 @@ class ApiService(ApiBaseService):
             db_port=obj_to_store['db_port'],
             genapi_version=obj_to_store['genapi_version'],
             log_level=obj_to_store['log_level']
-        )
-        logging.info('Received result from deploy job: {}'.format(deploy_result.to_dict()))
+        ).to_dict()
+        logging.info('Received result from deploy job: {}'.format(deploy_result))
 
         db_result = self.repository.add(
             object_id=uuid.uuid1().hex,
@@ -132,10 +132,10 @@ class ApiService(ApiBaseService):
                     'api_host': deploy_result['host'],
                     'api_port': deploy_result['port']
                 }
-            )
+            ).to_dict()
         )
 
-        return deploy_result.to_dict() + loadbalance_deploy_result.to_dict()
+        return deploy_result + loadbalance_deploy_result
 
     def loadbalance_deploy(self, request_body):
         """

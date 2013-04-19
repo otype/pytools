@@ -16,14 +16,14 @@ class DeployConfirmationMessage(object):
         A message object that is used for confirming a successful deployment
     """
 
-    def __init__(self, api_id, genapi_version, host, port, status):
+    def __init__(self, api_id, genapi_version, api_host, api_port, status):
         """
             Setting the base variables for this message object
         """
         self.api_id = api_id
         self.genapi_version = genapi_version
-        self.host = host
-        self.port = port
+        self.api_host = api_host
+        self.api_port = api_port
         self.status = status
         self.created_at = time.strftime('%d %b %Y %H:%M:%S +0000', time.gmtime())
 
@@ -35,8 +35,8 @@ class DeployConfirmationMessage(object):
             'task_type': 'DEPLOY_CONFIRMATION',
             'api_id': self.api_id,
             'genapi_version': self.genapi_version,
-            'host': self.host,
-            'port': self.port,
+            'api_host': self.api_host,
+            'api_port': self.api_port,
             'status': self.status,
             'created_at': self.created_at
         }

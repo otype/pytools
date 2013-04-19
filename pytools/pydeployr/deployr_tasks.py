@@ -73,7 +73,7 @@ def deploy(deploy_task):
     logging.info("Processing task: {}".format(deploy_task))
 
     deploy_service = DeployService(config=config)
-    status_code, host_ip, port = deploy_service.deploy_api(
+    status_code, api_host, api_port = deploy_service.deploy_api(
         api_id=deploy_task['api_id'],
         db_host=deploy_task['db_host'],
         genapi_version=deploy_task['genapi_version'],
@@ -86,8 +86,8 @@ def deploy(deploy_task):
     return DeployConfirmationMessage(
         api_id=deploy_task['api_id'],
         genapi_version=deploy_task['genapi_version'],
-        host=host_ip,
-        port=port,
+        api_host=api_host,
+        api_port=api_port,
         status=status_code
     )
 

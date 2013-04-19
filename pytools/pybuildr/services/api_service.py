@@ -114,8 +114,8 @@ class ApiService(ApiBaseService):
                 u'log_level': obj_to_store['log_level'],
                 u'status': deploy_result['status'],
                 u'genapi_version': deploy_result['genapi_version'],
-                u'app_host': deploy_result['host'],
-                u'app_port': deploy_result['port'],
+                u'app_host': deploy_result['api_host'],
+                u'app_port': deploy_result['api_port'],
                 u'created_at': deploy_result['created_at']
             }
         )
@@ -129,8 +129,8 @@ class ApiService(ApiBaseService):
             json.dumps(
                 {
                     'api_id': obj_to_store['api_id'],
-                    'api_host': deploy_result['host'],
-                    'api_port': deploy_result['port']
+                    'api_host': deploy_result['api_host'],
+                    'api_port': deploy_result['api_port']
                 }
             )
         ).to_dict()

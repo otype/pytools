@@ -132,10 +132,12 @@ class ApiService(ApiBaseService):
                     'api_host': deploy_result['host'],
                     'api_port': deploy_result['port']
                 }
-            ).to_dict()
-        )
+            )
+        ).to_dict()
 
-        return deploy_result + loadbalance_deploy_result
+        deploy_result.update(loadbalance_deploy_result)
+        logging.info('Merged result: {}'.format(deploy_result))
+        return deploy_result
 
     def loadbalance_deploy(self, request_body):
         """

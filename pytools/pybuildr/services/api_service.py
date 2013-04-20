@@ -195,8 +195,8 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        logging.info("Ready to undeploy API:{} by host:{}".format(api['api_id'], api['api_host']))
-        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['api_host'])
+        logging.info("Ready to undeploy API:{} by host:{}".format(api['api_id'], api['app_host']))
+        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
 
         # TODO: find out on which host API is running
         # TODO: check if API is running

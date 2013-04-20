@@ -24,7 +24,7 @@ def undeploy_api(api_id, api_host):
     undeploy_message = UndeployMessage(api_id=api_id, api_host=api_host)
     logging.info('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
 
-    return deployr_tasks.undeploy.apply_async(
+    return deployr_tasks.undeploy.apply(
         args=[undeploy_message.to_dict()],
         exchange='C.dq',
         routing_key=api_host

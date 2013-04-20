@@ -20,10 +20,14 @@ class UndeployService(object):
         Undeploy service.
     """
 
-    def __init__(self, config):
+    def __init__(self, config, api_host=None):
         self.config = config
         self.template_service = TemplateService()
-        self.supervisor_xml_rpc_service = SupervisorXmlRpcService(self.config.supervisord_xml_rpc_server)
+        if api_host is None:
+            self.supervisor_xml_rpc_service = SupervisorXmlRpcService(self.config.supervisord_xml_rpc_server)
+        else:
+            # TODO: This will be the default in the future! Check this again later and only use this way!
+            self.supervisor_xml_rpc_service = SupervisorXmlRpcService(api_host)
 
     def define_supervisor_config_file(self, api_id):
         """
@@ -89,11 +93,11 @@ class UndeployService(object):
         config_file = self.define_supervisor_config_file(api_id=api_id)
         filesystem_service.delete_file(config_file)
 
-    def undeploy_api(self, api_id):
+    def undeploy_api(self, api_id, api_host):
         """
             Undeploy an GenAPI
         """
-        logging.info("Undeploying API: {}".format(api_id))
+        logging.info("Undeploying API:{} on API HOST:{}".format(api_id, api_host))
 
         if self.is_already_running(api_id=api_id):
             self.stop_api(api_id=api_id)

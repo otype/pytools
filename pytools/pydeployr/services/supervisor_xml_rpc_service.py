@@ -40,7 +40,6 @@ class SupervisorXmlRpcService(object):
             return RETURNCODE.OS_ERROR
         return RETURNCODE.OS_SUCCESS
 
-
     def start(self, app_name):
         """
             Start given application via supervisor_api
@@ -59,7 +58,6 @@ class SupervisorXmlRpcService(object):
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
-
     def stop(self, app_name):
         """
             Stop given application via supervisor_api
@@ -76,7 +74,6 @@ class SupervisorXmlRpcService(object):
         except Exception, e:
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
-
 
     def restart(self, app_name):
         """
@@ -95,7 +92,6 @@ class SupervisorXmlRpcService(object):
 
         return RETURNCODE.OS_SUCCESS
 
-
     def add_group(self, group_name):
         """
             Add new application to supervisor_api configuration
@@ -112,7 +108,6 @@ class SupervisorXmlRpcService(object):
         except Exception, e:
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
-
 
     def status(self):
         """
@@ -133,7 +128,6 @@ class SupervisorXmlRpcService(object):
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
-
     def get_all_process_info(self):
         """
             Request status of given application
@@ -147,7 +141,6 @@ class SupervisorXmlRpcService(object):
         except Exception, e:
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
-
 
     def get_process_info(self, app_name):
         """
@@ -170,7 +163,6 @@ class SupervisorXmlRpcService(object):
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
-
     def remove_group(self, group_name):
         """
             Remove application from supervisor_api context
@@ -188,7 +180,6 @@ class SupervisorXmlRpcService(object):
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
-
     def get_all_config_info(self):
         """
             Remove application from supervisor_api context
@@ -202,7 +193,6 @@ class SupervisorXmlRpcService(object):
         except Exception, e:
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
-
 
     def get_config_info(self, app_name):
         """
@@ -223,7 +213,6 @@ class SupervisorXmlRpcService(object):
             logging.error('Unknown error! Call the administrator! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
 
-
     def help_method(self, method_name):
         """
             Simple helper method to show the method's parameters and response values.
@@ -235,7 +224,6 @@ class SupervisorXmlRpcService(object):
             logging.warning('Received no result on given method! Error: {}'.format(e))
             return RETURNCODE.OS_ERROR
         return RETURNCODE.OS_SUCCESS
-
 
     def list_methods(self):
         """

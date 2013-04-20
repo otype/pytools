@@ -21,8 +21,8 @@ def undeploy_api(api_id, api_host):
         Undeploy a given API from given app host
     """
     logging.info('Undeploying API ID:{} on API HOST:{}'.format(api_id, api_host))
-    undeploy_message = UndeployMessage(api_id=api_id)
-    logging.debug('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
+    undeploy_message = UndeployMessage(api_id=api_id, api_host=api_host)
+    logging.info('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
 
     return deployr_tasks.undeploy.apply_async(
         args=[undeploy_message.to_dict()],

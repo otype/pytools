@@ -10,16 +10,18 @@
 """
 import json
 
+
 class UndeployConfirmationMessage(object):
     """
         An undeploy message
     """
 
-    def __init__(self, api_id, status):
+    def __init__(self, api_id, api_host, status):
         """
             Setting the base variables for this message object
         """
         self.api_id = api_id
+        self.api_host = api_host
         self.status = status
 
     def to_dict(self):
@@ -29,6 +31,7 @@ class UndeployConfirmationMessage(object):
         return {
             'task_type': 'UNDEPLOY_CONFIRMATION',
             'api_id': self.api_id,
+            'api_host': self.api_host,
             'status': self.status
         }
 

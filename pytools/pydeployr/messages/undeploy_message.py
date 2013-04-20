@@ -10,16 +10,18 @@
 """
 import json
 
+
 class UndeployMessage(object):
     """
         An undeploy message
     """
 
-    def __init__(self, api_id):
+    def __init__(self, api_id, api_host):
         """
             Setting the base variables for this message object
         """
         self.api_id = api_id
+        self.api_host = api_host
 
     def to_dict(self):
         """
@@ -27,7 +29,8 @@ class UndeployMessage(object):
         """
         return {
             'task_type': 'UNDEPLOY',
-            'api_id': self.api_id
+            'api_id': self.api_id,
+            'api_host': self.api_host
         }
 
     def to_json(self):

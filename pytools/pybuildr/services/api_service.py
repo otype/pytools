@@ -209,7 +209,7 @@ class ApiService(ApiBaseService):
         undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
         logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
 
-        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id']).to_dict()
+        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id'])
         logging.info('Loadbalancer undeploy result for API:{} = {}'.format(api['api_id'], loadbalance_undeploy_result))
 
         logging.debug('Deleting reference for API ID:{}'.format(api['api_id']))

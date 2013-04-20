@@ -91,9 +91,9 @@ def deploy(deploy_task):
 
     return LoadbalanceUpdateConfirmationMessage(
         api_id=deploy_task['api_id'],
-        lb_host='api.apitrary.com',
+        lb_host=config.loadbalancer_domainname,
         lb_api_port=80,
-        api_domainname='{}.api.apitrary.com'.format(deploy_task['api_id'])
+        api_domainname='{}.{}'.format(deploy_task['api_id'], config.loadbalancer_domainname)
     )
 
 #########################################################################

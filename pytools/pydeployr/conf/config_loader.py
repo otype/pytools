@@ -52,6 +52,7 @@ class ConfigLoader(object):
         self.config_file = self.get("DEPLOYR_CONFIG_FILE")
         self.service_name = self.get("SERVICE")
         self.debug = True if self.get("DEBUG") == "1" or self.get("DEBUG") == True else False
+        self.loadbalancer_domainname = self.get("LOADBALANCER_DOMAINNAME")
 
     def show_all_settings(self):
         """
@@ -63,6 +64,7 @@ class ConfigLoader(object):
         logging.info('Config file: {}'.format(self.config_file))
         logging.info('Service: {}'.format(self.service_name))
         logging.info('Debug: {}'.format("ON" if self.debug == True else "OFF"))
+        logging.info('Loadbalancer domainname: {}'.format(self.loadbalancer_domainname))
         logging.info('Supervisor host: {}'.format(self.supervisord_host))
         logging.info('Supervisor web port: {}'.format(self.supervisord_web_port))
         logging.info('Supervisor XML-RPC Server address: {}'.format(self.supervisord_xml_rpc_server))

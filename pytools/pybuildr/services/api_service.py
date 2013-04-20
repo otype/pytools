@@ -206,11 +206,11 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        logging.info("Ready to undeploy API:{} by host:{}".format(api['api_id'], api['app_host']))
-        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
+        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host']).to_dict()
+        logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
 
-        logging.info('Ready to undeploy API:{} from loadbalancer'.format(api['api_id']))
-        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id'])
+        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id']).to_dict()
+        logging.info('Loadbalancer undeploy result for API:{} = {}'.format(api['api_id'], loadbalance_undeploy_result))
 
         logging.debug('Deleting reference for API ID:{}'.format(api['api_id']))
         self.repository.remove(db_id).get_data()

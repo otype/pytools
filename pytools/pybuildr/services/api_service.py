@@ -180,6 +180,7 @@ class ApiService(ApiBaseService):
         if db_objects is None or len(db_objects) == 0:
             raise RiakObjectNotFoundException()
 
+        logging.info("Ready to undeploy API:{}".format(api_id))
         undeploy_result = []
         for entry in db_objects:
             undeploy_result.append(self.undeploy_api_by_host(entry))
@@ -194,7 +195,8 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        undeploy_result = undeploy_api(api_id=api['api_id'], app_host=api['app_host'])
+        logging.info("Ready to undeploy API:{} by host:{}".format(api['api_id'], api['api_host']))
+        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['api_host'])
 
         # TODO: find out on which host API is running
         # TODO: check if API is running

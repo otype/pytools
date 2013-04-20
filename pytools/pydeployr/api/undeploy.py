@@ -24,10 +24,8 @@ def undeploy_api(api_id, app_host):
     undeploy_message = UndeployMessage(api_id=api_id)
     logging.debug('Preparing UndeployMessage: {}'.format(undeploy_message.to_dict()))
 
-    # TODO: Obviously, as of time writing, the apply_async() method is having trouble. This sync'ed one works!
-    result = deployr_tasks.undeploy.apply(
+    return deployr_tasks.undeploy.apply_async(
         args=[undeploy_message.to_dict()],
         exchange='C.dq',
         routing_key=app_host
-    )
-    return result.get()
+    ).get()

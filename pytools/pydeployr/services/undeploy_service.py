@@ -23,11 +23,15 @@ class UndeployService(object):
     def __init__(self, config, api_host=None):
         self.config = config
         self.template_service = TemplateService()
-        if api_host is None:
-            self.supervisor_xml_rpc_service = SupervisorXmlRpcService(self.config.supervisord_xml_rpc_server)
-        else:
+        if api_host is not None:
             # TODO: This will be the default in the future! Check this again later and only use this way!
-            self.supervisor_xml_rpc_service = SupervisorXmlRpcService(api_host)
+            supervisor_xml_rpc_server = 'http://{}'.format(api_host)
+        else:
+            supervisor_xml_rpc_server = self.config.supervisord_xml_rpc_server
+
+        self.supervisor_xml_rpc_service = SupervisorXmlRpcService(supervisor_xml_rpc_server)
+
+
 
     def define_supervisor_config_file(self, api_id):
         """

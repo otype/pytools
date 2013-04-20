@@ -25,7 +25,7 @@ class UndeployService(object):
         self.template_service = TemplateService()
         if api_host is not None:
             # TODO: This will be the default in the future! Check this again later and only use this way!
-            supervisor_xml_rpc_server = 'http://{user}:{password}@{host}:9001/RPC2'.format(
+            supervisor_xml_rpc_server = 'http://{}:{}@{}:9001/RPC2'.format(
                 self.config.supervisord_xml_rpc_username,
                 self.config.supervisord_xml_rpc_password,
                 api_host

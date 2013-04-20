@@ -60,7 +60,7 @@ def undeploy(undeploy_task):
     api_host = undeploy_task['api_host']
     undeploy_service = UndeployService(config=config, api_host=api_host)
     status = undeploy_service.undeploy_api(api_id=api_id, api_host=api_host)
-    return UndeployConfirmationMessage(api_id=api_id, api_host=api_host, status=status).to_dict()
+    return UndeployConfirmationMessage(api_id=api_id, api_host=api_host, status=status)
 
 
 @celery.task

@@ -178,7 +178,7 @@ class ApiService(ApiBaseService):
             raise NoSuchApiFoundException()
 
         logging.info('Received command to redeploy API ID:{}'.format(obj_to_store['api_id']))
-        self.undeploy(api_id=obj_to_store['api_id'])    # TODO: BAD ONE HERE! Should make sure 'api_id' exists!
+        self.undeploy(api_id=obj_to_store['api_id'])
         self.deploy(request_body=request_body)
 
     def undeploy(self, api_id):
@@ -206,8 +206,7 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        # TODO: On this one, the to_dict() is not required! Why? Fix this!
-        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
+        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host']).to_dict()
         logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
 
         loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id']).to_dict()

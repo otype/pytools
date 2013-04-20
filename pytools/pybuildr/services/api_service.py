@@ -12,6 +12,7 @@ import json
 import logging
 import uuid
 from pybalancr.api.deploy import loadbalance_deploy
+from pybalancr.api.undeploy import loadbalance_undeploy
 from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
 from pybuildr.services.api_base_service import ApiBaseService
 from pydeployr.api.undeploy import undeploy_api
@@ -152,8 +153,18 @@ class ApiService(ApiBaseService):
             api_port=obj_to_store['api_port']
         )
         logging.info("Loadbalance deploy result: {}".format(loadbalance_deploy_result.to_json()))
-
         return loadbalance_deploy_result
+
+    def loadbalance_undeploy(self, request_body):
+        """
+            Remove loadbalancer configuration for a given API
+        """
+        obj_to_store = self.read_json(request_body)
+        self.validate_json(obj_to_store, ['api_id'])
+
+        loadbalance_undeploy_result = loadbalance_undeploy(api_id=obj_to_store['api_id'])
+        logging.info('Loadbalance undeploy result: {}'.format(loadbalance_undeploy_result))
+        return loadbalance_undeploy_result
 
     def redeploy(self, request_body):
         """
@@ -198,14 +209,12 @@ class ApiService(ApiBaseService):
         logging.info("Ready to undeploy API:{} by host:{}".format(api['api_id'], api['app_host']))
         undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
 
-        # TODO: find out on which host API is running
-        # TODO: check if API is running
-        # TODO: tell loadbalancer to de-register API
-        # TODO: stop API on given host(-s)
-        # TODO: remove API
-        # TODO: delete supervisor config for API
+        logging.info('Ready to undeploy API:{} from loadbalancer'.format(api['api_id']))
+        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id'])
 
         logging.debug('Deleting reference for API ID:{}'.format(api['api_id']))
         self.repository.remove(db_id).get_data()
 
+        undeploy_result.update(loadbalance_undeploy_result)
+        logging.info('Merged result: {}'.format(undeploy_result))
         return undeploy_result

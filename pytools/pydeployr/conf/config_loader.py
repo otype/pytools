@@ -52,7 +52,10 @@ class ConfigLoader(object):
         self.config_file = self.get("DEPLOYR_CONFIG_FILE")
         self.service_name = self.get("SERVICE")
         self.debug = True if self.get("DEBUG") == "1" or self.get("DEBUG") == True else False
-        self.loadbalancer_domainname = self.get("LOADBALANCER_DOMAINNAME")
+        self.loadbalancer_api_base_name = self.get("LOADBALANCER_API_BASE_NAME")
+        self.loadbalancer_host = self.get("LOADBALANCER_HOST")
+        self.loadbalancer_riak_pb_port = self.get("LOADBALANCER_RIAK_PB_PORT")
+        self.loadbalancer_riak_rest_port = self.get("LOADBALANCER_RIAK_REST_PORT")
 
     def show_all_settings(self):
         """
@@ -64,7 +67,10 @@ class ConfigLoader(object):
         logging.info('Config file: {}'.format(self.config_file))
         logging.info('Service: {}'.format(self.service_name))
         logging.info('Debug: {}'.format("ON" if self.debug == True else "OFF"))
-        logging.info('Loadbalancer domainname: {}'.format(self.loadbalancer_domainname))
+        logging.info('Loadbalancer HOST: {}'.format(self.loadbalancer_host))
+        logging.info('Loadbalancer API base name: {}'.format(self.loadbalancer_api_base_name))
+        logging.info('Loadbalancer Riak Protobuf port: {}'.format(self.loadbalancer_riak_pb_port))
+        logging.info('Loadbalancer Riak REST port: {}'.format(self.loadbalancer_riak_rest_port))
         logging.info('Supervisor host: {}'.format(self.supervisord_host))
         logging.info('Supervisor web port: {}'.format(self.supervisord_web_port))
         logging.info('Supervisor XML-RPC Server address: {}'.format(self.supervisord_xml_rpc_server))

@@ -11,13 +11,14 @@
 from pybuildr.handlers.base_handler import BaseHandler
 from pybuildr.services.api_service import ApiService
 
+
 class ApiHostHandler(BaseHandler):
     """
         Handler for /apis/by_host
     """
 
     #noinspection PyMethodOverriding
-    def initialize(self, riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq):
+    def initialize(self, riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq, app_secrets):
         super(ApiHostHandler, self).initialize()
         self.api_service = ApiService(
             riak_host=riak_host,
@@ -26,6 +27,8 @@ class ApiHostHandler(BaseHandler):
             riak_rq=riak_rq,
             riak_wq=riak_wq
         )
+        self.app_secrets = app_secrets
+        self.api_key = app_secrets['X-API-KEY']
 
     def get(self):
         """
@@ -33,6 +36,7 @@ class ApiHostHandler(BaseHandler):
             GET /apis?app_host=<app_host>   -> get a map of APIs for a single app host
         """
         self.require_accept_header()
+        self.matches_api_key(self.api_key)
         app_host = self.get_argument('app_host', None)
         if app_host is None:
             # No app_host provided -> Get all entries, sorted by host

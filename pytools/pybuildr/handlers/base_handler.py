@@ -16,6 +16,7 @@ from pybuildr.handlers.handler_helpers import get_current_time_formatted
 from pybuildr.response import Response
 from pybuildr.services.header_service import HeaderService
 
+
 class BaseHandler(tornado.web.RequestHandler):
     """
         The most general handler class. Should be sub-classed by all consecutive
@@ -50,6 +51,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Methods", ', '.join([str(x) for x in self.SUPPORTED_METHODS]))
         self.write("ok")
 
+    # noinspection PyUnusedLocal
     def respond(self, payload, status_code=200, status_message='OK'):
         """
             The general responder for ALL cases (success response, error response)
@@ -65,13 +67,14 @@ class BaseHandler(tornado.web.RequestHandler):
         response = Response(result=payload).get_data()
 
         self.set_status(status_code)
-        self.set_header("X-Calvin",
-            "You know, Hobbes, some days even my lucky rocketship underpants don’t help. --Bill Watterson")
+        self.set_header(
+            "X-Calvin",
+            "You know, Hobbes, some days even my lucky rocketship underpants don’t help. --Bill Watterson"
+        )
         self.set_header("Content-Type", "application/json; charset=UTF-8")
         self.write(response)
         if status_code in [200, 201, 204, 300]:
             self.finish()
-
 
     def write_error(self, status_code, **kwargs):
         """
@@ -114,14 +117,14 @@ class BaseHandler(tornado.web.RequestHandler):
             self.write_error(status_code=406, message='Content-Type is not set to application/json.')
             self.finish()
 
-#    def require_api_key(self):
-#        """
-#            Authorize request by enforcing API key (X-API-Key)
-#        """
-#        self.require_headers()
-#        if self.header_service.get_key_from_header('X-Api-Key') != self.api_key:
-#            self.write_error(status_code=401, message='Invalid API Key.')
-#            return 1
+    def matches_api_key(self, api_key):
+        """
+           Authorize request by enforcing API key (X-API-Key)
+        """
+        self.require_headers()
+        if self.header_service.get_key_from_header('X-Api-Key') != api_key:
+            self.write_error(status_code=401, message='Invalid API Key.')
+            self.finish()
 
     def require_headers(self):
         """

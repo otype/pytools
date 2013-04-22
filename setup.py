@@ -66,7 +66,9 @@ setup(
     packages=find_packages('pytools'),
     package_dir={'': 'pytools'},
     data_files=[
-        (get_template_base_dir(), ['pytools/pydeployr/templates/genapi_base.tpl'])
+        (get_template_base_dir(), ['pytools/pydeployr/templates/genapi_base.tpl']),
+        (get_template_base_dir(), ['pytools/pybalancr/templates/genapi_backends.tpl']),
+        (get_template_base_dir(), ['pytools/pybalancr/templates/genapi_frontends.tpl'])
     ],
     scripts=scripts_list()
 )

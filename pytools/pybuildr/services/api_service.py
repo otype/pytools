@@ -206,7 +206,9 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host']).to_dict()
+        # Obviously, when using .apply() instead of .apply_async(), the dict is returned as is
+        # therefore we are missing here the .to_dict() at the end
+        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host']) #.to_dict()
         logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
 
         loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id']).to_dict()

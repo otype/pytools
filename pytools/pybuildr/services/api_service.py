@@ -225,13 +225,12 @@ class ApiService(ApiBaseService):
 
         res = loadbalance_undeploy(api_id=api['api_id'])
         logging.info("Loadbalance update API response is type={} and has content:{}".format(type(res), res))
-        loadbalance_undeploy_result = None
         if type(res) == LoadbalanceUpdateConfirmationMessage:
             loadbalance_undeploy_result = res.to_dict()
         elif type(res) == dict:
             loadbalance_undeploy_result = res
         else:
-            undeploy_result = {}
+            loadbalance_undeploy_result = {}
 
         logging.info('Loadbalancer undeploy result for API:{} = {}'.format(api['api_id'], loadbalance_undeploy_result))
 

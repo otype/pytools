@@ -17,6 +17,8 @@ from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundExcep
 from pybuildr.services.api_base_service import ApiBaseService
 from pydeployr.api.undeploy import undeploy_api
 from pydeployr.api.deploy import deploy_api
+from pydeployr.conf.config_loader import ConfigLoader
+from pydeployr.services import config_service
 
 
 class ApiService(ApiBaseService):
@@ -88,17 +90,19 @@ class ApiService(ApiBaseService):
             Deploy an API from a given JSON request by calling pydeployr's API method
         """
         obj_to_store = self.read_json(request_body)
-        self.validate_json(
-            obj_to_store,
-            ['api_id', 'api_key', 'entities', 'db_host', 'db_port', 'log_level', 'genapi_version']
-        )
+        self.validate_json(obj_to_store, ['api_id', 'api_key', 'entities', 'log_level', 'genapi_version'])
+
+        # retrieve Riak loadbalancer information from deployr.conf
+        config = ConfigLoader(config=config_service.load_configuration())
+        loadbalancer_host = config.loadbalancer_host
+        loadbalancer_riak_pb_port = config.loadbalancer_riak_pb_port
 
         deploy_result = deploy_api(
             api_id=obj_to_store['api_id'],
             api_key=obj_to_store['api_key'],
             entities=obj_to_store['entities'],
-            db_host=obj_to_store['db_host'],
-            db_port=obj_to_store['db_port'],
+            db_host=loadbalancer_host,
+            db_port=loadbalancer_riak_pb_port,
             genapi_version=obj_to_store['genapi_version'],
             log_level=obj_to_store['log_level']
         ).to_dict()
@@ -110,8 +114,8 @@ class ApiService(ApiBaseService):
                 u'api_id': obj_to_store['api_id'],
                 u'api_key': obj_to_store['api_key'],
                 u'entities': obj_to_store['entities'],
-                u'db_host': obj_to_store['db_host'],
-                u'db_port': obj_to_store['db_port'],
+                u'db_host': loadbalancer_host,
+                u'db_port': loadbalancer_riak_pb_port,
                 u'log_level': obj_to_store['log_level'],
                 u'status': deploy_result['status'],
                 u'genapi_version': deploy_result['genapi_version'],

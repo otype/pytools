@@ -24,7 +24,7 @@ enable_pretty_logging()
 
 APP_DETAILS = {
     'name': 'pybuildr',
-    'version': '0.0.3',
+    'version': '0.1',
     'company': 'apitrary',
     'author': 'Hans-Gunther Schmidt',
     'author_email': 'hgs@apitrary.com',
@@ -37,6 +37,11 @@ APP_SETTINGS = {
     'cookie_secret': 'hie5oeyie7Oog6tohhai5ahzeexaequeidooch2ooqu2no0uafoh2OosoquahgahmaeChieng6iemei8',
     'xheaders': True
 }
+
+APP_SECRETS = {
+    'X-API-KEY': 'gaebiRaiTh4iez8Ees4umaidooZ1ooNg6ohngeimahbaekahroh3xahjieleech6aevee7aiqua7mai9'
+}
+
 
 def show_pre_commit_hook_warning():
     """
@@ -73,7 +78,8 @@ def main():
         riak_pb_port=options.riak_pb_port,
         bucket_name=options.riak_bucket_name,
         riak_rq=options.riak_rq,
-        riak_wq=options.riak_wq
+        riak_wq=options.riak_wq,
+        app_secrets=APP_SECRETS
     )
 
     all_routes = [

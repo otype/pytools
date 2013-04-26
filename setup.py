@@ -55,7 +55,7 @@ def scripts_list():
 
 setup(
     name='pytools',
-    version='0.1.7',
+    version='0.1.8',
     author='Hans-Gunther Schmidt',
     author_email='hgs@apitrary.com',
     description='pytools - apitrary pytools',

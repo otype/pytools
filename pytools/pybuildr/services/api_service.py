@@ -215,10 +215,13 @@ class ApiService(ApiBaseService):
         res = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
         logging.info("Undeploy API response is type={} and has content:{}".format(type(res), res))
         if type(res) == UndeployConfirmationMessage:
+            logging.info("Received UndeployConfirmationMessage for API ID:{}".format(api['api_id']))
             undeploy_result = res.to_dict()
         elif type(res) == dict:
+            logging.warn("Received Simple dictionary for API ID:{}".format(api['api_id']))
             undeploy_result = res
         else:
+            logging.warn("Received Empty message for API ID:{}".format(api['api_id']))
             undeploy_result = {}
 
         logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
@@ -226,10 +229,13 @@ class ApiService(ApiBaseService):
         res = loadbalance_undeploy(api_id=api['api_id'])
         logging.info("Loadbalance update API response is type={} and has content:{}".format(type(res), res))
         if type(res) == LoadbalanceUpdateConfirmationMessage:
+            logging.info("Received LoadbalanceUpdateConfirmationMessage for API ID:{}".format(api['api_id']))
             loadbalance_undeploy_result = res.to_dict()
         elif type(res) == dict:
+            logging.warn("Received Simple dictionary on Loadbalance update for API ID:{}".format(api['api_id']))
             loadbalance_undeploy_result = res
         else:
+            logging.warn("Received Empty message on Loadbalance update for API ID:{}".format(api['api_id']))
             loadbalance_undeploy_result = {}
 
         logging.info('Loadbalancer undeploy result for API:{} = {}'.format(api['api_id'], loadbalance_undeploy_result))

@@ -18,6 +18,8 @@ from pybuildr.services.api_base_service import ApiBaseService
 from pydeployr.api.undeploy import undeploy_api
 from pydeployr.api.deploy import deploy_api
 from pydeployr.conf.config_loader import ConfigLoader
+from pydeployr.messages.loadbalance_update_confirmation_message import LoadbalanceUpdateConfirmationMessage
+from pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from pydeployr.services import config_service
 
 
@@ -210,10 +212,22 @@ class ApiService(ApiBaseService):
         api = db_object['_data']
         db_id = db_object['_id']
 
-        undeploy_result = undeploy_api(api_id=api['api_id'], api_host=api['app_host']).to_dict()
+        res = undeploy_api(api_id=api['api_id'], api_host=api['app_host'])
+        undeploy_result = None
+        if type(res) == UndeployConfirmationMessage:
+            undeploy_result = res.to_dict()
+        elif type(res) == dict:
+            undeploy_result = res
+
         logging.info("Undeploy result for API:{} on host:{}".format(api['api_id'], api['app_host']))
 
-        loadbalance_undeploy_result = loadbalance_undeploy(api_id=api['api_id']).to_dict()
+        res = loadbalance_undeploy(api_id=api['api_id'])
+        loadbalance_undeploy_result = None
+        if type(res) == LoadbalanceUpdateConfirmationMessage:
+            loadbalance_undeploy_result = res.to_dict()
+        elif type(res) == dict:
+            loadbalance_undeploy_result = res
+
         logging.info('Loadbalancer undeploy result for API:{} = {}'.format(api['api_id'], loadbalance_undeploy_result))
 
         logging.debug('Deleting reference for API ID:{}'.format(api['api_id']))

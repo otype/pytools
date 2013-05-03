@@ -52,7 +52,7 @@ class TemplateService(object):
         template = env.get_template(template_name)
         return template
 
-    def write_genapi_base_tpl(self, python_interpreter, genapi_start, logging_level, riak_host, app_port,
+    def write_genapi_base_tpl(self, python_interpreter, genapi_start, logging_level, riak_host, riak_port, app_port,
                               genapi_api_id, genapi_version, genapi_env, genapi_entity_list, genapi_api_key,
                               genapi_home_directory, genapi_user, genapi_log_file, config_file_name):
         """
@@ -65,6 +65,7 @@ class TemplateService(object):
             genapi_start=genapi_start,
             logging_level=logging_level,
             riak_host=riak_host,
+            riak_port=riak_port,
             app_port=app_port,
             genapi_version=genapi_version,
             genapi_env=genapi_env,

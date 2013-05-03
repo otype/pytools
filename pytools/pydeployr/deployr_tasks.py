@@ -77,6 +77,7 @@ def deploy(deploy_task):
     status_code, api_host, api_port = deploy_service.deploy_api(
         api_id=deploy_task['api_id'],
         db_host=deploy_task['db_host'],
+        db_port=deploy_task['db_port'],
         genapi_version=deploy_task['genapi_version'],
         log_level=deploy_task['log_level'],
         environment=config.environment,

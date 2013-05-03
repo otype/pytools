@@ -67,7 +67,7 @@ class DeployService(object):
         logging.debug('Configuration file name is {}'.format(config_file_name))
         return assigned_port, application_host, config_file_name
 
-    def deploy_api(self, api_id, db_host, genapi_version, log_level, environment, entities, api_key):
+    def deploy_api(self, api_id, db_host, db_port, genapi_version, log_level, environment, entities, api_key):
         """
             Deploy an GenAPI
         """
@@ -80,6 +80,7 @@ class DeployService(object):
             genapi_start='/usr/local/bin/genapi_runner.py',
             logging_level=log_level,
             riak_host=db_host,
+            riak_port=db_port,
             app_port=assigned_port,
             genapi_version=genapi_version,
             genapi_env=environment,

@@ -96,15 +96,13 @@ class ApiService(ApiBaseService):
 
         # retrieve Riak loadbalancer information from deployr.conf
         config = ConfigLoader(config=config_service.load_configuration())
-        loadbalancer_host = config.loadbalancer_host
-        loadbalancer_riak_pb_port = config.loadbalancer_riak_pb_port
 
         deploy_result = deploy_api(
             api_id=obj_to_store['api_id'],
             api_key=obj_to_store['api_key'],
             entities=obj_to_store['entities'],
-            db_host=loadbalancer_host,
-            db_port=loadbalancer_riak_pb_port,
+            db_host=config.loadbalancer_host,
+            db_port=config.loadbalancer_riak_pb_port,
             genapi_version=obj_to_store['genapi_version'],
             log_level=obj_to_store['log_level']
         ).to_dict()
@@ -116,8 +114,8 @@ class ApiService(ApiBaseService):
                 u'api_id': obj_to_store['api_id'],
                 u'api_key': obj_to_store['api_key'],
                 u'entities': obj_to_store['entities'],
-                u'db_host': loadbalancer_host,
-                u'db_port': loadbalancer_riak_pb_port,
+                u'db_host': config.loadbalancer_host,
+                u'db_port': config.loadbalancer_riak_pb_port,
                 u'log_level': obj_to_store['log_level'],
                 u'status': deploy_result['status'],
                 u'genapi_version': deploy_result['genapi_version'],

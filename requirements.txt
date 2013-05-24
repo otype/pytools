@@ -15,4 +15,4 @@ python-dateutil==1.5
 pytz==2012j
 pyzmq==13.0.0
 riak==1.5.2
-tornado==2.4.1
+tornado==3.0.1

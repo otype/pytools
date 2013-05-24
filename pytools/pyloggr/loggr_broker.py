@@ -11,7 +11,7 @@
 import sys
 import tornado
 from tornado.options import define
-from tornado.options import enable_pretty_logging
+from tornado.log import enable_pretty_logging
 from tornado.options import options
 from zeromq.majordomo_broker import MajorDomoBroker
 

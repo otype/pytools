@@ -9,13 +9,14 @@
 
 """
 import sys
+import logging
 import tornado
 import tornado.web
 import tornado.ioloop
 import tornado.httpserver
-from tornado.options import define, logging
+from tornado.log import enable_pretty_logging
+from tornado.options import define
 from tornado.options import options
-from tornado.options import enable_pretty_logging
 from pybuildr.handlers.api_handler import ApiHandler
 from pybuildr.handlers.api_host_handler import ApiHostHandler
 from pybuildr.handlers.status_handler import StatusHandler

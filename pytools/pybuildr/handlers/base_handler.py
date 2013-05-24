@@ -10,7 +10,7 @@
 """
 import tornado
 import tornado.web
-from tornado.options import logging
+import logging
 from pybuildr.exceptions import NoDictionaryException
 from pybuildr.handlers.handler_helpers import get_current_time_formatted
 from pybuildr.response import Response

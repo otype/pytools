@@ -10,7 +10,7 @@
 """
 import sys
 import socket
-from tornado.options import logging
+from tornado.log import logging
 from pyloggr.log_message import LogMessage
 from pyloggr.settings import ZMQ
 from zeromq.majordomo_client import MajorDomoClient

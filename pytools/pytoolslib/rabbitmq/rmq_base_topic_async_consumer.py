@@ -10,7 +10,7 @@
 """
 import logging
 import pika
-from tornado.options import enable_pretty_logging
+from tornado.log import enable_pretty_logging
 
 enable_pretty_logging()
 

@@ -8,10 +8,11 @@
     Copyright (c) 2012 apitrary
 
 """
-import logging
 import riak
+import logging
 from pybuildr.exceptions import RiakObjectIdNotProvidedException
 from pybuildr.exceptions import RiakObjectNotFoundException
+
 
 class RiakRepository(object):
     """

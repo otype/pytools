@@ -19,6 +19,7 @@ from tornado.options import define
 from tornado.options import options
 from pybuildr.handlers.api_handler import ApiHandler
 from pybuildr.handlers.api_host_handler import ApiHostHandler
+from pybuildr.handlers.api_stats_handler import ApiStatsHandler
 from pybuildr.handlers.status_handler import StatusHandler
 
 enable_pretty_logging()
@@ -87,6 +88,7 @@ def main():
         (r"/", StatusHandler, dict(app_details=APP_DETAILS)),
         (r"/v1/apis", ApiHandler, options_dict),
         (r"/v1/apis/([0-9a-zA-Z]+)", ApiHandler, options_dict),
+        (r"/v1/apis/stats/([0-9a-zA-Z_]+)", ApiStatsHandler, options_dict),
         (r"/v1/apis/by_host", ApiHostHandler, options_dict),
         (r"/v1/apis/by_host/([0-9a-zA-Z]+)", ApiHostHandler, options_dict),
     ]

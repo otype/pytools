@@ -10,7 +10,9 @@
 """
 import json
 import logging
+import re
 import uuid
+import requests
 from pybalancr.api.deploy import loadbalance_deploy
 from pybalancr.api.undeploy import loadbalance_undeploy
 from pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
@@ -29,6 +31,7 @@ class ApiService(ApiBaseService):
     """
 
     def __init__(self, riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq):
+        self.riak_host = riak_host
         super(ApiService, self).__init__(riak_host, riak_pb_port, bucket_name, riak_rq, riak_wq)
 
     def fetch_all(self):
@@ -48,6 +51,24 @@ class ApiService(ApiBaseService):
             Fetch all APIs by API ID and APP_HOST
         """
         return self.repository.search('api_id:{} AND app_host:{}'.format(api_id, app_host))
+
+    def fetch_bucket_size(self, bucket_name):
+        """
+            Fetch bucket size
+        """
+        payload = {
+            "inputs": bucket_name,
+            "query": [
+                {"map": {"language": "erlang", "module": "riak_mapreduce_utils", "function": "map_datasize"}},
+                {"reduce": {"language": "erlang", "module": "riak_kv_mapreduce", "function": "reduce_sum"}}
+            ]
+        }
+        r = requests.post(
+            "http://{}:8098/mapred".format(self.riak_host),
+            data=json.dumps(payload),
+            headers={'content-type': 'application/json'}
+        )
+        return {'size': re.sub(r'\D', "", r.text), 'unit': 'bytes'}
 
     def fetch_all_by_app_host(self):
         """

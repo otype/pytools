@@ -63,8 +63,8 @@ setup(
     url='http://apitrary.com',
     install_requires=read_requirements(),
     keywords='pytools pybuildr pydeployr pybalancr pyloggr pytoolslib pytrackr apitrary application',
-    packages=find_packages('pytools'),
-    package_dir={'': 'pytools'},
+    packages=find_packages('.'),
+    package_dir={'': '.'},
     data_files=[
         (get_template_base_dir(), ['pytools/pydeployr/templates/genapi_base.tpl']),
         (get_template_base_dir(), ['pytools/pybalancr/templates/genapi_backends.tpl']),

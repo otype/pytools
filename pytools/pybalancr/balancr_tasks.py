@@ -12,9 +12,9 @@ from __future__ import absolute_import
 import logging
 from celery import Celery
 from kombu.entity import Queue
-from pytools.pybalancr.repositories.loadbalance_update_repository import loadbalance_update_api, loadbalance_remove_api
-from pytools.pydeployr.conf.config_loader import ConfigLoader
-from pytools.pydeployr.conf.returncodes import RETURNCODE
+from pytools.pybalancr.loadbalance_update_repository import loadbalance_update_api, loadbalance_remove_api
+from pytools.pydeployr.config_loader import ConfigLoader
+from pytools.pydeployr.returncodes import RETURNCODE
 from pytools.pydeployr.messages.loadbalance_remove_confirmation_message import LoadbalanceRemoveConfirmationMessage
 from pytools.pydeployr.messages.loadbalance_update_confirmation_message import LoadbalanceUpdateConfirmationMessage
 from pytools.pydeployr.services import config_service

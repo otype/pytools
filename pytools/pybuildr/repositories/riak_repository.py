@@ -58,7 +58,7 @@ class RiakRepository(object):
         query.map('''function(v) {
                         var data = JSON.parse(v.values[0].data);
                         if(v.key != '_init') {
-                            return [{"id": v.key, "data": data}];
+                            return [{'_data': data, '_id': v.key}];
                         }
                         return [];
                     }''')

@@ -10,6 +10,7 @@
 """
 import json
 
+
 class DeployMessage(object):
     """
         A Deploy message

@@ -37,5 +37,5 @@ class ApiStatsHandler(BaseHandler):
         self.require_accept_header()
         self.matches_api_key(self.api_key)
         resp = self.api_service.fetch_bucket_size(bucket_name=bucket_name)
-        resp['bucket'] = bucket_name
+        resp['api_id'] = bucket_name
         self.respond(payload=resp)

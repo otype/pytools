@@ -11,8 +11,8 @@
 import os
 import sys
 import logging
-from pytools.pybalancr.repositories import haproxy_repository
-from pytools.pydeployr.conf.returncodes import RETURNCODE
+import subprocess
+from pytools.pydeployr.returncodes import RETURNCODE
 from pytools.pydeployr.services.template_service import TemplateService
 
 
@@ -58,7 +58,7 @@ def reload_haproxy():
         Reload HAPROXY
     """
     logging.info('Trying to reload loadbalancer (haproxy), now ...')
-    status_code = haproxy_repository.reload_haproxy()
+    status_code = subprocess.call(['/etc/init.d/haproxy', 'reload'])
     logging.info('Reload of haproxy status: {}'.format(status_code))
     if status_code != RETURNCODE.OS_SUCCESS:
         logging.error("Error on reloading haproxy.")

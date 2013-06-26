@@ -22,6 +22,7 @@ from pytools.pybuildr.handlers.api_host_handler import ApiHostHandler
 from pytools.pybuildr.handlers.api_stats_handler import ApiStatsHandler
 from pytools.pybuildr.handlers.status_handler import StatusHandler
 
+# Enable Tornado's pretty logging
 enable_pretty_logging()
 
 APP_DETAILS = {
@@ -40,9 +41,7 @@ APP_SETTINGS = {
     'xheaders': True
 }
 
-APP_SECRETS = {
-    'X-API-KEY': 'gaebiRaiTh4iez8Ees4umaidooZ1ooNg6ohngeimahbaekahroh3xahjieleech6aevee7aiqua7mai9'
-}
+APP_SECRETS = {'X-API-KEY': 'gaebiRaiTh4iez8Ees4umaidooZ1ooNg6ohngeimahbaekahroh3xahjieleech6aevee7aiqua7mai9'}
 
 
 def show_pre_commit_hook_warning():
@@ -87,10 +86,15 @@ def main():
     all_routes = [
         (r"/", StatusHandler, dict(app_details=APP_DETAILS)),
         (r"/v1/apis", ApiHandler, options_dict),
+        (r"/v1/apis.json", ApiHandler, options_dict),
         (r"/v1/apis/([0-9a-zA-Z]+)", ApiHandler, options_dict),
+        (r"/v1/apis/([0-9a-zA-Z]+).json", ApiHandler, options_dict),
         (r"/v1/apis/stats/([0-9a-zA-Z_]+)", ApiStatsHandler, options_dict),
+        (r"/v1/apis/stats/([0-9a-zA-Z_]+).json", ApiStatsHandler, options_dict),
         (r"/v1/apis/by_host", ApiHostHandler, options_dict),
+        (r"/v1/apis/by_host.json", ApiHostHandler, options_dict),
         (r"/v1/apis/by_host/([0-9a-zA-Z]+)", ApiHostHandler, options_dict),
+        (r"/v1/apis/by_host/([0-9a-zA-Z]+).json", ApiHostHandler, options_dict),
     ]
 
     application = tornado.web.Application(handlers=all_routes, **APP_SETTINGS)

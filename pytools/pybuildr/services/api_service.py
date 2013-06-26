@@ -13,13 +13,13 @@ import logging
 import re
 import uuid
 import requests
-from pytools.pybalancr.api.deploy import loadbalance_deploy
-from pytools.pybalancr.api.undeploy import loadbalance_undeploy
+from pytools.pybalancr.balancr_api import loadbalance_deploy
+from pytools.pybalancr.balancr_api import loadbalance_undeploy
 from pytools.pybuildr.exceptions import RiakObjectNotFoundException, NoSuchApiFoundException
 from pytools.pybuildr.services.api_base_service import ApiBaseService
-from pytools.pydeployr.api.undeploy import undeploy_api
-from pytools.pydeployr.api.deploy import deploy_api
-from pytools.pydeployr.conf.config_loader import ConfigLoader
+from pytools.pydeployr.deployr_api import undeploy_api
+from pytools.pydeployr.deployr_api import deploy_api
+from pytools.pydeployr.config_loader import ConfigLoader
 from pytools.pydeployr.messages.loadbalance_update_confirmation_message import LoadbalanceUpdateConfirmationMessage
 from pytools.pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from pytools.pydeployr.services import config_service
@@ -75,16 +75,17 @@ class ApiService(ApiBaseService):
             Fetch all APIs, sorted by app_host
         """
         entries = self.fetch_all()
+
         by_app_hosts = dict()
         for entry in entries:
-            app_host = entry['data']['app_host']
+            app_host = entry['_data']['app_host']
 
             if app_host in by_app_hosts:
                 app_host_entry = by_app_hosts[app_host]
             else:
                 app_host_entry = []
 
-            app_host_entry.append(entry['data'])
+            app_host_entry.append(entry['_data'])
             by_app_hosts[app_host] = app_host_entry
 
         return by_app_hosts

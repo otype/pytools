@@ -11,6 +11,7 @@
 import json
 import time
 
+
 class DeployConfirmationMessage(object):
     """
         A message object that is used for confirming a successful deployment

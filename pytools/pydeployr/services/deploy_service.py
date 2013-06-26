@@ -10,7 +10,7 @@
 """
 import sys
 import logging
-from pytools.pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.returncodes import RETURNCODE
 from pytools.pydeployr.services import os_service, network_service
 from pytools.pydeployr.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
 from pytools.pydeployr.services.template_service import TemplateService

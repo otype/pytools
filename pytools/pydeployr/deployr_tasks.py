@@ -12,7 +12,7 @@ from __future__ import absolute_import
 import logging
 from celery import Celery
 from kombu.entity import Queue
-from pytools.pydeployr.conf.config_loader import ConfigLoader
+from pytools.pydeployr.config_loader import ConfigLoader
 from pytools.pydeployr.messages.deploy_confirmation_message import DeployConfirmationMessage
 from pytools.pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
 from pytools.pydeployr.services import config_service

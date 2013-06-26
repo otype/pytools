@@ -11,19 +11,17 @@
 import json
 import time
 
-LOADBALANCE_UPDATE_CONFIRMATION_QUEUE = 'loadbalance_update_confirmation_queue'
-LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY = LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
 
 class LoadbalanceUpdateMessage(object):
     """
         A message object that is used for confirming a successful deployment
     """
 
-    # the routing key for deploy confirmation
-    routing_key = LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY
-
     # the exchange to use
-    queue = LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
+    queue = 'loadbalance_update_confirmation_queue'
+
+    # the routing key for deploy confirmation
+    routing_key = queue
 
     def __init__(self, api_id, api_host, api_port):
         """

@@ -11,7 +11,7 @@
 import logging
 import socket
 import xmlrpclib
-from pytools.pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.returncodes import RETURNCODE
 
 
 class SupervisorXmlRpcService(object):

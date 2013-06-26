@@ -9,6 +9,7 @@
 
 """
 
+
 class ENVIRONMENT:
     """
         Self-defined enumeration for environment names
@@ -24,7 +25,7 @@ GLOBAL_CONF = {
         'NAME': ENVIRONMENT.STAGING,
         'DEPLOYR_CONFIG_FILE': 'deployr.conf',
         'SUPERVISORD_HOST': '127.0.0.1',
-        'SUPERVISORD_WEB_PORT': 9001, # XML-RPC web API of a running supervisord.
+        'SUPERVISORD_WEB_PORT': 9001,   # XML-RPC web API of a running supervisord.
         'SUPERVISOR_XML_RPC_USERNAME': 'UNSET',
         'SUPERVISOR_XML_RPC_PASSWORD': 'UNSET',
         'SUPERVISOR_XML_RPC_SERVER_ADDRESS': 'http://127.0.0.1:9001/RPC2'
@@ -38,7 +39,7 @@ GLOBAL_CONF = {
         'SUPERVISOR_XML_RPC_USERNAME': 'UNSET',
         'SUPERVISOR_XML_RPC_PASSWORD': 'UNSET',
         'SUPERVISOR_XML_RPC_SERVER_ADDRESS': 'http://{}:{}@app1.dev.apitrary.net:9001/RPC2'.format(
-            'UNSET', # USER NAME (see Chef recipe "supervisor" and role "pythonenv")
+            'UNSET',      # USER NAME (see Chef recipe "supervisor" and role "pythonenv")
             'UNSET'       # PASSWORD  (see Chef recipe "supervisor" and role "pythonenv")
         )
     },
@@ -51,7 +52,7 @@ GLOBAL_CONF = {
         'SUPERVISOR_XML_RPC_USERNAME': 'UNSET',
         'SUPERVISOR_XML_RPC_PASSWORD': 'UNSET',
         'SUPERVISOR_XML_RPC_SERVER_ADDRESS': 'http://{}:{}@127.0.0.1:9001/RPC2'.format(
-            'UNSET', # USER NAME (see Chef recipe "supervisor" and role "pythonenv")
+            'UNSET',     # USER NAME (see Chef recipe "supervisor" and role "pythonenv")
             'UNSET'      # PASSWORD  (see Chef recipe "supervisor" and role "pythonenv")
         )
     }

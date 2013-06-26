@@ -28,10 +28,10 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
 )
 
 celery = Celery(
-    'pybalancr.balancr_tasks',
+    'balancr_tasks',
     broker=broker_address,
     backend=broker_address,
-    include=['pybalancr.balancr_tasks']
+    include=['pytools.pybalancr.balancr_tasks']
 )
 celery.conf.update(
     CELERY_DEFAULT_QUEUE='balancr.default',

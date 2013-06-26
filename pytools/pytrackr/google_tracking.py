@@ -1,25 +1,39 @@
 # -*- coding: utf-8 -*-
 """
 
-    trackr
+    GenAPI - Analytics library
 
-    Copyright (c) 2012 - 2013 apitrary
+    Copyright (c) 2012 apitrary
 
 """
-import uuid
+import re
 import logging
 from random import randint
 from urllib import urlencode
 from urllib2 import urlopen
 from urlparse import urlunparse
 from hashlib import sha1
+import uuid
+
 
 GOOGLE_ANALYTICS = {
-    'STAGING': "UA-28942332-9",         # STAGING ENVIRONMENT GA
-    'LIVE': "UA-28942332-3"             # LIVE ENVIRONMENT GA
+    'STAGING': "MO-28942332-9",         # STAGING ENVIRONMENT GA
+    'LIVE': "MO-28942332-3"             # LIVE ENVIRONMENT GA
 }
 
-def send_data_to_google_analytics(ga_account_id, ga_visitor_id, called_path, http_method):
+
+def get_ip(remote_address):
+    # dbgMsg("remote_address: " + str(remote_address))
+    if not remote_address:
+        return ""
+    matches = re.match('^([^.]+\.[^.]+\.[^.]+\.).*', remote_address)
+    if matches:
+        return matches.groups()[0] + "0"
+    else:
+        return ""
+
+
+def send_data_to_google_analytics(ga_account_id, ga_visitor_id, called_path, http_method, obfuscated_remote_ip):
     """
         Google Analytics magic.
 
@@ -33,26 +47,28 @@ def send_data_to_google_analytics(ga_account_id, ga_visitor_id, called_path, htt
     logging.debug("Generated visitor ID: {}".format(visitor))
 
     # Collect everything in a dictionary
-    DATA = {"utmwv": "5.2.2d",                      # Tracking code version
-            "utmn": str(randint(1, 9999999999)),    # Unique ID generated to each GIF request preventing caching
-            "utmp": called_path,                    # The called path
-            "utmac": ga_account_id,                 # GA profile identifier
+    DATA = {"utmwv": "5.2.2d", # Tracking code version
+            "utmn": str(randint(1, 9999999999)), # Unique ID generated to each GIF request preventing caching
+            "utmp": called_path, # The called path
+            "utmac": ga_account_id, # GA profile identifier
+            "utmip": obfuscated_remote_ip,
             "utmcc": "__utma={};__utmv={};".format(
                 ".".join([
-                    "1",        # Domain hash, unique for each domain
-                    visitor,    # Unique Identifier (Unique ID)
-                    "1",        # Timestamp of time you first visited the site
-                    "1",        # Timestamp for the previous visit
-                    "1",        # Timestamp for the current visit
+                    "1", # Domain hash, unique for each domain
+                    visitor, # Unique Identifier (Unique ID)
+                    "1", # Timestamp of time you first visited the site
+                    "1", # Timestamp for the previous visit
+                    "1", # Timestamp for the current visit
                     "1"         # Number of sessions started
                 ]),
                 ".".join([
-                    '1',            # ID (up to 5 entries possible)
-                    'HTTP_METHOD',  # Our custom var = HTTP METHOD
+                    '1', # ID (up to 5 entries possible)
+                    'HTTP_METHOD', # Our custom var = HTTP METHOD
                     http_method     # The value of HTTP METHOD
                 ])
             )
     }
+    logging.debug("Sending DATA: {}".format(DATA))
 
     # Encode this data and generate the final URL
     URL = urlunparse(("http",
@@ -78,6 +94,7 @@ def generate_unique_user_id(api_id, remote_ip, user_agent):
         user_agent=user_agent,
         uuid=uuid.uuid4()
     )
+
 
 def get_ga_profile(env):
     """
@@ -145,5 +162,6 @@ def send_analytics_data(remote_ip, user_agent, api_id, api_version, env, entity_
         ga_account_id=get_ga_profile(env),
         ga_visitor_id=ga_visitor_id,
         called_path=ga_path,
-        http_method=http_method
+        http_method=http_method,
+        obfuscated_remote_ip=get_ip(remote_ip)
     )

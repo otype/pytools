@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 
-    trackr
+    pygenapi trackr
 
     by hgschmidt
 
-    Copyright (c) 2012 - 2013 apitrary
+    Copyright (c) 2012 apitrary
 
 """
 import zmq
@@ -13,25 +13,43 @@ import json
 import logging
 from pytrackr.google_tracking import send_analytics_data
 
+ZMQ = {
+    'TRACKR_CONNECT_ADDRESS': "tcp://localhost:5555",  # ZMQ_SERVER is running locally (for now).
+    'TRACKR_BIND_ADDRESS': "tcp://*:5555"   # ZMQ_SERVER is running locally (for now).
+}
 
-TRACKR_BIND_ADDRESS = "tcp://*:5555"
-
+# Establish ZMQ context
 context = zmq.Context()
-receiver = context.socket(zmq.PULL)
-receiver.bind(TRACKR_BIND_ADDRESS)
 
+# Socket to receive messages on
+receiver = context.socket(zmq.PULL)
+
+# Bind to the track address
+receiver.bind(ZMQ['TRACKR_BIND_ADDRESS'])
+
+# Initial config for logging
 logging.basicConfig()
+
+# Set logger name to 'deployr
 log = logging.getLogger('trackr')
+
+# Set the default log level
 log.setLevel(logging.DEBUG)
 
-log.debug("Starting trackr on: {}".format(TRACKR_BIND_ADDRESS))
+log.debug("Starting trackr on: {}".format(ZMQ['TRACKR_BIND_ADDRESS']))
 while True:
+    # TODO: Strange but first recv() always delivers error! Check this in ZMQ guide!
     # Running a first recv() ... the second one will actually get the message!
     receiver.recv()
+
+    # Receive the tracking data
     message = receiver.recv()
+
+    # Convert message to json
     try:
         tracking_data = json.loads(message)
 
+        # Send the tracking data to Google Analytics
         log.debug("Contacting Google with data: {}".format(tracking_data))
         send_analytics_data(
             remote_ip=tracking_data['remote_ip'],

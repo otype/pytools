@@ -17,10 +17,10 @@ import tornado.httpserver
 from tornado.log import enable_pretty_logging
 from tornado.options import define
 from tornado.options import options
-from pybuildr.handlers.api_handler import ApiHandler
-from pybuildr.handlers.api_host_handler import ApiHostHandler
-from pybuildr.handlers.api_stats_handler import ApiStatsHandler
-from pybuildr.handlers.status_handler import StatusHandler
+from pytools.pybuildr.handlers.api_handler import ApiHandler
+from pytools.pybuildr.handlers.api_host_handler import ApiHostHandler
+from pytools.pybuildr.handlers.api_stats_handler import ApiStatsHandler
+from pytools.pybuildr.handlers.status_handler import StatusHandler
 
 enable_pretty_logging()
 

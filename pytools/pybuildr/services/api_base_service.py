@@ -12,7 +12,7 @@ import json
 import logging
 import tornado
 from tornado import escape
-from pybuildr.repositories.riak_repository import RiakRepository
+from pytools.pybuildr.repositories.riak_repository import RiakRepository
 
 
 class ApiBaseService(object):

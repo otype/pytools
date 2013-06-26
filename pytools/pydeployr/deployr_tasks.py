@@ -12,12 +12,12 @@ from __future__ import absolute_import
 import logging
 from celery import Celery
 from kombu.entity import Queue
-from pydeployr.conf.config_loader import ConfigLoader
-from pydeployr.messages.deploy_confirmation_message import DeployConfirmationMessage
-from pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
-from pydeployr.services import config_service
-from pydeployr.services.deploy_service import DeployService
-from pydeployr.services.undeploy_service import UndeployService
+from pytools.pydeployr.conf.config_loader import ConfigLoader
+from pytools.pydeployr.messages.deploy_confirmation_message import DeployConfirmationMessage
+from pytools.pydeployr.messages.undeploy_confirmation_message import UndeployConfirmationMessage
+from pytools.pydeployr.services import config_service
+from pytools.pydeployr.services.deploy_service import DeployService
+from pytools.pydeployr.services.undeploy_service import UndeployService
 
 config = ConfigLoader(config=config_service.load_configuration())
 broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(

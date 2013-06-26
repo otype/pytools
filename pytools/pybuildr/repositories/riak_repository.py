@@ -10,8 +10,8 @@
 """
 import riak
 import logging
-from pybuildr.exceptions import RiakObjectIdNotProvidedException
-from pybuildr.exceptions import RiakObjectNotFoundException
+from pytools.pybuildr.exceptions import RiakObjectIdNotProvidedException
+from pytools.pybuildr.exceptions import RiakObjectNotFoundException
 
 
 class RiakRepository(object):

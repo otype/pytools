@@ -11,9 +11,9 @@
 import os
 import sys
 import logging
-from pybalancr.repositories import haproxy_repository
-from pydeployr.conf.returncodes import RETURNCODE
-from pydeployr.services.template_service import TemplateService
+from pytools.pybalancr.repositories import haproxy_repository
+from pytools.pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.services.template_service import TemplateService
 
 
 def define_haproxy_config_path():

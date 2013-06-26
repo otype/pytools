@@ -9,8 +9,8 @@
 
 """
 import logging
-from pybalancr import balancr_tasks
-from pydeployr.messages.loadbalance_update_message import LoadbalanceUpdateMessage
+from pytools.pybalancr import balancr_tasks
+from pytools.pydeployr.messages.loadbalance_update_message import LoadbalanceUpdateMessage
 
 DEPLOY_ROUTING_KEY = 'deploy.deploy'
 DEPLOY_QUEUE = 'balancr.deploy'

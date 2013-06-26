@@ -11,7 +11,7 @@
 import zmq
 import json
 import logging
-from pytrackr.google_tracking import send_analytics_data
+from pytools.pytrackr.google_tracking import send_analytics_data
 
 ZMQ = {
     'TRACKR_CONNECT_ADDRESS': "tcp://localhost:5555",  # ZMQ_SERVER is running locally (for now).

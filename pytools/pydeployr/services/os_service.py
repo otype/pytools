@@ -12,7 +12,7 @@ import os
 import sys
 import logging
 import subprocess
-from pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.conf.returncodes import RETURNCODE
 
 
 def execute_shell_command(command):

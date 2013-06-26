@@ -13,7 +13,7 @@ import tornado
 from tornado.options import options
 from tornado.options import define
 from tornado.log import enable_pretty_logging
-from pyloggr.loggr_manager import LoggrManager
+from pytools.pyloggr.loggr_manager import LoggrManager
 
 enable_pretty_logging()
 

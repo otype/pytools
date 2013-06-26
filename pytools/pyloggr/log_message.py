@@ -10,7 +10,7 @@
 """
 import datetime
 import json
-from pyloggr.errors import InvalidMessageLengthError
+from pytools.pyloggr.errors import InvalidMessageLengthError
 
 class LogMessage(object):
     """

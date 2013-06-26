@@ -8,8 +8,8 @@
     Copyright (c) 2012 - 2013 apitrary
 
 """
-from pydeployr import deployr_tasks
-from pydeployr.messages.deploy_message import DeployMessage
+from pytools.pydeployr import deployr_tasks
+from pytools.pydeployr.messages.deploy_message import DeployMessage
 
 DEPLOY_ROUTING_KEY = 'deploy.deploy'
 DEPLOY_QUEUE = 'deployr.deploy'

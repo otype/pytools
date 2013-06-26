@@ -10,10 +10,10 @@
 """
 import sys
 import logging
-from pydeployr.conf.returncodes import RETURNCODE
-from pydeployr.services import filesystem_service
-from pydeployr.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
-from pydeployr.services.template_service import TemplateService
+from pytools.pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.services import filesystem_service
+from pytools.pydeployr.services.supervisor_xml_rpc_service import SupervisorXmlRpcService
+from pytools.pydeployr.services.template_service import TemplateService
 
 class UndeployService(object):
     """

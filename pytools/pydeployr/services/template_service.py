@@ -14,7 +14,7 @@ import logging
 import os
 from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
-from pydeployr.services import filesystem_service
+from pytools.pydeployr.services import filesystem_service
 
 
 class TemplateService(object):

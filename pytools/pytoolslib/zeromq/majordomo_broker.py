@@ -13,8 +13,8 @@ from binascii import hexlify
 
 import zmq
 
-from pytoolslib.zeromq import majordomo_protocol
-from pytoolslib.zeromq.zhelpers import dump
+from pytools.pytoolslib.zeromq import majordomo_protocol
+from pytools.pytoolslib.zeromq.zhelpers import dump
 
 
 class Service(object):

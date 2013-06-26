@@ -11,8 +11,8 @@
 import sys
 import socket
 from tornado.log import logging
-from pyloggr.log_message import LogMessage
-from pyloggr.settings import ZMQ
+from pytools.pyloggr.log_message import LogMessage
+from pytools.pyloggr.settings import ZMQ
 from zeromq.majordomo_client import MajorDomoClient
 
 class LoggrClient(object):

@@ -8,8 +8,8 @@
     Copyright (c) 2012 apitrary
 
 """
-from pybuildr.handlers.base_handler import BaseHandler
-from pybuildr.services.api_service import ApiService
+from pytools.pybuildr.handlers.base_handler import BaseHandler
+from pytools.pybuildr.services.api_service import ApiService
 
 
 class ApiHostHandler(BaseHandler):

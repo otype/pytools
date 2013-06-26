@@ -12,7 +12,7 @@ import os
 import sys
 import logging
 from configobj import ConfigObj
-from pydeployr.conf.returncodes import RETURNCODE
+from pytools.pydeployr.conf.returncodes import RETURNCODE
 
 
 class ConfigManager(object):

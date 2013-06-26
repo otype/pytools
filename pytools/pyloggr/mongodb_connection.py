@@ -11,7 +11,7 @@
 import logging
 from pymongo import MongoClient
 from pymongo.errors import CollectionInvalid
-from pyloggr.log_message import LogMessage
+from pytools.pyloggr.log_message import LogMessage
 
 class MongoDBConnection(object):
     """

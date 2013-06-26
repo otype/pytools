@@ -11,7 +11,7 @@
 import tornado
 import tornado.web
 from tornado import gen
-from pybuildr.handlers.base_handler import BaseHandler
+from pytools.pybuildr.handlers.base_handler import BaseHandler
 
 
 class StatusHandler(BaseHandler):

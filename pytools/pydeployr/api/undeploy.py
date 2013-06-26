@@ -9,8 +9,8 @@
 
 """
 import logging
-from pydeployr import deployr_tasks
-from pydeployr.messages.undeploy_message import UndeployMessage
+from pytools.pydeployr import deployr_tasks
+from pytools.pydeployr.messages.undeploy_message import UndeployMessage
 
 UNDEPLOY_ROUTING_KEY = 'undeploy.undeploy'
 UNDEPLOY_QUEUE = 'deployr.undeploy'

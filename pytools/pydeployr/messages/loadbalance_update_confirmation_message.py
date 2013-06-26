@@ -10,8 +10,8 @@
 """
 import json
 import time
-from pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
-from pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY
+from pytools.pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
+from pytools.pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY
 
 
 class LoadbalanceUpdateConfirmationMessage(object):

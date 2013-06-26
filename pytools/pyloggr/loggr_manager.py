@@ -13,9 +13,9 @@ import logging
 import datetime
 import sys
 from pymongo.errors import ConnectionFailure
-from pyloggr.log_message import LogMessage
-from pyloggr.mongodb_connection import MongoDBConnection
-from pyloggr.settings import ZMQ
+from pytools.pyloggr.log_message import LogMessage
+from pytools.pyloggr.mongodb_connection import MongoDBConnection
+from pytools.pyloggr.settings import ZMQ
 from zeromq.majordomo_worker import MajorDomoWorker
 
 

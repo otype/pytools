@@ -9,8 +9,8 @@
 
 """
 import logging
-from pybalancr import balancr_tasks
-from pydeployr.messages.loadbalance_remove_message import LoadbalanceRemoveMessage
+from pytools.pybalancr import balancr_tasks
+from pytools.pydeployr.messages.loadbalance_remove_message import LoadbalanceRemoveMessage
 
 DEPLOY_ROUTING_KEY = 'undeploy.undeploy'
 DEPLOY_QUEUE = 'balancr.undeploy'

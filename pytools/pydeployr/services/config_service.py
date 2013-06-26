@@ -11,8 +11,8 @@
 import os
 import sys
 import shutil
-from pydeployr.conf.config_manager import ConfigManager
-from pydeployr.conf.global_config import GLOBAL_CONF, ENVIRONMENT
+from pytools.pydeployr.conf.config_manager import ConfigManager
+from pytools.pydeployr.conf.global_config import GLOBAL_CONF, ENVIRONMENT
 
 
 def get_config_file_name():

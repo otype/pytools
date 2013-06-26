@@ -28,7 +28,7 @@ broker_address = 'amqp://{user}:{password}@{host}:{port}'.format(
 )
 
 celery = Celery(
-    'balancr_tasks',
+    'pytools.pybalancr.balancr_tasks',
     broker=broker_address,
     backend=broker_address,
     include=['pytools.pybalancr.balancr_tasks']

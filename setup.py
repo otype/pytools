@@ -43,19 +43,9 @@ def get_template_base_dir():
     return template_dir
 
 
-def scripts_list():
-    return [
-        'pytools/pybalancr/balancr_tasks.py',
-        'pytools/pydeployr/deployr_tasks.py',
-        'pytools/pybuildr/buildr.py',
-        'pytools/pyloggr/loggr.py',
-        'pytools/pytrackr/trackr.py'
-    ]
-
-
 setup(
     name='pytools',
-    version='0.2.2.1',
+    version='0.2.2.2',
     author='Hans-Gunther Schmidt',
     author_email='hgs@apitrary.com',
     description='pytools - apitrary pytools',
@@ -70,5 +60,11 @@ setup(
         (get_template_base_dir(), ['pytools/pybalancr/templates/genapi_backends.tpl']),
         (get_template_base_dir(), ['pytools/pybalancr/templates/genapi_frontends.tpl'])
     ],
-    scripts=scripts_list()
+    scripts=[
+        'pytools/pybalancr/balancr_tasks.py',
+        'pytools/pydeployr/deployr_tasks.py',
+        'pytools/pybuildr/buildr.py',
+        'pytools/pyloggr/loggr.py',
+        'pytools/pytrackr/trackr.py'
+    ]
 )

@@ -10,8 +10,6 @@
 """
 import json
 import time
-from pytools.pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
-from pytools.pydeployr.messages.loadbalance_update_message import LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY
 
 
 class LoadbalanceUpdateConfirmationMessage(object):
@@ -20,10 +18,10 @@ class LoadbalanceUpdateConfirmationMessage(object):
     """
 
     # the routing key for deploy confirmation
-    routing_key = LOADBALANCE_UPDATE_CONFIRMATION_ROUTING_KEY
+    routing_key = 'loadbalance_update_confirmation_queue'
 
     # the exchange to use
-    queue = LOADBALANCE_UPDATE_CONFIRMATION_QUEUE
+    queue = routing_key
 
     def __init__(self, api_id, lb_host, lb_api_port, api_domainname):
         """
